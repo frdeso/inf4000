@@ -20,7 +20,7 @@ Il y a 2 tailles de paquets où se retrouvent 80% des paquets sur le réseau. On
 Dans un réseau de contrôle comme celui à l'étude le modèle de client-serveur ne tient pas. En effet, le modèle Maitre-esclave colle mieux à la topologie normal d'un réseau de contrôle. Le maitre demande des mises à jour de ses esclaves et ceux-ci lui répondent. Mis à part des situations extraordinaires les esclaves n'initient jamais une conversation avec le maitre
 
 #Test de Kolmogorov-Smirno
-http://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov.E2.80.93Smirnov_test
+[Test deux échantilons](http://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov.E2.80.93Smirnov_test)
 #Glossaire
 * MTU = Master Terminal Unit
 * RTU = Remote Terminal Unit
