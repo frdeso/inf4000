@@ -9,8 +9,11 @@ inf4000
 
 
 ##Temps entre deux envois
-Les intervalles entre deux envois sur un réseau SCADA sont très réguliers. Les MTU utilise une méthode de pooling pour questionner les sondes un peu partout dans le réseau.
+Les intervalles entre deux envois sur un réseau SCADA sont très réguliers. Les MTU utilise une méthode de pooling pour questionner les sondes un peu partout dans le réseau. Les MTU font des requêtes à des intervalles réguliers.
+
 ##Taille des paquets
+Il y a 2 tailles de paquets où se retrouvent 80% des paquets sur le réseau. On pense que les deux tailles de paquets ont les fonctions suivantes:
+* Requêtes du MTU et réponses des RTU
 ##Topologie des communications
 
 
