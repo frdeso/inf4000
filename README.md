@@ -17,7 +17,7 @@ Il y a 2 tailles de paquets où se retrouvent 80% des paquets sur le réseau. On
 * Différents ACK provenant des RTU ou du MTU
 
 ##Topologie des communications
-
+Dans un réseau de contrôle comme celui à l'étude le modèle de client-serveur ne tient pas. En effet, le modèle Maitre-esclave colle mieux à la topologie normal d'un réseau de contrôle. Le maitre demande des mises à jour de ses esclaves et ceux-ci lui répondent. Mis à part des situations extraordinaires les esclaves n'initient jamais une conversation avec le maitre
 
 #Glossaire
 * MTU = Master Terminal Unit
