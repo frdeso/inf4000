@@ -14,6 +14,8 @@ Les intervalles entre deux envois sur un réseau SCADA sont très réguliers. Le
 ##Taille des paquets
 Il y a 2 tailles de paquets où se retrouvent 80% des paquets sur le réseau. On pense que les deux tailles de paquets ont les fonctions suivantes:
 * Requêtes du MTU et réponses des RTU
+* Différents ACK provenant des RTU ou du MTU
+
 ##Topologie des communications
 
 
