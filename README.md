@@ -21,6 +21,20 @@ Dans un réseau de contrôle comme celui à l'étude le modèle de client-serveu
 
 #Test de Kolmogorov-Smirno
 [Test deux échantilons](http://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov.E2.80.93Smirnov_test)
+
+#Implémentation
+##packet
+* int capture_id_; (Numéro de paquet depusi le début de la capture)
+* uint64_t timestamp_ (Temps depuis le depuis de la capture)
+* int ip_src
+* int ip_dst
+* int tcp_protocole
+* u16 port
+* size_t length_
+
+##packet_capture
+* 
+
 #Glossaire
 * MTU = Master Terminal Unit
 * RTU = Remote Terminal Unit
