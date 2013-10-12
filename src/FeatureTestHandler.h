@@ -2,10 +2,12 @@
 #define _FEATURECAPTURE_H_
 
 #include <fstream>
+
 #include <pcap.h>
 
-
 #include "PacketCapture.h"
+
+
 class FeatureTestHandler {
 	public:
 		FeatureTestHandler(FILE * pcap){

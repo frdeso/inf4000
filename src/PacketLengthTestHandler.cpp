@@ -1,8 +1,11 @@
 #include "PacketLengthTestHandler.h"
 #include "PacketCapture.h"
 #include <iostream>
+#include <map>
+
 PacketLengthTestHandler::PacketLengthTestHandler(FILE * fichier) : FeatureTestHandler(fichier)
 {
+	packetDistribution_ = new std::map<unsigned int, unsigned int>();
 	ComputeMaxPacketSize();
 }
 
@@ -10,10 +13,15 @@ PacketLengthTestHandler::PacketLengthTestHandler(FILE * fichier) : FeatureTestHa
 void FindMaxPacketSizeCallback( unsigned char * arg, const struct pcap_pkthdr* pkthdr, const unsigned char * packet )
 {
 	PacketLengthTestHandler* p = (PacketLengthTestHandler* ) arg;
+	size_t max = 0;
+
+	(*p->getPacketDistribution())[pkthdr->len]++;
+//	std::cout<<pkthdr->len<< ": "<<(*p->getPacketDistribution())[pkthdr->len]<<std::endl;
 	if(p->getPacketCapture()->getMaxPacketSize() < pkthdr->len) {
-		p->getPacketCapture()->setMaxPacketSize(pkthdr->len);
+		max = pkthdr->len;
 	}
-	std::cout<<p->getPacketCapture()->getMaxPacketSize()<<std::endl;
+	p->getPacketCapture()->setMaxPacketSize(max);
+
 }
 
 void PacketLengthTestHandler::ReadPacketCapture(pcap_t * pcap)
@@ -27,3 +35,12 @@ size_t PacketLengthTestHandler::ComputeMaxPacketSize()
 {
 	pcap_loop(this->getPacketCapture()->getRawData(), -1, FindMaxPacketSizeCallback,(unsigned char *) this);
 }
+
+std::map<unsigned int , unsigned int>* PacketLengthTestHandler::getPacketDistribution() const
+{
+	return packetDistribution_;
+}
+void PacketLengthTestHandler::printDistribution() const
+{
+}
+
