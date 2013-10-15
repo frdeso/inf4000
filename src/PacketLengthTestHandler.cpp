@@ -1,7 +1,10 @@
-#include "PacketLengthTestHandler.h"
-#include "PacketCapture.h"
 #include <iostream>
 #include <map>
+
+#include "../libs/jsoncpp/json/json.h"
+
+#include "PacketLengthTestHandler.h"
+#include "PacketCapture.h"
 
 PacketLengthTestHandler::PacketLengthTestHandler():FeatureTestHandler()
 {
@@ -22,7 +25,19 @@ void PacketLengthTestHandler::initCapture(){
 }
 
 void PacketLengthTestHandler::saveDataToModel(){
-	
+	Json::Value model;
+	Json::Value vec(Json::arrayValue);
+
+	for (std::map<uint32_t ,uint32_t>::iterator it=packetDistribution_->begin(); it!=packetDistribution_->end(); ++it){
+		Json::Value subVec(Json::arrayValue);
+		subVec.append(it->first);
+		subVec.append(it->second);
+
+		vec.append(subVec);
+
+	}
+	model["packet_lenght"] = vec;
+	std::cout << model << std::endl;
 }
 
 void PacketLengthTestHandler::ComputePacketDistribution()

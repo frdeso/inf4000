@@ -81,5 +81,6 @@ int main(int argc, char **argv)
 	p->initCapture();
 
 	p->printDistribution();
+	p->saveDataToModel();
 	return 0;
 }
