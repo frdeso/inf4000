@@ -2,7 +2,7 @@
 #define _FEATURECAPTURE_H_
 
 #include <fstream>
-
+#include <vector>
 #include <pcap.h>
 
 #include "PacketCapture.h"
@@ -10,22 +10,13 @@
 
 class FeatureTestHandler {
 	public:
-		FeatureTestHandler(FILE * pcap){
-			char * error = new char[1000]();
-			pcap_ = new PacketCapture(pcap_fopen_offline(pcap, error));
-		}
-	//	virtual void ReadPacketCapture(std::ifstream *pcap) = 0;
-	//	virtual void RunTest() = 0;
-		PacketCapture * getPacketCapture() const
-		{
-			return pcap_;
-		}
-		void SetPacketCapture(pcap_t * pcap)
-		{
-			pcap_->setRawData(pcap);
-		}
+		FeatureTestHandler();
+		virtual void initCapture();
+		virtual void saveDataToModel();
+		PacketCapture* getPacketCapture() const;
+		void addPacketCaptureFile(FILE * pcapFile);
+		virtual int getTestResult() = 0;
 	private:
-
-		PacketCapture * pcap_;
+		PacketCapture *pcap_;
 };
 #endif

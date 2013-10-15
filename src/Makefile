@@ -1,10 +1,16 @@
-all: PacketLengthTestHandler.o FeatureTestHandler.o PacketCapture.o pcap_analyzer.c
-	g++ -g -lpcap pcap_analyzer.c PacketLengthTestHandler.o PacketCapture.o -o pcap_analyzer
-PacketLengthTestHandler.o : PacketLengthTestHandler.h PacketLengthTestHandler.cpp 
-	g++ -g -c PacketLengthTestHandler.cpp  -o PacketLengthTestHandler.o
-FeatureTestHandler.o: FeatureTestHandler.h
-	g++ -g -c FeatureTestHandler.h -o FeatureTestHandler.o
+OBJ= PacketLengthTestHandler.o FeatureTestHandler.o PacketCapture.o jsoncpp.o 
+
+CFLAGS= -g -Wall
+
+all: pcap_analyzer.c $(OBJ)
+	g++ $(CFLAGS)  pcap_analyzer.c $(OBJ) -lpcap -o pcap_analyzer
+PacketLengthTestHandler.o : PacketLengthTestHandler.h PacketLengthTestHandler.cpp
+	g++ $(CFLAGS) -c PacketLengthTestHandler.cpp  -o PacketLengthTestHandler.o
+FeatureTestHandler.o: FeatureTestHandler.h FeatureTestHandler.cpp
+	g++ $(CFLAGS) -c FeatureTestHandler.cpp -o FeatureTestHandler.o
 PacketCapture.o: PacketCapture.h PacketCapture.cpp
-	g++ -g -c PacketCapture.cpp -o PacketCapture.o
+	g++ $(CFLAGS) -c PacketCapture.cpp -o PacketCapture.o
+jsoncpp.o:
+	g++ $(CFLAGS) -c ../libs/jsoncpp/jsoncpp.cpp -I ../libs/jsoncpp/ -o jsoncpp.o
 clean:
 	rm -f pcap_analyzer PacketLengthTestHandler.o FeatureTestHandler.o PacketCapture.o
