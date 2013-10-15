@@ -13,4 +13,4 @@ PacketCapture.o: PacketCapture.h PacketCapture.cpp
 jsoncpp.o:
 	g++ $(CFLAGS) -c ../libs/jsoncpp/jsoncpp.cpp -I ../libs/jsoncpp/ -o jsoncpp.o
 clean:
-	rm -f pcap_analyzer PacketLengthTestHandler.o FeatureTestHandler.o PacketCapture.o
+	rm -f pcap_analyzer $(OBJ)
