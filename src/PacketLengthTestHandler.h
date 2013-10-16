@@ -2,13 +2,17 @@
 #define _PACKETLENGTHTESTHANDLER_H_
 
 #include <map>
-#include "FeatureTestHandler.h"
+#include <fstream>
 #include <stdint.h>
+
+#include "FeatureTestHandler.h"
+
 class PacketLengthTestHandler: public FeatureTestHandler
 {
 	public:
-		PacketLengthTestHandler();
+		PacketLengthTestHandler(std::fstream *modelFile);
 		virtual void initCapture();
+		virtual void loadDataToModel();
 		virtual void saveDataToModel();
 		virtual int getTestResult();	
 		void ComputePacketDistribution();

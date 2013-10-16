@@ -2,14 +2,18 @@
 #include <iostream>
 	
 using namespace std;
-FeatureTestHandler::FeatureTestHandler(){
+FeatureTestHandler::FeatureTestHandler(fstream * modelFile){
 	pcap_ = new PacketCapture();
+	modelFile_ = modelFile;
 }
 void FeatureTestHandler::initCapture() {cout<<"Unimplemented method. Should be virtual pure?"<<endl;}
-void FeatureTestHandler::saveDataToModel(){cout<<"Unimplemented method. Should be virtual pure?"<<endl;}
+//void FeatureTestHandler::saveDataToModel(){cout<<"Unimplemented method. Should be virtual pure?"<<endl;}
 PacketCapture *FeatureTestHandler::getPacketCapture() const
 {
 	return pcap_;
+}
+std::fstream *FeatureTestHandler::getModelFile()const{
+	return modelFile_;
 }
 void FeatureTestHandler::addPacketCaptureFile(FILE * pcapFile)
 {

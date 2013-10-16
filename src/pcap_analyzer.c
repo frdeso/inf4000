@@ -76,11 +76,19 @@ int main(int argc, char **argv)
 		std::cerr << "Trouble openning the file... "<<std::strerror(errno)<<std::endl;	
 		return -1;	
 	}
-	PacketLengthTestHandler* p  = new PacketLengthTestHandler();
+	std::fstream *modelFile = new std::fstream();
+	modelFile->open("model.json",std::ios::in | std::ios::out );
+	if(!modelFile->is_open()) {
+		std::cout<<"Model file does not seems to exist. Creating one..."<<std::endl;
+	}
+		
+	//*modelFile << "allol";
+	PacketLengthTestHandler* p  = new PacketLengthTestHandler(modelFile);
 	p->addPacketCaptureFile(pcap);
 	p->initCapture();
-
 	p->printDistribution();
 	p->saveDataToModel();
+	
+	modelFile->close();
 	return 0;
 }
