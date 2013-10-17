@@ -7,9 +7,8 @@
 #include "../libs/jsoncpp/json/json.h"
 
 #include "PacketLengthTestHandler.h"
+#include "constants.h"
 unsigned int  max_size;
-
-enum TYPE_OF_DATA{LEARNING_DATA, ANALYSIS_DATA, NB_ACTIONS};
 
 /*
 source: http://stackoverflow.com/questions/865668/parse-command-line-arguments
@@ -39,7 +38,7 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
 
 int main(int argc, char **argv)
 {
-	TYPE_OF_DATA typeOfData_;
+	int typeOfData;
 	std::string pathToFile_;
 
 	if(cmdOptionExists(argv, argv + argc, "-h")){
@@ -59,9 +58,9 @@ int main(int argc, char **argv)
 	}
 
 	if ( cmdOptionExists(argv, argv + argc, "-l") ){
-		typeOfData_ = LEARNING_DATA;
+		typeOfData = LEARNING_DATA;
 	} else if ( cmdOptionExists(argv, argv + argc, "-a") ){
-		typeOfData_ = ANALYSIS_DATA;
+		typeOfData = ANALYSIS_DATA;
 	}
 	if(cmdOptionExists(argv, argv + argc, "-f")){
 		pathToFile_ = std::string(getCmdOption(argv, argv + argc, "-f"));
@@ -78,16 +77,27 @@ int main(int argc, char **argv)
 	}
 	std::fstream *modelFile = new std::fstream();
 	modelFile->open("model.json",std::ios::in | std::ios::out );
-	if(!modelFile->is_open()) {
-		std::cout<<"Model file does not seems to exist. Creating one..."<<std::endl;
+	if(!modelFile->is_open()){
+		if(typeOfData == LEARNING_DATA) {
+			std::cout<<"Model file does not seems to exist. Creating one..."<<std::endl;
+		}
+		else if(typeOfData == ANALYSIS_DATA){
+			std::cerr<<"Model file needed for analysis but not found. Exiting."<<std::endl;
+			return -1;
+		}
 	}
 		
-	//*modelFile << "allol";
 	PacketLengthTestHandler* p  = new PacketLengthTestHandler(modelFile);
 	p->addPacketCaptureFile(pcap);
+	p->loadDataToModel();
+	p->ComputeDistribution(typeOfData);
 	p->initCapture();
-	p->printDistribution();
-	p->saveDataToModel();
+	if(typeOfData == LEARNING_DATA){
+		p->saveDataToModel();
+	}else if(typeOfData == ANALYSIS_DATA){
+		p->runTest();
+		p->getTestResult();
+	}
 	
 	modelFile->close();
 	return 0;
