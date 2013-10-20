@@ -178,7 +178,7 @@ void PacketLengthTestHandler::runTest(){
 			testValue = 1;
 		else
 			testValue = (*testCumulDist_)[i];
-		cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelValue<< ", test: "<<setw(9)<< testValue <<", test-model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
+		cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelValue<< ", test: "<<setw(9)<< testValue <<", test - model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
 
 		if (dStat_ < fabs(testValue - modelValue)){
 			dStat_ = fabs(testValue - modelValue);
