@@ -12,7 +12,7 @@ class PacketLengthTestHandler: public FeatureTestHandler
 	public:
 		PacketLengthTestHandler(std::fstream *modelFile);
 		virtual void initCapture();
-		virtual void loadDataToModel();
+		virtual void JsonToData(Json::Value * json);
 		virtual void runTest();
 		virtual int getTestResult();	
 		void ComputeDistribution(int type);

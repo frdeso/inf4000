@@ -60,35 +60,20 @@ InterdepartTimeTestHandler::InterdepartTimeTestHandler(std::fstream *modelFile):
 	interdepTiming_ = new map<uint32_t, list<uint64_t> >();
 
 }
-void InterdepartTimeTestHandler::loadDataToModel(){
-	Json::Value root;
-	Json::Reader reader;
-	getModelFile()->seekg(0, ios::end);
-	if(getModelFile()->tellg() <= 0) {
-		cout  << "Empty model file." << endl;
-		return;
-	}
-	getModelFile()->seekg(0, ios::beg);
-	bool parsingSuccessful = reader.parse( (*getModelFile()), root, false );
+void InterdepartTimeTestHandler::JsonToData(Json::Value * root){
 
- 	if ( !parsingSuccessful ) {
-		cout  <<"Parsing error :" <<reader.getFormatedErrorMessages() 
-			<< "File not empty, but no model found."<<endl;
-		return;
-	} else{
 
-	    //Take the feature section of the model
-		Json::Value featureName = root[MODEL_ROOT_][getFeatureName()]; //FIXME: understand what can i do with the "null" situation
-		std::vector<string> addressList = featureName.getMemberNames();
-		//Add data
-		  for (std::vector<string>::iterator it = addressList.begin() ; it != addressList.end(); ++it){
-		  	//cout<<*it<<endl;
-			for(uint32_t i = 0; i < featureName[it->c_str()].size(); ++i){
-				uint32_t address = atoi(it->c_str());
-				uint64_t timing = featureName[*it][i].asLargestUInt();
-				//cout<<"address: "<<address<<", timing: "<<timing<<endl; 
-				(*(interdepTiming_))[address].push_back(timing);
-			}
+	//Take the feature section of the model
+	Json::Value featureName = (*root)[MODEL_ROOT_][getFeatureName()]; //FIXME: understand what can i do with the "null" situation
+	std::vector<string> addressList = featureName.getMemberNames();
+	//Add data
+	  for (std::vector<string>::iterator it = addressList.begin() ; it != addressList.end(); ++it){
+	  	//cout<<*it<<endl;
+		for(uint32_t i = 0; i < featureName[it->c_str()].size(); ++i){
+			uint32_t address = atoi(it->c_str());
+			uint64_t timing = featureName[*it][i].asLargestUInt();
+			//cout<<"address: "<<address<<", timing: "<<timing<<endl; 
+			(*(interdepTiming_))[address].push_back(timing);
 		}
 	}
 }

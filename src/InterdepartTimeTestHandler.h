@@ -17,7 +17,7 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 		InterdepartTimeTestHandler(std::fstream *modelFile);
 		void initCapture();
 		void ComputeDistribution(int type);
-		virtual void loadDataToModel();
+		virtual void JsonToData(Json::Value * json);
 		virtual Json::Value *DataToJson() const ;
 		virtual std::string getFeatureName() const;
 		virtual void runTest();

@@ -35,33 +35,16 @@ void PacketLengthTestHandler::initCapture(){
 	computeModelMaxValue();
 	computeTestMaxValue();
 }
-void PacketLengthTestHandler::loadDataToModel(){
-	Json::Value root;
-	Json::Reader reader;
-	if(getModelFile()->peek() ==  ifstream::traits_type::eof()) {
-		cout  << "Empty model file." << endl;
-		return;
-	} 
-	bool parsingSuccessful = reader.parse( (*getModelFile()), root, false );
+void PacketLengthTestHandler::JsonToData(Json::Value * root){
+	//Take the feature section of the model
+	Json::Value featureName = (*root)[MODEL_ROOT_][getFeatureName()]; //FIXME: understand what can i do with the "null" situation
 
-	if(root.size() == 0 || root[MODEL_ROOT_].isNull()) {
-		cout  << "File not empty, but no model found" << endl;
-		return;
-	} else if ( !parsingSuccessful ) {
-		cout  <<"Parsing error :" <<reader.getFormatedErrorMessages() << endl;
-		return;
-	} else{
-
-	    //Take the feature section of the model
-		Json::Value featureName = root[MODEL_ROOT_][getFeatureName()]; //FIXME: understand what can i do with the "null" situation
-
-		//Add data
-		for ( unsigned int i = 0; i < featureName.size(); i++ ) {
-			//cout << "Loading of model data : " << featureName[i][0].asUInt() <<":"<< featureName[i][1].asUInt() <<endl;
-			uint32_t packetlength = featureName[i][0].asUInt();
-			uint32_t currentNumber = featureName[i][1].asUInt();
-			(*getModelDistribution())[packetlength] += currentNumber;
-		}
+	//Add data
+	for ( unsigned int i = 0; i < featureName.size(); i++ ) {
+		//cout << "Loading of model data : " << featureName[i][0].asUInt() <<":"<< featureName[i][1].asUInt() <<endl;
+		uint32_t packetlength = featureName[i][0].asUInt();
+		uint32_t currentNumber = featureName[i][1].asUInt();
+		(*getModelDistribution())[packetlength] += currentNumber;
 	}
 
 }

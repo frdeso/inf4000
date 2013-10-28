@@ -76,25 +76,34 @@ int main(int argc, char **argv)
 	}
 	std::fstream *modelFile = new std::fstream();
 	modelFile->open("model.json",std::ios::in | std::ios::out );
+	modelFile->seekg(0, std::ios::end);
 	modelFile->exceptions ( std::ifstream::failbit | std::ifstream::badbit );
-	if(!modelFile->is_open()){
+	if(!modelFile->is_open() || modelFile->tellg() <= 0){
 		if(typeOfData == LEARNING_DATA) {
-			std::cout<<"Model file does not seems to exist. Creating one..."<<std::endl;
+			modelFile->seekg(0, std::ios::beg);
+			std::cout<<"Model file does not seems to exist or is empty. Creating one..."<<std::endl;
 		}
 		else if(typeOfData == ANALYSIS_DATA){
-			std::cerr<<"Model file needed for analysis but not found. Exiting."<<std::endl;
+			std::cerr<<"Model file needed for analysis but not found or is empty. Exiting."<<std::endl;
 			return -1;
 		}
 	}
 		
-	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile);
-//	FeatureTestHandler* p  = new PacketLengthTestHandler(modelFile);
+//	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile);
+	FeatureTestHandler* p  = new PacketLengthTestHandler(modelFile);
 	p->addPacketCaptureFile(pcap);
 	try{
 		p->loadDataToModel();
 	}catch(std::ifstream::failure e){
-		std::cout<<"Exception during loading of the model. Exception type: "<<e.what()<<std::endl;
-		return -1;
+		std::cerr<<"Exception during loading of the model.";
+		if( typeOfData == ANALYSIS_DATA){
+			std::cerr<<" Exception type: "<<e.what()<<std::endl;
+			return -1;
+		}
+		else{
+			modelFile->clear(); // to reset the fail and bad flags
+		}
+		
 	}
 	p->ComputeDistribution(typeOfData);
 	p->initCapture();
@@ -103,6 +112,7 @@ int main(int argc, char **argv)
 		p->saveDataToModel();
 	}catch(std::ifstream::failure e){
 		std::cout<<"Exception during the saving of the data. Exception type: "<<e.what()<<std::endl;
+		
 		return -1;
 	}
 	}else if(typeOfData == ANALYSIS_DATA){

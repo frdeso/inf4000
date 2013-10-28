@@ -54,6 +54,25 @@ void FeatureTestHandler::saveDataToModel(){
 	return;
 }
 
+void FeatureTestHandler::loadDataToModel(){
+	Json::Value *root = new Json::Value();
+	Json::Reader reader;
+
+	getModelFile()->seekg(0, ios::beg);
+	bool parsingSuccessful = reader.parse( (*getModelFile()), (*root), false );
+
+ 	if ( !parsingSuccessful ) {
+		cout  <<"Parsing error :" <<reader.getFormatedErrorMessages() << "File not empty, but no model found."<<endl;
+		throw std::ios_base::failure("Parsing unsuccesful.");
+		return;
+	} else{
+		JsonToData(root);
+	}
+	delete root;
+
+	return;
+}
+
 
 string FeatureTestHandler::getFeatureName() const{
 	return "FEATURE_TEST_HANDLER";

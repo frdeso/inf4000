@@ -15,8 +15,9 @@ class FeatureTestHandler {
 	public:
 		FeatureTestHandler(std::fstream *modelFile);
 		virtual void initCapture() = 0;
-		virtual void loadDataToModel() = 0;
-		virtual void saveDataToModel();
+		virtual void JsonToData(Json::Value * json) = 0;
+		void loadDataToModel();
+		void saveDataToModel();
 		virtual void ComputeDistribution(int type) = 0;
 		virtual void runTest() = 0;
 		virtual int getTestResult() = 0;
