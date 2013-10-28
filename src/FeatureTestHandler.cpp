@@ -6,8 +6,7 @@ FeatureTestHandler::FeatureTestHandler(fstream * modelFile){
 	pcap_ = new PacketCapture();
 	modelFile_ = modelFile;
 }
-void FeatureTestHandler::initCapture() {cout<<"Unimplemented method. Should be virtual pure?"<<endl;}
-//void FeatureTestHandler::saveDataToModel(){cout<<"Unimplemented method. Should be virtual pure?"<<endl;}
+
 PacketCapture *FeatureTestHandler::getPacketCapture() const
 {
 	return pcap_;
@@ -27,3 +26,5 @@ void FeatureTestHandler::addPacketCaptureFile(FILE * pcapFile)
 		this->getPacketCapture()->addRawPacket(p);
 	}
 }
+
+const string FeatureTestHandler::MODEL_ROOT_ = "model";

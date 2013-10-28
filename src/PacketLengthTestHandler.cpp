@@ -42,12 +42,11 @@ void PacketLengthTestHandler::loadDataToModel(){
 	Json::Reader reader;
 	if(getModelFile()->peek() ==  ifstream::traits_type::eof()) {
 		cout  << "Empty model file." << endl;
-		Json::Value a = root["model"];
 		return;
 	} 
 	bool parsingSuccessful = reader.parse( (*getModelFile()), root, false );
 
-	if(root.size() == 0 || root["model"].isNull()) {
+	if(root.size() == 0 || root[MODEL_ROOT_].isNull()) {
 		cout  << "File not empty, but no model found" << endl;
 		return;
 	} else if ( !parsingSuccessful ) {
@@ -56,7 +55,7 @@ void PacketLengthTestHandler::loadDataToModel(){
 	} else{
 
 	    //Take the feature section of the model
-		Json::Value featureName = root["model"][FEATURE_NAME]; //FIXME: understand what can i do with the "null" situation
+		Json::Value featureName = root[MODEL_ROOT_][FEATURE_NAME]; //FIXME: understand what can i do with the "null" situation
 
 		//Add data
 		for ( unsigned int i = 0; i < featureName.size(); i++ ) {
@@ -73,22 +72,33 @@ void PacketLengthTestHandler::saveDataToModel(){
 	Json::Value vec(Json::arrayValue);
 
 	for ( map<uint32_t ,uint32_t>::iterator it=getModelDistribution()->begin(); it!=getModelDistribution()->end(); ++it){
-		/*if(it->second <= 0) {
-			continue;
-		}
-*/
 		Json::Value subVec(Json::arrayValue);
 		subVec.append(it->first);
 		subVec.append(it->second);
 
 		vec.append(subVec);
 	}
-	model[FEATURE_NAME] = vec;
-	Json::Value root;
-	root["model"] = model;
-	//cout << root <<  endl;
+	Json::Value oldroot;
+	Json::Reader reader;
+	getModelFile()->seekg(0, ios::end);
+	if(getModelFile()->tellg() <= 0) {
+		cout  << "Empty model file." << endl;
+	} else {
+		getModelFile()->seekg(0, ios::beg);
+		bool parsingSuccessful = reader.parse( (*getModelFile()), oldroot, false );
+
+		if(oldroot.size() == 0 || oldroot[MODEL_ROOT_].isNull()) {
+			cout  << "File not empty, but no model found" << endl;
+		} else if ( !parsingSuccessful ) {
+			cout  <<"Parsing error :" <<reader.getFormatedErrorMessages() << endl;
+			return;
+		} 
+	}
+
+	//Take the feature section of the model
+	oldroot[MODEL_ROOT_][FEATURE_NAME] = vec;
 	getModelFile()->seekg(0, getModelFile()->beg);
-	(*getModelFile()) << root ;
+	(*getModelFile()) << oldroot;
 }
 
 void PacketLengthTestHandler::ComputeDistribution(int type)

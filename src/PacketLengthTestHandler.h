@@ -14,7 +14,7 @@ class PacketLengthTestHandler: public FeatureTestHandler
 		virtual void initCapture();
 		virtual void loadDataToModel();
 		virtual void saveDataToModel();
-		void runTest();
+		virtual void runTest();
 		virtual int getTestResult();	
 		void ComputeDistribution(int type);
 		std::map<uint32_t ,uint32_t>* getModelDistribution() const;

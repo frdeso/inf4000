@@ -6,7 +6,10 @@
 #include <pcap.h>
 #include "../libs/jsoncpp/json/json.h"
 
+#include "InterdepartTimeTestHandler.h"
 #include "PacketLengthTestHandler.h"
+
+
 #include "constants.h"
 unsigned int  max_size;
 
@@ -23,9 +26,6 @@ char* getCmdOption(char ** begin, char ** end, const std::string & option)
     return 0;
 }
 
-/*
-source: http://stackoverflow.com/questions/865668/parse-command-line-arguments
-*/
 bool cmdOptionExists(char** begin, char** end, const std::string& option)
 {
     return std::find(begin, end, option) != end;
@@ -33,7 +33,6 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
 
 /*
  * Available options : -h : help, -l : learning mode, -a :analysis mode, -f <path to file> pcap file to learning from or to analyze
- *
  */
 
 int main(int argc, char **argv)
@@ -77,6 +76,7 @@ int main(int argc, char **argv)
 	}
 	std::fstream *modelFile = new std::fstream();
 	modelFile->open("model.json",std::ios::in | std::ios::out );
+	modelFile->exceptions ( std::ifstream::failbit | std::ifstream::badbit );
 	if(!modelFile->is_open()){
 		if(typeOfData == LEARNING_DATA) {
 			std::cout<<"Model file does not seems to exist. Creating one..."<<std::endl;
@@ -87,13 +87,24 @@ int main(int argc, char **argv)
 		}
 	}
 		
-	PacketLengthTestHandler* p  = new PacketLengthTestHandler(modelFile);
+	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile);
+//	FeatureTestHandler* p  = new PacketLengthTestHandler(modelFile);
 	p->addPacketCaptureFile(pcap);
-	p->loadDataToModel();
+	try{
+		p->loadDataToModel();
+	}catch(std::ifstream::failure e){
+		std::cout<<"Exception during loading of the model. Exception type: "<<e.what()<<std::endl;
+		return -1;
+	}
 	p->ComputeDistribution(typeOfData);
 	p->initCapture();
 	if(typeOfData == LEARNING_DATA){
+		try{
 		p->saveDataToModel();
+	}catch(std::ifstream::failure e){
+		std::cout<<"Exception during the saving of the data. Exception type: "<<e.what()<<std::endl;
+		return -1;
+	}
 	}else if(typeOfData == ANALYSIS_DATA){
 		p->runTest();
 		p->getTestResult();
