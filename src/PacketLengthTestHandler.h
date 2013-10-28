@@ -13,7 +13,6 @@ class PacketLengthTestHandler: public FeatureTestHandler
 		PacketLengthTestHandler(std::fstream *modelFile);
 		virtual void initCapture();
 		virtual void loadDataToModel();
-		virtual void saveDataToModel();
 		virtual void runTest();
 		virtual int getTestResult();	
 		void ComputeDistribution(int type);
@@ -21,7 +20,9 @@ class PacketLengthTestHandler: public FeatureTestHandler
 		std::map<uint32_t ,uint32_t>* getTestDistribution() const;
 		void computeModelMaxValue();
 		void computeTestMaxValue();
+		virtual Json::Value *DataToJson() const;
 		void printDistribution() const;
+		virtual std::string getFeatureName() const;
 	private:
 		uint32_t getModelSampleSize();
 		uint32_t getTestSampleSize();
@@ -33,5 +34,6 @@ class PacketLengthTestHandler: public FeatureTestHandler
 		double dStat_;
 		size_t maxTestSize_;
 		static const double BUFFER = 0.000000000001; // 1*10^-15
+		static const std::string FEATURE_NAME;
 };
 #endif

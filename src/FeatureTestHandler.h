@@ -6,6 +6,7 @@
 #include <string>
 
 #include <pcap.h>
+#include "../libs/jsoncpp/json/json.h"
 
 #include "PacketCapture.h"
 
@@ -15,11 +16,12 @@ class FeatureTestHandler {
 		FeatureTestHandler(std::fstream *modelFile);
 		virtual void initCapture() = 0;
 		virtual void loadDataToModel() = 0;
-		virtual void saveDataToModel() = 0;
+		virtual void saveDataToModel();
 		virtual void ComputeDistribution(int type) = 0;
 		virtual void runTest() = 0;
 		virtual int getTestResult() = 0;
-
+		virtual Json::Value *DataToJson() const = 0;
+		virtual std::string getFeatureName() const;
 		PacketCapture* getPacketCapture() const;
 		void addPacketCaptureFile(FILE * pcapFile);
 		std::fstream *getModelFile()const;

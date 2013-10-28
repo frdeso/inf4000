@@ -12,7 +12,6 @@
 
 #define MAC_ADDR_LEN_STR (6*2+5+1)
 #define IP_ADDR_LEN_STR (4*3+3+1)
-#define FEATURE_NAME "INTERDEPARTURE_TIME"
 
 using namespace std;
 
@@ -79,7 +78,7 @@ void InterdepartTimeTestHandler::loadDataToModel(){
 	} else{
 
 	    //Take the feature section of the model
-		Json::Value featureName = root[MODEL_ROOT_][FEATURE_NAME]; //FIXME: understand what can i do with the "null" situation
+		Json::Value featureName = root[MODEL_ROOT_][getFeatureName()]; //FIXME: understand what can i do with the "null" situation
 		std::vector<string> addressList = featureName.getMemberNames();
 		//Add data
 		  for (std::vector<string>::iterator it = addressList.begin() ; it != addressList.end(); ++it){
@@ -93,9 +92,11 @@ void InterdepartTimeTestHandler::loadDataToModel(){
 		}
 	}
 }
-void InterdepartTimeTestHandler::saveDataToModel(){
-	Json::Value newRoot, feature;
-	Json::Value vect;
+
+
+Json::Value* InterdepartTimeTestHandler::DataToJson() const
+{
+	Json::Value *vect = new Json::Value();
 
 	for ( map<uint32_t ,list<uint64_t> >::iterator it=interdepTiming_->begin(); it!=interdepTiming_->end(); ++it){
 		Json::Value subvec(Json::arrayValue);
@@ -104,36 +105,11 @@ void InterdepartTimeTestHandler::saveDataToModel(){
 		}
 		ostringstream convert;
 		convert << it->first;
-		vect[convert.str()] = subvec;
+		(*vect)[convert.str()] = subvec;
 	}
-	feature[FEATURE_NAME] = vect;
-	newRoot[MODEL_ROOT_]=feature;
-
-//check if the file is empty
-	Json::Value oldroot;
-	Json::Reader reader;
-	getModelFile()->seekg(0, ios::end);
-	if(getModelFile()->tellg() <= 0) {
-		cout  << "Empty model file." << endl;
-	} else {
-		getModelFile()->seekg(0, ios::beg);
-		bool parsingSuccessful = reader.parse( (*getModelFile()), oldroot, false );
-
-		if(oldroot.size() == 0 || oldroot[MODEL_ROOT_].isNull()) {
-			cout  << "File not empty, but no model found" << endl;
-		} else if ( !parsingSuccessful ) {
-			cout  <<"Parsing error :" <<reader.getFormatedErrorMessages() << endl;
-			return;
-		} 
-	}
-
-	//Take the feature section of the model
-	oldroot[MODEL_ROOT_][FEATURE_NAME] = vect;
-	getModelFile()->seekg(0, getModelFile()->beg);
-	(*getModelFile()) << oldroot;
-	
-	return;
+	return vect;
 }
+
 int InterdepartTimeTestHandler::getTestResult(){
 	//TODO: implemente me
 	return 0;
@@ -167,3 +143,7 @@ void InterdepartTimeTestHandler::ComputeInterdeparture(std::map<uint32_t, std::l
 		}
 	}
 }
+string InterdepartTimeTestHandler::getFeatureName() const{
+	return FEATURE_NAME;
+}
+const std::string InterdepartTimeTestHandler::FEATURE_NAME = "INTERDEPARTURE_TIME";

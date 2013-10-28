@@ -27,4 +27,37 @@ void FeatureTestHandler::addPacketCaptureFile(FILE * pcapFile)
 	}
 }
 
+void FeatureTestHandler::saveDataToModel(){
+	Json::Value *vec = DataToJson();
+	Json::Value oldroot;
+	Json::Reader reader;
+	getModelFile()->seekg(0, ios::end);
+	if(getModelFile()->tellg() <= 0) {
+		cout  << "Empty model file." << endl;
+	} else {
+		getModelFile()->seekg(0, ios::beg);
+		bool parsingSuccessful = reader.parse( (*getModelFile()), oldroot, false );
+
+		if(oldroot.size() == 0 || oldroot[MODEL_ROOT_].isNull()) {
+			cout  << "File not empty, but no model found" << endl;
+		} else if ( !parsingSuccessful ) {
+			cout  <<"Parsing error :" <<reader.getFormatedErrorMessages() << endl;
+			return;
+		} 
+	}
+
+	//Take the feature section of the model
+	oldroot[MODEL_ROOT_][getFeatureName()] = *vec;
+	getModelFile()->seekg(0, getModelFile()->beg);
+	(*getModelFile()) << oldroot;
+	delete vec;
+	return;
+}
+
+
+string FeatureTestHandler::getFeatureName() const{
+	return "FEATURE_TEST_HANDLER";
+}
+
+
 const string FeatureTestHandler::MODEL_ROOT_ = "model";

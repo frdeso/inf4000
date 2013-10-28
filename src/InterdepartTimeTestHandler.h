@@ -18,14 +18,15 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 		void initCapture();
 		void ComputeDistribution(int type);
 		virtual void loadDataToModel();
-		virtual void saveDataToModel();
+		virtual Json::Value *DataToJson() const ;
+		virtual std::string getFeatureName() const;
 		virtual void runTest();
 		virtual int getTestResult();
 		void printDistribution() const;
 	private:
 		void ComputeInterdeparture(std::map<uint32_t, std::list<uint64_t> > *packetTiming);
 		std::map<uint32_t, std::list<uint64_t> > * interdepTiming_;
-
+		static const std::string FEATURE_NAME ;
 
 };
 
