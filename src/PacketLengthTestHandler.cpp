@@ -167,19 +167,21 @@ void PacketLengthTestHandler::computeModelMaxValue()
 		if(maxModelSize_ < it->first) {
 			maxModelSize_ = it->first;
 		}
-	}
-	void PacketLengthTestHandler::computeTestMaxValue()
-	{
-		for ( map<uint32_t ,uint32_t>::iterator it=getTestDistribution()->begin(); it!=getTestDistribution()->end(); ++it)
-			if(maxTestSize_ < it->first) {
-				maxTestSize_ = it->first;
-			}
+}
+
+void PacketLengthTestHandler::computeTestMaxValue()
+{
+	for ( map<uint32_t ,uint32_t>::iterator it=getTestDistribution()->begin(); it!=getTestDistribution()->end(); ++it)
+		if(maxTestSize_ < it->first) {
+			maxTestSize_ = it->first;
 		}
+}
 
 uint32_t PacketLengthTestHandler::getModelSampleSize()
 {
 	static uint32_t size = UINT_MAX;
 	if(size == UINT_MAX){
+		size = 0;
 		for ( map<uint32_t ,uint32_t>::iterator it=getModelDistribution()->begin(); it!=getModelDistribution()->end(); ++it){
 			size += it->second;
 		}
@@ -191,6 +193,7 @@ uint32_t PacketLengthTestHandler::getTestSampleSize()
 {
 	static uint32_t size = UINT_MAX;
 	if(size == UINT_MAX){
+		size = 0;
 		for ( map<uint32_t ,uint32_t>::iterator it=getTestDistribution()->begin(); it!=getTestDistribution()->end(); ++it){
 			size += it->second;
 		}

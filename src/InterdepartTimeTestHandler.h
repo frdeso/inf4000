@@ -25,7 +25,10 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 		void printDistribution() const;
 	private:
 		void ComputeInterdeparture(std::map<uint32_t, std::list<uint64_t> > *packetTiming);
-		std::map<uint32_t, std::list<uint64_t> > * interdepTiming_;
+		uint32_t getModelSampleSize();
+		uint32_t getTestSampleSize();
+		std::map<uint32_t, std::map<uint64_t, uint32_t> > * interdepTiming_;
+		std::map<uint32_t, std::vector<uint64_t> > * interdepTimingCumul_;
 		static const std::string FEATURE_NAME ;
 
 };

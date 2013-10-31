@@ -20,9 +20,10 @@ class FeatureTestHandler {
 		void saveDataToModel();
 		virtual void ComputeDistribution(int type) = 0;
 		virtual void runTest() = 0;
+		virtual void printDistribution() const = 0;
 		virtual int getTestResult() = 0;
 		virtual Json::Value *DataToJson() const = 0;
-		virtual std::string getFeatureName() const;
+		virtual std::string getFeatureName() const= 0;
 		PacketCapture* getPacketCapture() const;
 		void addPacketCaptureFile(FILE * pcapFile);
 		std::fstream *getModelFile()const;

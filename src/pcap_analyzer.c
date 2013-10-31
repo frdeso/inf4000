@@ -89,14 +89,14 @@ int main(int argc, char **argv)
 		}
 	}
 		
-//	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile);
-	FeatureTestHandler* p  = new PacketLengthTestHandler(modelFile);
+	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile);
+//	FeatureTestHandler* p  = new PacketLengthTestHandler(modelFile);
 	p->addPacketCaptureFile(pcap);
 	try{
 		p->loadDataToModel();
 	}catch(std::ifstream::failure e){
-		std::cerr<<"Exception during loading of the model.";
 		if( typeOfData == ANALYSIS_DATA){
+			std::cerr<<"Exception during loading of the model.";
 			std::cerr<<" Exception type: "<<e.what()<<std::endl;
 			return -1;
 		}

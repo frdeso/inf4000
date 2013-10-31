@@ -39,9 +39,9 @@ void FeatureTestHandler::saveDataToModel(){
 		bool parsingSuccessful = reader.parse( (*getModelFile()), oldroot, false );
 
 		if(oldroot.size() == 0 || oldroot[MODEL_ROOT_].isNull()) {
-			cout  << "File not empty, but no model found" << endl;
+			cerr  << "File not empty, but no model found" << endl;
 		} else if ( !parsingSuccessful ) {
-			cout  <<"Parsing error :" <<reader.getFormatedErrorMessages() << endl;
+			cerr  <<"Parsing error :" <<reader.getFormatedErrorMessages() << endl;
 			return;
 		} 
 	}
@@ -62,7 +62,7 @@ void FeatureTestHandler::loadDataToModel(){
 	bool parsingSuccessful = reader.parse( (*getModelFile()), (*root), false );
 
  	if ( !parsingSuccessful ) {
-		cout  <<"Parsing error :" <<reader.getFormatedErrorMessages() << "File not empty, but no model found."<<endl;
+		cerr  <<"Parsing error :" <<reader.getFormatedErrorMessages() << "File not empty, but no model found."<<endl;
 		throw std::ios_base::failure("Parsing unsuccesful.");
 		return;
 	} else{
