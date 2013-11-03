@@ -5,15 +5,17 @@
 #include <vector>
 #include <string>
 
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include <pcap.h>
 #include "../libs/jsoncpp/json/json.h"
 
 #include "PacketCapture.h"
 
-
+namespace fs = boost::filesystem ;
 class FeatureTestHandler {
 	public:
-		FeatureTestHandler(std::fstream *modelFile);
+		FeatureTestHandler(fs::fstream *modelFile, fs::path path);
 		virtual void initCapture() = 0;
 		virtual void JsonToData(Json::Value * json) = 0;
 		void loadDataToModel();
@@ -26,11 +28,12 @@ class FeatureTestHandler {
 		virtual std::string getFeatureName() const= 0;
 		PacketCapture* getPacketCapture() const;
 		void addPacketCaptureFile(FILE * pcapFile);
-		std::fstream *getModelFile()const;
+		fs::fstream *getModelFile()const;
 		
 	private:
 		PacketCapture *pcap_;
-		std::fstream *modelFile_;
+		fs::path path_;
+		fs::fstream *modelFile_;
 	protected:
 		static const std::string MODEL_ROOT_;
 };

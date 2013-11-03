@@ -3,6 +3,8 @@
 #include <errno.h>
 #include <cstring>
 
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include <pcap.h>
 #include "../libs/jsoncpp/json/json.h"
 
@@ -13,6 +15,8 @@
 #include "constants.h"
 unsigned int  max_size;
 
+namespace fs = boost::filesystem ;
+//using namespace fs;
 /*
 source: http://stackoverflow.com/questions/865668/parse-command-line-arguments
 */
@@ -74,13 +78,10 @@ int main(int argc, char **argv)
 		std::cerr << "Trouble openning the file... "<<std::strerror(errno)<<std::endl;	
 		return -1;	
 	}
-	std::fstream *modelFile = new std::fstream();
-	modelFile->open("model.json",std::ios::in | std::ios::out );
-	modelFile->seekg(0, std::ios::end);
-	modelFile->exceptions ( std::ifstream::failbit | std::ifstream::badbit );
-	if(!modelFile->is_open() || modelFile->tellg() <= 0){
+
+	fs::path pathToModel("model.json");
+	if(!fs::exists(pathToModel)){
 		if(typeOfData == LEARNING_DATA) {
-			modelFile->seekg(0, std::ios::beg);
 			std::cout<<"Model file does not seems to exist or is empty. Creating one..."<<std::endl;
 		}
 		else if(typeOfData == ANALYSIS_DATA){
@@ -88,11 +89,15 @@ int main(int argc, char **argv)
 			return -1;
 		}
 	}
+	fs::fstream *modelFile = new fs::fstream();
 		
-	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile);
+	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile,pathToModel);
 //	FeatureTestHandler* p  = new PacketLengthTestHandler(modelFile);
 	p->addPacketCaptureFile(pcap);
 	try{
+		modelFile->open(pathToModel, std::ios::in);
+		modelFile->exceptions ( std::ios::failbit | std::ios::badbit );
+
 		p->loadDataToModel();
 	}catch(std::ifstream::failure e){
 		if( typeOfData == ANALYSIS_DATA){
@@ -105,11 +110,17 @@ int main(int argc, char **argv)
 		}
 		
 	}
+	modelFile->clear();
+	modelFile->close();
 	p->ComputeDistribution(typeOfData);
 	p->initCapture();
 	if(typeOfData == LEARNING_DATA){
+		modelFile->open(pathToModel, std::ios::out |std::ios::in);
+		modelFile->exceptions ( std::ios::failbit | std::ios::badbit );
+
 		try{
-		p->saveDataToModel();
+			
+			p->saveDataToModel();
 	}catch(std::ifstream::failure e){
 		std::cout<<"Exception during the saving of the data. Exception type: "<<e.what()<<std::endl;
 		

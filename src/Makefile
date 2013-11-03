@@ -3,11 +3,14 @@ OBJ= PacketLengthTestHandler.o FeatureTestHandler.o PacketCapture.o jsoncpp.o In
 CFLAGS= -g -Wall -O0
 
 all: pcap_analyzer.c $(OBJ)
-	g++ $(CFLAGS) pcap_analyzer.c $(OBJ) -lpcap -o pcap_analyzer
+	g++ $(CFLAGS) pcap_analyzer.c $(OBJ) -lboost_system  -lboost_filesystem -lpcap  -o pcap_analyzer
+
 PacketLengthTestHandler.o: PacketLengthTestHandler.h PacketLengthTestHandler.cpp
 	g++ $(CFLAGS) -c PacketLengthTestHandler.cpp  -o PacketLengthTestHandler.o
+
 InterdepartTimeTestHandler.o: InterdepartTimeTestHandler.h InterdepartTimeTestHandler.cpp
 	g++ $(CFLAGS) -c InterdepartTimeTestHandler.cpp  -o InterdepartTimeTestHandler.o
+
 FeatureTestHandler.o: FeatureTestHandler.h FeatureTestHandler.cpp
 	g++ $(CFLAGS) -c FeatureTestHandler.cpp -o FeatureTestHandler.o
 PacketCapture.o: PacketCapture.h PacketCapture.cpp

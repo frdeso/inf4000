@@ -12,7 +12,7 @@
 
 
 using namespace std;
-PacketLengthTestHandler::PacketLengthTestHandler(fstream *modelFile):FeatureTestHandler(modelFile)
+PacketLengthTestHandler::PacketLengthTestHandler(fs::fstream *modelFile, fs::path path):FeatureTestHandler(modelFile, path)
 {
 	modelDist_ = new map<uint32_t,uint32_t>();
 	testDist_ = new map<uint32_t,uint32_t>();

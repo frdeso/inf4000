@@ -4,6 +4,8 @@
 #include <net/ethernet.h>
 #include <netinet/ip.h>
 #include <stdio.h> //scanf
+#include <climits>//UINT_MAX
+
 #include <pcap.h>
 
 #include "InterdepartTimeTestHandler.h"
@@ -15,7 +17,7 @@
 
 using namespace std;
 
-InterdepartTimeTestHandler::InterdepartTimeTestHandler(std::fstream *modelFile):FeatureTestHandler(modelFile){
+InterdepartTimeTestHandler::InterdepartTimeTestHandler(fs::fstream *modelFile, fs::path path):FeatureTestHandler(modelFile, path){
 	interdepTiming_ = new map<uint32_t, map<uint64_t, uint32_t> >();
 	interdepTimingCumul_ =  new map<uint32_t, vector<uint64_t> >();
 
