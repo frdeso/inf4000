@@ -2,10 +2,13 @@
 #define _INTERDEPART_TIME_TEST_HANDLER_H_
 
 #include <fstream> //std::fstream
-#include <time.h> // struct timeval
+#include <inttypes.h> //in_addr_t
 #include <list> // std::list
 #include <map> // std::map
-#include <inttypes.h> //in_addr_t
+#include <vector> //in_addr_t
+#include <tuple> //in_addr_t
+#include <time.h> // struct timeval
+
 
 #include "FeatureTestHandler.h"
 
@@ -24,10 +27,12 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 		virtual int getTestResult();
 		void printDistribution() const;
 	private:
-		void ComputeInterdeparture(std::map<uint32_t, std::list<uint64_t> > *packetTiming);
-		uint32_t getModelSampleSize();
-		uint32_t getTestSampleSize();
-		std::map<uint32_t, std::map<uint64_t, uint32_t> > * interdepTiming_;
+		void ComputeInterdeparture(std::map<uint32_t, std::list<uint64_t> > *packetTiming, std::map<uint32_t, std::map<uint64_t, uint32_t> > * timing);
+		double findValueInCumul(std::vector<std::tuple<uint64_t,uint64_t, double> > cumul, uint64_t value);
+		uint32_t computeNumElement(std::map<uint64_t, uint32_t> *dist);
+		uint64_t computeMaxTiming(std::map<uint64_t, uint32_t> *dist);
+		std::map<uint32_t, std::map<uint64_t, uint32_t> > * interdepTiming_; //TODO::change to modelInterdepTiming_
+		std::map<uint32_t, std::map<uint64_t, uint32_t> > * testInterdepTiming_;
 		std::map<uint32_t, std::vector<uint64_t> > * interdepTimingCumul_;
 		static const std::string FEATURE_NAME ;
 

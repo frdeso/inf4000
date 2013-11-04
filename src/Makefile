@@ -1,6 +1,6 @@
 OBJ= PacketLengthTestHandler.o FeatureTestHandler.o PacketCapture.o jsoncpp.o InterdepartTimeTestHandler.o
 
-CFLAGS= -g -Wall -O0
+CFLAGS= -g -Wall -O0 -std=c++11
 
 all: pcap_analyzer.c $(OBJ)
 	g++ $(CFLAGS) pcap_analyzer.c $(OBJ) -lboost_system  -lboost_filesystem -lpcap  -o pcap_analyzer

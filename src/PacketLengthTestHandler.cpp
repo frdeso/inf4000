@@ -142,15 +142,10 @@ void PacketLengthTestHandler::runTest(){
 	uint32_t max =  (maxModelSize_ > maxTestSize_ ? maxModelSize_ : maxTestSize_ );
 	for(uint32_t i = 0; i <= max ; ++i){
 		
-		if(i >= maxModelSize_ )
-			modelValue = 1;
-		else
-			modelValue = (*modelCumulDist_)[i];
+		modelValue = (i >= maxModelSize_ ? 1:  (*modelCumulDist_)[i]);
 
-		if(i >= maxTestSize_ )
-			testValue = 1;
-		else
-			testValue = (*testCumulDist_)[i];
+		testValue = (i >= maxTestSize_ ? 1:  (*testCumulDist_)[i]);
+
 		cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelValue<< ", test: "<<setw(9)<< testValue <<", test - model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
 
 		if (dStat_ < fabs(testValue - modelValue)){
@@ -205,3 +200,4 @@ string PacketLengthTestHandler::getFeatureName() const{
 }
 
 const std::string PacketLengthTestHandler::FEATURE_NAME = "PACKET_LENGHT";
+const double PacketLengthTestHandler::BUFFER = 0.000000000001;

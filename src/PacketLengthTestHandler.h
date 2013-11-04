@@ -33,7 +33,7 @@ class PacketLengthTestHandler: public FeatureTestHandler
 		size_t maxModelSize_;
 		double dStat_;
 		size_t maxTestSize_;
-		static const double BUFFER = 0.000000000001; // 1*10^-15
+		static const double BUFFER; // 1*10^-15
 		static const std::string FEATURE_NAME;
 };
 #endif

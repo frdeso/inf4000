@@ -111,10 +111,11 @@ int main(int argc, char **argv)
 		
 	}
 	modelFile->clear();
-	modelFile->close();
+	
 	p->ComputeDistribution(typeOfData);
 	p->initCapture();
 	if(typeOfData == LEARNING_DATA){
+		modelFile->close();
 		modelFile->open(pathToModel, std::ios::out |std::ios::in);
 		modelFile->exceptions ( std::ios::failbit | std::ios::badbit );
 
