@@ -48,7 +48,7 @@ void FeatureTestHandler::saveDataToModel(){
 			return;
 		} 
 	}
-getModelFile()->clear();
+	getModelFile()->clear();
 	//Take the feature section of the model
 	oldroot[MODEL_ROOT_][getFeatureName()] = *vec;
 	getModelFile()->seekg(0, getModelFile()->beg);

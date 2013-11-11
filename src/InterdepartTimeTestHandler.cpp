@@ -89,12 +89,18 @@ Json::Value* InterdepartTimeTestHandler::DataToJson() const
 		convert << it->first;
 		(*vect)[convert.str()] = addressVec;
 	}
-	cout<<vect;
 	return vect;
 }
 
 int InterdepartTimeTestHandler::getTestResult(){
 	//TODO: implemente me
+	for(std::list<std::tuple<uint64_t, double,double> >::iterator iter = dStats_.begin(); iter != dStats_.end(); iter++){
+		if(get<1>(*iter) > get<2>(*iter) )
+			cout<< "Host at "<< get<0>(*iter)<< " have anormal interdeparture behavior.";
+		else
+			cout<<"Host at "<< get<0>(*iter)<< " have normal interdeparture behavior.";
+		cout<<" (dstat: "<<get<1>(*iter)<<", seuil:"<<get<2>(*iter)<<")"<<endl ;
+	}
 	return 0;
 }
 void InterdepartTimeTestHandler::runTest(){
@@ -120,7 +126,7 @@ void InterdepartTimeTestHandler::runTest(){
 		modelCumulDist.push_back(tuple<uint64_t,uint64_t, double>(maxModelTiming, maxModelTiming,  newSum ));
 
 		// for(uint32_t k=0; k < modelCumulDist.size();k++)
-		// 	std::cout<<"s: "<<get<0>(modelCumulDist[k])<<", e: "<<get<1>(modelCumulDist[k])<< ", v: "<<get<2>(modelCumulDist[k])<<endl;
+		//  	std::cout<<"s: "<<get<0>(modelCumulDist[k])<<", e: "<<get<1>(modelCumulDist[k])<< ", v: "<<get<2>(modelCumulDist[k])<<endl;
 
 
 		map<uint64_t, uint32_t> testAddressTiming = (*testInterdepTiming_)[networkIter->first];
@@ -137,7 +143,12 @@ void InterdepartTimeTestHandler::runTest(){
 			newSum += (it->second/(double)numOfElemTestAddrTiming);
 			lastTiming = it->first + 1;
 		}
+
+		
 		testCumulDist.push_back(tuple<uint64_t,uint64_t, double>(maxTestTiming, maxTestTiming,  newSum ));
+		// for(uint32_t k=0; k < testCumulDist.size();k++)
+		// 	std::cout<<"s: "<<get<0>(testCumulDist[k])<<", e: "<<get<1>(testCumulDist[k])<< ", v: "<<get<2>(testCumulDist[k])<<endl;
+
 		double modelValue = 0;
 		double testValue = 0;
 		
@@ -156,14 +167,28 @@ void InterdepartTimeTestHandler::runTest(){
 				++iterTest;
 			}
 			//cout<<"value: "<< value<<endl;
-			modelValue = findValueInCumul(modelCumulDist, value);
-			testValue = findValueInCumul(testCumulDist, value);
+			if(value >= maxModelTiming)
+				modelValue = 1;
+			else
+				modelValue = findValueInCumul(modelCumulDist, value);
+			
+			if(value >= maxTestTiming)
+				testValue = 1;
+			else
+				testValue = findValueInCumul(testCumulDist, value);
 			double tmp = modelValue - testValue;
 			if (dStat < fabs(tmp)){
 					dStat = fabs(tmp);
 			}
 		}
-		cout<<"dStat: "<< dStat <<endl;
+
+		double nModel = (double)numOfElemModelAddrTiming;
+		double nTest = (double) numOfElemTestAddrTiming;
+		double c_alpah = 1.22;
+		double seuil = c_alpah*pow((nModel + nTest)/(nModel * nTest), 0.5);
+
+		//cout<<"Address: "<<networkIter->first<<" , dStat: "<< dStat <<endl;
+		dStats_.push_back(make_tuple(networkIter->first, dStat, seuil));
 	}
 }
 
@@ -194,8 +219,8 @@ void InterdepartTimeTestHandler::ComputeInterdeparture(map<uint32_t, list<uint64
 			//(*interdepTiming_)[it->first].sort();
 		}
 	}
-
 }
+
 string InterdepartTimeTestHandler::getFeatureName() const{
 	return FEATURE_NAME;
 }
@@ -218,7 +243,6 @@ uint64_t InterdepartTimeTestHandler::computeMaxTiming(map<uint64_t, uint32_t> *d
 		 i++;
 	}
 	return max;
-
 }
 
 double InterdepartTimeTestHandler::findValueInCumul(std::vector<tuple<uint64_t,uint64_t, double> > cumul, uint64_t value)
@@ -232,7 +256,7 @@ double InterdepartTimeTestHandler::findValueInCumul(std::vector<tuple<uint64_t,u
 		//std::cout<<"\ts: "<<get<0>(cumul[2])<<", e: "<<get<1>(cumul[2])<< ", v: "<<get<2>(cumul[2])<<endl;
 
 
-	//	std::cout<<"s: "<<get<0>(cumul[mid])<<", e: "<<get<1>(cumul[mid])<< ", v: "<<get<2>(cumul[mid])<<endl;
+	//std::cout<<"s: "<<get<0>(cumul[mid])<<", e: "<<get<1>(cumul[mid])<< ", v: "<<get<2>(cumul[mid])<<endl;
 
 		if(get<0>(cumul[mid]) > value)
 			max = mid - 1;

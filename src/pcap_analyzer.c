@@ -46,17 +46,17 @@ int main(int argc, char **argv)
 
 	if(cmdOptionExists(argv, argv + argc, "-h")){
 		/*TODO: help menu*/
-		std::cout<<"Display help menu"<<std::endl;
+		std::cerr<<"Display help menu"<<std::endl;
 		return -1;
 	} 
 	/* Check for conflicting arguments */
 	if (cmdOptionExists(argv, argv + argc, "-l") && cmdOptionExists(argv, argv + argc, "-a")) {
-		std::cout<<"You specified two conflicting arguments '-l' and '-a'. Please specify only one of them." <<std::endl;
+		std::cerr<<"You specified two conflicting arguments '-l' and '-a'. Please specify only one of them." <<std::endl;
 		return -1;
 	}
 		/* Check for missing arguments */
 	if (!cmdOptionExists(argv, argv + argc, "-l") && !cmdOptionExists(argv, argv + argc, "-a")) {
-		std::cout<<"You did not specified any argument. Please specify the type of data you have." <<std::endl;
+		std::cerr<<"You did not specified any argument. Please specify the type of data you have." <<std::endl;
 		return -1;
 	}
 
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 	if(cmdOptionExists(argv, argv + argc, "-f")){
 		pathToFile_ = std::string(getCmdOption(argv, argv + argc, "-f"));
 	}else{
-		std::cout<<"No '-f' argument."<<std::endl;
+		std::cerr<<"No '-f' argument."<<std::endl;
 		return -1;
 	}
 
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
 	fs::path pathToModel("model.json");
 	if(!fs::exists(pathToModel)){
 		if(typeOfData == LEARNING_DATA) {
-			std::cout<<"Model file does not seems to exist or is empty. Creating one..."<<std::endl;
+			std::cerr<<"Model file does not seems to exist or is empty. Creating one..."<<std::endl;
 		}
 		else if(typeOfData == ANALYSIS_DATA){
 			std::cerr<<"Model file needed for analysis but not found or is empty. Exiting."<<std::endl;
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 		}
 	}
 	fs::fstream *modelFile = new fs::fstream();
-		
+	
 	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile,pathToModel);
 //	FeatureTestHandler* p  = new PacketLengthTestHandler(modelFile);
 	p->addPacketCaptureFile(pcap);
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
 		}
 		
 	}
-	modelFile->clear();
+	//modelFile->clear();
 	
 	p->ComputeDistribution(typeOfData);
 	p->initCapture();
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 			
 			p->saveDataToModel();
 	}catch(std::ifstream::failure e){
-		std::cout<<"Exception during the saving of the data. Exception type: "<<e.what()<<std::endl;
+		std::cerr<<"Exception during the saving of the data. Exception type: "<<e.what()<<std::endl;
 		
 		return -1;
 	}
@@ -131,7 +131,8 @@ int main(int argc, char **argv)
 		p->runTest();
 		p->getTestResult();
 	}
-	
+	std::cout.flush();
+
 	modelFile->close();
 	return 0;
 }

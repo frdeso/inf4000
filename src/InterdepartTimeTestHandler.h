@@ -31,6 +31,7 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 		double findValueInCumul(std::vector<std::tuple<uint64_t,uint64_t, double> > cumul, uint64_t value);
 		uint32_t computeNumElement(std::map<uint64_t, uint32_t> *dist);
 		uint64_t computeMaxTiming(std::map<uint64_t, uint32_t> *dist);
+		std::list<std::tuple<uint64_t, double, double> > dStats_;
 		std::map<uint32_t, std::map<uint64_t, uint32_t> > * interdepTiming_; //TODO::change to modelInterdepTiming_
 		std::map<uint32_t, std::map<uint64_t, uint32_t> > * testInterdepTiming_;
 		std::map<uint32_t, std::vector<uint64_t> > * interdepTimingCumul_;
