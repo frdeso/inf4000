@@ -8,13 +8,14 @@
 #include <stdio.h> //scanf
 #include <sstream> // for ostringstream
 
-
+#include "../libs/jsoncpp/json/json.h"
 #include <pcap.h>
+
 
 #include "constants.h"
 #include "InterdepartTimeTestHandler.h"
 #include "utils.h"
-#include "../libs/jsoncpp/json/json.h"
+
 
 using namespace std;
 
@@ -24,6 +25,7 @@ InterdepartTimeTestHandler::InterdepartTimeTestHandler(fs::fstream *modelFile, f
 	interdepTimingCumul_ =  new map<uint32_t, vector<uint64_t> >();
 
 }
+InterdepartTimeTestHandler::~InterdepartTimeTestHandler(){}
 
 void interdepartureDistributionCallback( unsigned char * arg, const struct pcap_pkthdr* pkthdr, const unsigned char * packet )
 {
@@ -127,9 +129,6 @@ void InterdepartTimeTestHandler::runTest(){
 		}
 		modelCumulDist.push_back(tuple<uint64_t,uint64_t, double>(maxModelTiming, maxModelTiming,  newSum ));
 
-		// for(uint32_t k=0; k < modelCumulDist.size();k++)
-		//  	std::cout<<"s: "<<get<0>(modelCumulDist[k])<<", e: "<<get<1>(modelCumulDist[k])<< ", v: "<<get<2>(modelCumulDist[k])<<endl;
-
 
 		map<uint64_t, uint32_t> testAddressTiming = (*testInterdepTiming_)[networkIter->first];
 		//Compute the number of elements for a particular address in test
@@ -148,8 +147,6 @@ void InterdepartTimeTestHandler::runTest(){
 
 		
 		testCumulDist.push_back(tuple<uint64_t,uint64_t, double>(maxTestTiming, maxTestTiming,  newSum ));
-		// for(uint32_t k=0; k < testCumulDist.size();k++)
-		// 	std::cout<<"s: "<<get<0>(testCumulDist[k])<<", e: "<<get<1>(testCumulDist[k])<< ", v: "<<get<2>(testCumulDist[k])<<endl;
 
 		double modelValue = 0;
 		double testValue = 0;
@@ -215,10 +212,8 @@ void InterdepartTimeTestHandler::ComputeInterdeparture(map<uint32_t, list<uint64
 				uint64_t first = *(--itList); // go back one element
 				uint64_t second = *(++itList); // return to the current one 
 				
-				//cout<<"address: "<< it->first<<" , timing: "<< second -first<< endl;
 				(*dist)[it->first][second - first]++; 
 			}
-			//(*interdepTiming_)[it->first].sort();
 		}
 	}
 }

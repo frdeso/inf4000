@@ -23,6 +23,7 @@ PacketLengthTestHandler::PacketLengthTestHandler(fs::fstream *modelFile, fs::pat
 	dStat_ = 0;
 }
 
+PacketLengthTestHandler::~PacketLengthTestHandler(){}
 
 void packetDistributionCallback( unsigned char * arg, const struct pcap_pkthdr* pkthdr, const unsigned char * packet )
 {
@@ -48,7 +49,6 @@ void PacketLengthTestHandler::JsonToData(Json::Value * root){
 	}
 
 }
-
 
 Json::Value* PacketLengthTestHandler::DataToJson() const
 {
@@ -94,6 +94,7 @@ void PacketLengthTestHandler::printDistribution() const
 int PacketLengthTestHandler::getTestResult(){
 	double nModel = (double)getModelSampleSize();
 	double nTest = (double) getTestSampleSize();
+	//TODO: take alpha by argument or set default in a better place
 	double alpha = 0.1;
 	double c_alpah = 1.22;
 

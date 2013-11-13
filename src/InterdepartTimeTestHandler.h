@@ -15,6 +15,7 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 	public:
 
 		InterdepartTimeTestHandler(fs::fstream *modelFile, fs::path path);
+		~InterdepartTimeTestHandler();
 		void initCapture();
 		void ComputeDistribution(int type);
 		virtual void JsonToData(Json::Value * json);

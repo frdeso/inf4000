@@ -11,6 +11,7 @@ class PacketLengthTestHandler: public FeatureTestHandler
 {
 	public:
 		PacketLengthTestHandler(fs::fstream *modelFile, fs::path path);
+		~PacketLengthTestHandler();
 		virtual void initCapture();
 		virtual void JsonToData(Json::Value * json);
 		virtual void runTest();
