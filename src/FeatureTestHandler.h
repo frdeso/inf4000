@@ -7,7 +7,6 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
-//#include <pcap.h>
 #include "../libs/jsoncpp/json/json.h"
 
 #include "PacketCapture.h"
@@ -16,6 +15,7 @@ namespace fs = boost::filesystem ;
 class FeatureTestHandler {
 	public:
 		FeatureTestHandler(fs::fstream *modelFile, fs::path path);
+		~FeatureTestHandler();
 		virtual void initCapture() = 0;
 		void loadDataToModel();
 		void saveDataToModel();

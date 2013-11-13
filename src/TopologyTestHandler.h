@@ -3,11 +3,9 @@
 
 #include <fstream> //std::fstream
 #include <inttypes.h> //in_addr_t
-#include <list> // std::list
-#include <map> // std::map
-#include <vector> //in_addr_t
-#include <tuple> //in_addr_t
 #include <time.h> // struct timeval
+
+#include <map>
 
 #include "FeatureTestHandler.h"
 
@@ -24,7 +22,7 @@ class TopologyTestHandler : public FeatureTestHandler{
 		virtual int getTestResult();
 		void printDistribution() const;
 	private:
-
+		std::map<uint64_t,uint64_t> topology_;
 		static const std::string FEATURE_NAME ;
 
 };
