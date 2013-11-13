@@ -9,10 +9,7 @@
 #include <tuple> //in_addr_t
 #include <time.h> // struct timeval
 
-
 #include "FeatureTestHandler.h"
-
-
 
 class InterdepartTimeTestHandler : public FeatureTestHandler{
 	public:

@@ -7,7 +7,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
-#include <pcap.h>
+//#include <pcap.h>
 #include "../libs/jsoncpp/json/json.h"
 
 #include "PacketCapture.h"
@@ -17,13 +17,13 @@ class FeatureTestHandler {
 	public:
 		FeatureTestHandler(fs::fstream *modelFile, fs::path path);
 		virtual void initCapture() = 0;
-		virtual void JsonToData(Json::Value * json) = 0;
 		void loadDataToModel();
 		void saveDataToModel();
 		virtual void ComputeDistribution(int type) = 0;
-		virtual void runTest() = 0;
 		virtual void printDistribution() const = 0;
+		virtual void runTest() = 0;
 		virtual int getTestResult() = 0;
+		virtual void JsonToData(Json::Value * json) = 0;
 		virtual Json::Value *DataToJson() const = 0;
 		virtual std::string getFeatureName() const= 0;
 		PacketCapture* getPacketCapture() const;
