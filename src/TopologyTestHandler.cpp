@@ -57,8 +57,12 @@ int TopologyTestHandler::getTestResult(){
 }
 void TopologyTestHandler::printDistribution() const
 {
-	for(map<uint64_t,uint64_t>::const_iterator it = topology_.begin(); it != topology_.end(); it++)
-		cout<<it->first<<" ---->"<<it->second<< endl;
+	for(map<uint64_t,uint64_t>::const_iterator it = topology_.begin(); it != topology_.end(); it++){
+		struct in_addr first, second;
+		first.s_addr = it->first;
+		second.s_addr = it->second;
+		cout<<inet_ntoa(first)<<" ---->"<<inet_ntoa(second)<< endl;
+	}
 }
 
 const std::string TopologyTestHandler::FEATURE_NAME = "TOPOLOGY";

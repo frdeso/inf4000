@@ -93,12 +93,14 @@ Json::Value* InterdepartTimeTestHandler::DataToJson() const
 }
 
 int InterdepartTimeTestHandler::getTestResult(){
-	//TODO: implemente me
+	struct in_addr host;
 	for(std::list<std::tuple<uint64_t, double,double> >::iterator iter = dStats_.begin(); iter != dStats_.end(); iter++){
+		host.s_addr = get<0>(*iter);
+		cout<< "Host at "<< inet_ntoa(host);
 		if(get<1>(*iter) > get<2>(*iter) )
-			cout<< "Host at "<< get<0>(*iter)<< " have anormal interdeparture behavior.";
+			cout<<" have abnormal interdeparture behavior.";
 		else
-			cout<<"Host at "<< get<0>(*iter)<< " have normal interdeparture behavior.";
+			cout<<" have normal interdeparture behavior.";
 		cout<<" (dstat: "<<get<1>(*iter)<<", seuil:"<<get<2>(*iter)<<")"<<endl ;
 	}
 	return 0;
