@@ -1,4 +1,4 @@
-INF4000 - Abnormal behavior detector for SCADA networks
+Abnormal behavior detector for SCADA networks
 =======
 
 #External Dependancies
