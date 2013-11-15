@@ -23,7 +23,6 @@ class PacketLengthTestHandler: public FeatureTestHandler
 		void computeTestMaxValue();
 		virtual Json::Value *DataToJson() const;
 		void printDistribution() const;
-		virtual std::string getFeatureName() const;
 	private:
 		uint32_t getModelSampleSize();
 		uint32_t getTestSampleSize();
@@ -35,6 +34,5 @@ class PacketLengthTestHandler: public FeatureTestHandler
 		double dStat_;
 		size_t maxTestSize_;
 		static const double BUFFER; // 1*10^-15
-		static const std::string FEATURE_NAME;
 };
 #endif

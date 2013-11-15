@@ -24,7 +24,8 @@ class FeatureTestHandler {
 		virtual int getTestResult() = 0;
 		virtual void JsonToData(Json::Value * json) = 0;
 		virtual Json::Value *DataToJson() const = 0;
-		virtual std::string getFeatureName() const= 0;
+		std::string getFeatureName() const;
+		void setFeatureName(std::string name);
 		PacketCapture* getPacketCapture() const;
 		void addPacketCaptureFile(FILE * pcapFile);
 		fs::fstream *getModelFile()const;
@@ -33,6 +34,8 @@ class FeatureTestHandler {
 		PacketCapture *pcap_;
 		fs::path path_;
 		fs::fstream *modelFile_;
+		std::string FEATURE_NAME;
+
 	protected:
 		static const std::string MODEL_ROOT_;
 };

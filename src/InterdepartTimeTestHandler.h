@@ -20,7 +20,6 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 		void ComputeDistribution(int type);
 		virtual void JsonToData(Json::Value * json);
 		virtual Json::Value *DataToJson() const ;
-		virtual std::string getFeatureName() const;
 		virtual void runTest();
 		virtual int getTestResult();
 		void printDistribution() const;
@@ -33,8 +32,6 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 		std::map<uint32_t, std::map<uint64_t, uint32_t> > * interdepTiming_; //TODO::change to modelInterdepTiming_
 		std::map<uint32_t, std::map<uint64_t, uint32_t> > * testInterdepTiming_;
 		std::map<uint32_t, std::vector<uint64_t> > * interdepTimingCumul_;
-		static const std::string FEATURE_NAME ;
-
 };
 
 #endif // _INTERDEPART_TIME_TEST_HANDLER_H_

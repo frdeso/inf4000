@@ -18,7 +18,6 @@ class TopologyTestHandler : public FeatureTestHandler{
 		void ComputeDistribution(int type);
 		virtual void JsonToData(Json::Value * json);
 		virtual Json::Value *DataToJson() const ;
-		virtual std::string getFeatureName() const;
 		virtual void runTest();
 		virtual int getTestResult();
 		void printDistribution() const;
@@ -26,7 +25,6 @@ class TopologyTestHandler : public FeatureTestHandler{
 		std::map<uint64_t,uint64_t> modelTopology_;
 		std::map<uint64_t,uint64_t> testTopology_;
 		std::map<uint64_t,uint64_t> unknownInteractions_;
-		static const std::string FEATURE_NAME ;
 
 };
 #endif 	//_TOPOLOGY_TEST_HANDLER_H_

@@ -24,6 +24,7 @@ TopologyTestHandler::TopologyTestHandler(fs::fstream *modelFile, fs::path path):
 	modelTopology_ = std::map<uint64_t,uint64_t>();
 	testTopology_ = std::map<uint64_t,uint64_t>();
 	unknownInteractions_ = std::map<uint64_t,uint64_t>();
+	setFeatureName("TOPOLOGY");
 }
 TopologyTestHandler::~TopologyTestHandler(){
 
@@ -72,10 +73,6 @@ Json::Value *TopologyTestHandler::DataToJson() const
 	return vect;
 }
 
-std::string TopologyTestHandler::getFeatureName() const{
-	return FEATURE_NAME;
-}
-
 void TopologyTestHandler::runTest(){
 	for(map<uint64_t,uint64_t>::const_iterator it = testTopology_.begin(); it != testTopology_.end(); it++){
 
@@ -112,5 +109,3 @@ void TopologyTestHandler::printDistribution() const
 		cout<<" ----> "<<inet_ntoa(second)<< endl;
 	}
 }
-
-const std::string TopologyTestHandler::FEATURE_NAME = "TOPOLOGY";

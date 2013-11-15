@@ -78,8 +78,12 @@ void FeatureTestHandler::loadDataToModel(){
 
 
 string FeatureTestHandler::getFeatureName() const{
-	return "FEATURE_TEST_HANDLER";
+	return FEATURE_NAME;
 }
+void FeatureTestHandler::setFeatureName(string name){
+	FEATURE_NAME = name;
+}
+
 
 
 const string FeatureTestHandler::MODEL_ROOT_ = "model";

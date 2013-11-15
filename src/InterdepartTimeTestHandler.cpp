@@ -24,6 +24,8 @@ InterdepartTimeTestHandler::InterdepartTimeTestHandler(fs::fstream *modelFile, f
 	testInterdepTiming_ = new map<uint32_t, map<uint64_t, uint32_t> >();
 	interdepTimingCumul_ =  new map<uint32_t, vector<uint64_t> >();
 
+	setFeatureName("INTERDEPARTURE_TIME");
+
 }
 InterdepartTimeTestHandler::~InterdepartTimeTestHandler(){}
 
@@ -218,10 +220,6 @@ void InterdepartTimeTestHandler::ComputeInterdeparture(map<uint32_t, list<uint64
 	}
 }
 
-string InterdepartTimeTestHandler::getFeatureName() const{
-	return FEATURE_NAME;
-}
-
 uint32_t InterdepartTimeTestHandler::computeNumElement(map<uint64_t, uint32_t> *dist)
 {
 	uint32_t size = 0;
@@ -264,5 +262,3 @@ double InterdepartTimeTestHandler::findValueInCumul(std::vector<tuple<uint64_t,u
 	}
 	assert(false); 
 }
-
-const std::string InterdepartTimeTestHandler::FEATURE_NAME = "INTERDEPARTURE_TIME";

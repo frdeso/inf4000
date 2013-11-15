@@ -21,6 +21,7 @@ PacketLengthTestHandler::PacketLengthTestHandler(fs::fstream *modelFile, fs::pat
 	maxModelSize_ = 0;
 	maxTestSize_ = 0;
 	dStat_ = 0;
+	setFeatureName("PACKET_LENGHT");
 }
 
 PacketLengthTestHandler::~PacketLengthTestHandler(){}
@@ -196,9 +197,5 @@ uint32_t PacketLengthTestHandler::getTestSampleSize()
 	}
 	return size;
 }
-string PacketLengthTestHandler::getFeatureName() const{
-	return FEATURE_NAME;
-}
 
-const std::string PacketLengthTestHandler::FEATURE_NAME = "PACKET_LENGHT";
 const double PacketLengthTestHandler::BUFFER = 0.000000000001;
