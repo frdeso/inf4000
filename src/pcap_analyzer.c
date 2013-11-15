@@ -91,9 +91,9 @@ int main(int argc, char **argv)
 	}
 	fs::fstream *modelFile = new fs::fstream();
 	
-	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile,pathToModel);
-//	FeatureTestHandler* p  = new PacketLengthTestHandler(modelFile);
-//	TopologyTestHandler *p = new TopologyTestHandler(modelFile,pathToModel);
+//	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile,pathToModel);
+	//FeatureTestHandler* p  = new PacketLengthTestHandler(modelFile,pathToModel);
+	TopologyTestHandler *p = new TopologyTestHandler(modelFile,pathToModel);
 	p->addPacketCaptureFile(pcap);
 	try{
 		modelFile->open(pathToModel, std::ios::in);

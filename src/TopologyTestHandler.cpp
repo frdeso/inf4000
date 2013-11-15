@@ -95,8 +95,7 @@ int TopologyTestHandler::getTestResult(){
 		struct in_addr first, second;
 		first.s_addr = it->first;
 		second.s_addr = it->second;
-		cout<<printInRed("loool\n");
-		cout<< "Unknown interaction : ";
+		cout<< printInRed("Unknown interaction : ");
 		cout<<setw(14)<<inet_ntoa(first);
 		cout<<" ----> "<<setw(14)<<inet_ntoa(second)<<endl;
 	}

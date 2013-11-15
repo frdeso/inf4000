@@ -8,10 +8,10 @@ all: pcap_analyzer.c $(OBJ)
 PacketLengthTestHandler.o: PacketLengthTestHandler.h PacketLengthTestHandler.cpp
 	g++ $(CFLAGS) -c PacketLengthTestHandler.cpp  -o PacketLengthTestHandler.o
 
-InterdepartTimeTestHandler.o: InterdepartTimeTestHandler.h InterdepartTimeTestHandler.cpp
+InterdepartTimeTestHandler.o: InterdepartTimeTestHandler.h InterdepartTimeTestHandler.cpp utils.h
 	g++ $(CFLAGS) -c InterdepartTimeTestHandler.cpp  -o InterdepartTimeTestHandler.o
 
-TopologyTestHandler.o: TopologyTestHandler.h TopologyTestHandler.cpp
+TopologyTestHandler.o: TopologyTestHandler.h TopologyTestHandler.cpp utils.h
 	g++ $(CFLAGS) -c TopologyTestHandler.cpp -o TopologyTestHandler.o
 
 FeatureTestHandler.o: FeatureTestHandler.h FeatureTestHandler.cpp
