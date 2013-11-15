@@ -1,5 +1,10 @@
-inf4000
+INF4000 - Abnormal behavior detector for SCADA networks
 =======
+
+#External Dependancies
+* Libpcap
+* C++11
+* Boost
 
 # Facteurs discriminants
 3 caractéristiques pouvant discriminer du trafic malveillant.
