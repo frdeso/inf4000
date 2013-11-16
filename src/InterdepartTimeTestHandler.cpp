@@ -38,10 +38,10 @@ void interdepartureDistributionCallback( unsigned char * arg, const struct pcap_
 	(*packetTiming)[ipHdr->ip_src.s_addr].push_back(timevalToUINT64(pkthdr->ts));
 }
 
-void InterdepartTimeTestHandler::ComputeDistribution(int type)
+void InterdepartTimeTestHandler::ComputeDistribution(int type, PacketCapture *packetCapture)
 {
 	map<uint32_t, list<uint64_t> > * packetTiming =  new map<uint32_t, list<uint64_t> >();
-	for( vector<pcap_t*>::iterator it = getPacketCapture()->getRawPackets()->begin(); it != getPacketCapture()->getRawPackets()->end(); ++it){
+	for( vector<pcap_t*>::iterator it = packetCapture->getRawPackets()->begin(); it != packetCapture->getRawPackets()->end(); ++it){
 		pcap_loop(*it, -1, interdepartureDistributionCallback, (unsigned char *)packetTiming);
 	}
 

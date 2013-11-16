@@ -18,7 +18,7 @@ class FeatureTestHandler {
 		virtual void initCapture() = 0;
 		void loadDataToModel();
 		void saveDataToModel();
-		virtual void ComputeDistribution(int type) = 0;
+		virtual void ComputeDistribution(int type, PacketCapture *packetCapture) = 0;
 		virtual void printDistribution() const = 0;
 		virtual void runTest() = 0;
 		virtual int getTestResult() = 0;

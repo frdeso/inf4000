@@ -41,13 +41,13 @@ void TopologyCallback( unsigned char * arg, const struct pcap_pkthdr* pkthdr, co
 
  }
 
-void TopologyTestHandler::ComputeDistribution(int type)
+void TopologyTestHandler::ComputeDistribution(int type, PacketCapture *packetCapture )
 {
 	map<uint64_t,uint64_t> * arg;
 	if(type == LEARNING_DATA) arg = &modelTopology_;
 	if(type == ANALYSIS_DATA) arg = &testTopology_;
 
-	for( vector<pcap_t*>::iterator it = getPacketCapture()->getRawPackets()->begin(); it != getPacketCapture()->getRawPackets()->end(); ++it){
+	for( vector<pcap_t*>::iterator it = packetCapture->getRawPackets()->begin(); it != packetCapture->getRawPackets()->end(); ++it){
 		pcap_loop(*it, -1, TopologyCallback, (unsigned char *)arg);
 	}
 }

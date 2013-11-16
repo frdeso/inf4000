@@ -10,6 +10,7 @@
 
 #include "InterdepartTimeTestHandler.h"
 #include "PacketLengthTestHandler.h"
+#include "TestHandlerContainer.h"
 #include "TopologyTestHandler.h"
 
 #include "constants.h"
@@ -91,15 +92,17 @@ int main(int argc, char **argv)
 	}
 	fs::fstream *modelFile = new fs::fstream();
 	
-	FeatureTestHandler* p  = new InterdepartTimeTestHandler(modelFile,pathToModel);
-	//FeatureTestHandler* p  = new PacketLengthTestHandler(modelFile,pathToModel);
-	//TopologyTestHandler *p = new TopologyTestHandler(modelFile,pathToModel);
-	p->addPacketCaptureFile(pcap);
+	TestHandlerContainer *container = new TestHandlerContainer(modelFile, pathToModel, typeOfData);
+	container->addTestHandler(new InterdepartTimeTestHandler(modelFile,pathToModel)	);
+	container->addTestHandler(new PacketLengthTestHandler(modelFile,pathToModel)	);
+	container->addTestHandler(new TopologyTestHandler(modelFile,pathToModel)		);
+	
+	container->addPacketCapture(pcap);
 	try{
 		modelFile->open(pathToModel, std::ios::in);
 		modelFile->exceptions ( std::ios::failbit | std::ios::badbit );
 
-		p->loadDataToModel();
+		container->loadModel();
 	}catch(std::ifstream::failure e){
 		if( typeOfData == ANALYSIS_DATA){
 			std::cerr<<"Exception during loading of the model.";
@@ -113,8 +116,8 @@ int main(int argc, char **argv)
 	}
 	//modelFile->clear();
 	
-	p->ComputeDistribution(typeOfData);
-	p->initCapture();
+	container->computeDistribution();
+	//p->initCapture();
 	if(typeOfData == LEARNING_DATA){
 		modelFile->close();
 		modelFile->open(pathToModel, std::ios::out |std::ios::in);
@@ -122,15 +125,15 @@ int main(int argc, char **argv)
 
 		try{
 			
-			p->saveDataToModel();
-	}catch(std::ifstream::failure e){
-		std::cerr<<"Exception during the saving of the data. Exception type: "<<e.what()<<std::endl;
-		
-		return -1;
+			container->saveModel();
+		}catch(std::ifstream::failure e){
+			std::cerr<<"Exception during the saving of the data. Exception type: "<<e.what()<<std::endl;
+			return -1;
+		}
 	}
-	}else if(typeOfData == ANALYSIS_DATA){
-		p->runTest();
-		p->getTestResult();
+	else if(typeOfData == ANALYSIS_DATA){
+		container->runTests();
+		container->printTestsResults();
 	}
 	std::cout.flush();
 

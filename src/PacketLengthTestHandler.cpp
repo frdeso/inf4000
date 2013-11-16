@@ -65,13 +65,13 @@ Json::Value* PacketLengthTestHandler::DataToJson() const
 	return vect;
 }
 
-void PacketLengthTestHandler::ComputeDistribution(int type)
+void PacketLengthTestHandler::ComputeDistribution(int type, PacketCapture * packetCapture)
 {
 	map<uint32_t ,uint32_t> * arg;
 	if(type == LEARNING_DATA) arg = getModelDistribution();
 	else if(type == ANALYSIS_DATA) arg = getTestDistribution();
 
-	for( vector<pcap_t*>::iterator it = getPacketCapture()->getRawPackets()->begin(); it != getPacketCapture()->getRawPackets()->end(); ++it){
+	for( vector<pcap_t*>::iterator it = packetCapture->getRawPackets()->begin(); it != packetCapture->getRawPackets()->end(); ++it){
 		pcap_loop(*it, -1, packetDistributionCallback,(unsigned char *) arg);
 	}
 }
@@ -100,7 +100,7 @@ int PacketLengthTestHandler::getTestResult(){
 	double c_alpah = 1.22;
 
 	double seuil = c_alpah*pow((nModel + nTest)/(nModel * nTest), 0.5);
-	cout<<"seuil: "<<seuil<<endl;
+	//cout<<"seuil: "<<seuil<<endl;
 	
 	if(dStat_ > seuil)
 		cout << "The test distribution does not match the model with an alpha of : "<<alpha<< ", seuil:"<<seuil<< ", dStat_: "<<dStat_<<endl;
@@ -115,7 +115,7 @@ void PacketLengthTestHandler::runTest(){
 	double lastSum = 0;
 	uint32_t numberOfElementModel = getModelSampleSize();
 
-	cout<<"numberOfElementModel: "<< numberOfElementModel<<endl;
+	//cout<<"numberOfElementModel: "<< numberOfElementModel<<endl;
 	for(uint32_t i = 0; i <= maxModelSize_; ++i) {
 		modelCumulDist_->push_back(lastSum + ((*getModelDistribution())[i])/(double)numberOfElementModel);
 		//cout<<", [i,j]:"<<i<<","<<(*getModelDistribution())[i]<<endl;
@@ -148,7 +148,7 @@ void PacketLengthTestHandler::runTest(){
 
 		testValue = (i >= maxTestSize_ ? 1:  (*testCumulDist_)[i]);
 
-		cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelValue<< ", test: "<<setw(9)<< testValue <<", test - model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
+		//cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelValue<< ", test: "<<setw(9)<< testValue <<", test - model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
 
 		if (dStat_ < fabs(testValue - modelValue)){
 			dStat_ = fabs(testValue - modelValue);
