@@ -6,9 +6,10 @@
 
 #include "../libs/jsoncpp/json/json.h"
 
+#include "constants.h"
 #include "PacketLengthTestHandler.h"
 #include "PacketCapture.h"
-#include "constants.h"
+#include "utils.h"
 
 
 using namespace std;
@@ -98,9 +99,9 @@ int PacketLengthTestHandler::getTestResult(){
 	//cout<<"seuil: "<<seuil<<endl;
 	
 	if(dStat_ > seuil)
-		cout << "The test distribution does not match the model with an alpha of : "<<alpha<< ", seuil:"<<seuil<< ", dStat_: "<<dStat_<<endl;
+		cout << printInRed("The test distribution does not match the model with an alpha of : ")<<alpha<< ", seuil:"<<seuil<< ", dStat_: "<<dStat_<<endl;
 	else
-		cout<<"The test distribution match with the model."<<endl;
+		cout<<printInGreen("The test distribution matches with the model.")<<endl;
 	return 0;
 }
 

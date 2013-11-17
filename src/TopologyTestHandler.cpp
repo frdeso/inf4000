@@ -80,15 +80,20 @@ void TopologyTestHandler::runTest(){
 
 }
 int TopologyTestHandler::getTestResult(){ 
-	for(map<uint64_t,uint64_t>::const_iterator it = unknownInteractions_->begin(); it != unknownInteractions_->end(); it++){
-		struct in_addr first, second;
-		first.s_addr = it->first;
-		second.s_addr = it->second;
-		cout<< printInRed("Unknown interaction : ");
-		cout<<setw(14)<<inet_ntoa(first);
-		cout<<" ----> "<<setw(14)<<inet_ntoa(second)<<endl;
-	}
 
+	if(unknownInteractions_->size() == 0){
+		cout<<printInGreen("The Test distrition matches with model.")<<endl;
+	}
+	else {
+		for(map<uint64_t,uint64_t>::const_iterator it = unknownInteractions_->begin(); it != unknownInteractions_->end(); it++){
+			struct in_addr first, second;
+			first.s_addr = it->first;
+			second.s_addr = it->second;
+			cout<< printInRed("Unknown interaction : ");
+			cout<<setw(14)<<inet_ntoa(first);
+			cout<<" ----> "<<setw(14)<<inet_ntoa(second)<<endl;
+		}
+	}
 	return 0;
 }
 void TopologyTestHandler::printDistribution() const

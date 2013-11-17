@@ -1,4 +1,5 @@
 #include <arpa/inet.h>
+#include <cfloat>
 #include <climits>//UINT_MAX
 #include <iostream>
 #include <iomanip> //setw()
@@ -92,17 +93,16 @@ int InterdepartTimeTestHandler::getTestResult(){
 	struct in_addr host;
 	for(std::list<std::tuple<uint64_t, double,double> >::iterator iter = dStats_.begin(); iter != dStats_.end(); iter++){
 		host.s_addr = get<0>(*iter);
-		cout<< "Host at "<< inet_ntoa(host);
+		cout<<"Host at "<<setw(14)<< inet_ntoa(host);
 		if(get<1>(*iter) > get<2>(*iter) )
-			cout<<" have abnormal interdeparture behavior.";
+			cout<<" have "<<printInRed("abnormal")<<" interdeparture behavior.";
 		else
-			cout<<" have normal interdeparture behavior.";
+			cout<<" have "<<printInGreen("normal") <<" interdeparture behavior.";
 		cout<<" (dstat: "<<get<1>(*iter)<<", seuil:"<<get<2>(*iter)<<")"<<endl ;
 	}
 	return 0;
 }
 void InterdepartTimeTestHandler::runTest(){
-
 
 	for(map<uint32_t, map<uint64_t, uint32_t> >::iterator networkIter = interdepTiming_->begin(); networkIter != interdepTiming_->end(); networkIter++){
 
@@ -177,6 +177,8 @@ void InterdepartTimeTestHandler::runTest(){
 
 		double nModel = (double)numOfElemModelAddrTiming;
 		double nTest = (double) numOfElemTestAddrTiming;
+		if(nTest == 0)
+			nTest = DBL_MAX;
 		double c_alpah = 1.22;
 		double seuil = c_alpah*pow((nModel + nTest)/(nModel * nTest), 0.5);
 

@@ -14,5 +14,11 @@ inline std::string printInRed(std::string s)
 	colorised << "\033[1;31m"<<s<<"\033[0m";
 	return colorised.str();
 }
+inline std::string printInGreen(std::string s)
+{
+	std::ostringstream colorised;
+	colorised << "\033[1;32m"<<s<<"\033[0m";
+	return colorised.str();
+}
 
 #endif // _UTILS_H_
