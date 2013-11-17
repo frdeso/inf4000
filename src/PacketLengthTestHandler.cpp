@@ -99,9 +99,9 @@ int PacketLengthTestHandler::getTestResult(){
 	//cout<<"seuil: "<<seuil<<endl;
 	
 	if(dStat_ > seuil)
-		cout << printInRed("The test distribution does not match the model with an alpha of : ")<<alpha<< ", seuil:"<<seuil<< ", dStat_: "<<dStat_<<endl;
+		cout << RED<<"The test distribution does not match the model with an alpha of : "<<NO_COLOR<<alpha<< ", seuil:"<<seuil<< ", dStat_: "<<dStat_<<endl;
 	else
-		cout<<printInGreen("The test distribution matches with the model.")<<endl;
+		cout<<GREEN<<"The test distribution matches with the model."<<NO_COLOR<<endl;
 	return 0;
 }
 

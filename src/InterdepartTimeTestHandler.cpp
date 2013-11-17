@@ -21,10 +21,10 @@
 using namespace std;
 
 InterdepartTimeTestHandler::InterdepartTimeTestHandler(fs::fstream *modelFile, fs::path path, int typeOfTest):FeatureTestHandler(modelFile, path, typeOfTest){
-	interdepTiming_ 		= new map<uint32_t, map<uint64_t, uint32_t> >();
+	interdepTiming_			= new map<uint32_t, map<uint64_t, uint32_t> >();
 	testInterdepTiming_		= new map<uint32_t, map<uint64_t, uint32_t> >();
-	interdepTimingCumul_ 	= new map<uint32_t, vector<uint64_t> >();
-	packetTiming_ 			= new map<uint32_t, list<uint64_t> >();
+	interdepTimingCumul_	= new map<uint32_t, vector<uint64_t> >();
+	packetTiming_			= new map<uint32_t, list<uint64_t> >();
 
 	setFeatureName("INTERDEPARTURE_TIME");
 
@@ -95,9 +95,9 @@ int InterdepartTimeTestHandler::getTestResult(){
 		host.s_addr = get<0>(*iter);
 		cout<<"Host at "<<setw(14)<< inet_ntoa(host);
 		if(get<1>(*iter) > get<2>(*iter) )
-			cout<<" have "<<printInRed("abnormal")<<" interdeparture behavior.";
+			cout<<" have "<<RED<<"abnormal"<<NO_COLOR<<" interdeparture behavior.";
 		else
-			cout<<" have "<<printInGreen("normal") <<" interdeparture behavior.";
+			cout<<" have "<<GREEN<<"normal"<<NO_COLOR <<" interdeparture behavior.";
 		cout<<" (dstat: "<<get<1>(*iter)<<", seuil:"<<get<2>(*iter)<<")"<<endl ;
 	}
 	return 0;

@@ -82,14 +82,14 @@ void TopologyTestHandler::runTest(){
 int TopologyTestHandler::getTestResult(){ 
 
 	if(unknownInteractions_->size() == 0){
-		cout<<printInGreen("The Test distrition matches with model.")<<endl;
+		cout<<GREEN<<"The Test distrition matches with model."<<NO_COLOR<<endl;
 	}
 	else {
 		for(map<uint64_t,uint64_t>::const_iterator it = unknownInteractions_->begin(); it != unknownInteractions_->end(); it++){
 			struct in_addr first, second;
 			first.s_addr = it->first;
 			second.s_addr = it->second;
-			cout<< printInRed("Unknown interaction : ");
+			cout<< RED<<"Unknown interaction : "<<NO_COLOR;
 			cout<<setw(14)<<inet_ntoa(first);
 			cout<<" ----> "<<setw(14)<<inet_ntoa(second)<<endl;
 		}
