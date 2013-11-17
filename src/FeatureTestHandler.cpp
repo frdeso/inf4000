@@ -4,10 +4,11 @@
 	
 using namespace std;
 
-FeatureTestHandler::FeatureTestHandler(fs::fstream * modelFile, fs::path path){
+FeatureTestHandler::FeatureTestHandler(fs::fstream * modelFile, fs::path path, int typeOfData){
 	pcap_ = new PacketCapture();
 	modelFile_ = modelFile;
 	path_ = path;
+	typeOfData_ = typeOfData;
 }
 
 PacketCapture *FeatureTestHandler::getPacketCapture() const
@@ -84,6 +85,12 @@ void FeatureTestHandler::setFeatureName(string name){
 	FEATURE_NAME = name;
 }
 
+void FeatureTestHandler::setTypeOfData(int type){
+	typeOfData_ = type;
+}
+int FeatureTestHandler::getTypeOfData() const{
+	return typeOfData_;
+}
 
 
 const string FeatureTestHandler::MODEL_ROOT_ = "model";

@@ -93,9 +93,12 @@ int main(int argc, char **argv)
 	fs::fstream *modelFile = new fs::fstream();
 	
 	TestHandlerContainer *container = new TestHandlerContainer(modelFile, pathToModel, typeOfData);
-	container->addTestHandler(new InterdepartTimeTestHandler(modelFile,pathToModel)	);
-	container->addTestHandler(new PacketLengthTestHandler(modelFile,pathToModel)	);
-	container->addTestHandler(new TopologyTestHandler(modelFile,pathToModel)		);
+	container->addTestHandler(new InterdepartTimeTestHandler(modelFile,pathToModel, typeOfData)	);
+
+	container->addTestHandler(new PacketLengthTestHandler(modelFile,pathToModel,typeOfData)	);
+	
+	container->addTestHandler(new TopologyTestHandler(modelFile,pathToModel,typeOfData)		);
+	
 	
 	container->addPacketCapture(pcap);
 	try{

@@ -12,7 +12,7 @@
 
 
 using namespace std;
-PacketLengthTestHandler::PacketLengthTestHandler(fs::fstream *modelFile, fs::path path):FeatureTestHandler(modelFile, path)
+PacketLengthTestHandler::PacketLengthTestHandler(fs::fstream *modelFile, fs::path path, int typeOfTest):FeatureTestHandler(modelFile, path, typeOfTest)
 {
 	modelDist_ = new map<uint32_t,uint32_t>();
 	testDist_ = new map<uint32_t,uint32_t>();
@@ -28,6 +28,8 @@ PacketLengthTestHandler::~PacketLengthTestHandler(){}
 
 void packetDistributionCallback( unsigned char * arg, const struct pcap_pkthdr* pkthdr, const unsigned char * packet )
 {
+	static int a = 0;
+	cout<<"packetSize: "<< a++ <<endl;
 	map<uint32_t,uint32_t>* p = (map<uint32_t,uint32_t>* ) arg;
 
 	(*p)[pkthdr->len]++;
@@ -75,6 +77,21 @@ void PacketLengthTestHandler::ComputeDistribution(int type, PacketCapture * pack
 		pcap_loop(*it, -1, packetDistributionCallback,(unsigned char *) arg);
 	}
 }
+
+void PacketLengthTestHandler::computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet ){
+
+	map<uint32_t ,uint32_t> * arg;
+	if(getTypeOfData() == LEARNING_DATA) arg = getModelDistribution();
+	else if(getTypeOfData() == ANALYSIS_DATA) arg = getTestDistribution();
+
+	static int a = 0;
+	cout<<"packetSize: "<< a++ <<endl;
+	map<uint32_t,uint32_t>* p = (map<uint32_t,uint32_t>* ) arg;
+
+	(*p)[pkthdr->len]++;
+
+}
+
 
 map<uint32_t ,uint32_t>* PacketLengthTestHandler::getModelDistribution() const
 {
@@ -148,14 +165,14 @@ void PacketLengthTestHandler::runTest(){
 
 		testValue = (i >= maxTestSize_ ? 1:  (*testCumulDist_)[i]);
 
-		//cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelValue<< ", test: "<<setw(9)<< testValue <<", test - model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
+		cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelValue<< ", test: "<<setw(9)<< testValue <<", test - model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
 
 		if (dStat_ < fabs(testValue - modelValue)){
 			dStat_ = fabs(testValue - modelValue);
 		}
 
 	}
-	cout<<"dStat: "<< dStat_ <<endl;
+	//cout<<"dStat: "<< dStat_ <<endl;
 }
 
 void PacketLengthTestHandler::computeModelMaxValue()

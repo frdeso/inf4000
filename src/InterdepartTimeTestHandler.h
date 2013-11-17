@@ -14,10 +14,11 @@
 class InterdepartTimeTestHandler : public FeatureTestHandler{
 	public:
 
-		InterdepartTimeTestHandler(fs::fstream *modelFile, fs::path path);
+		InterdepartTimeTestHandler(fs::fstream *modelFile, fs::path path, int typeOfTest);
 		~InterdepartTimeTestHandler();
 		void initCapture();
 		void ComputeDistribution(int type, PacketCapture *packetCapture);
+		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet );
 		virtual void JsonToData(Json::Value * json);
 		virtual Json::Value *DataToJson() const ;
 		virtual void runTest();

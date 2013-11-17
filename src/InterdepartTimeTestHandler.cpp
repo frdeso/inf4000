@@ -19,7 +19,7 @@
 
 using namespace std;
 
-InterdepartTimeTestHandler::InterdepartTimeTestHandler(fs::fstream *modelFile, fs::path path):FeatureTestHandler(modelFile, path){
+InterdepartTimeTestHandler::InterdepartTimeTestHandler(fs::fstream *modelFile, fs::path path, int typeOfTest):FeatureTestHandler(modelFile, path, typeOfTest){
 	interdepTiming_ = new map<uint32_t, map<uint64_t, uint32_t> >();
 	testInterdepTiming_ = new map<uint32_t, map<uint64_t, uint32_t> >();
 	interdepTimingCumul_ =  new map<uint32_t, vector<uint64_t> >();
@@ -31,6 +31,9 @@ InterdepartTimeTestHandler::~InterdepartTimeTestHandler(){}
 
 void interdepartureDistributionCallback( unsigned char * arg, const struct pcap_pkthdr* pkthdr, const unsigned char * packet )
 {
+	static int a = 0;
+	cout<<"interdep: "<< a++ <<endl;
+
 	struct ip * ipHdr = (struct ip*) (packet + sizeof(struct ether_header));
 
 	map<uint32_t, list<uint64_t> > * packetTiming = (map<uint32_t, list<uint64_t> > *) arg;
@@ -52,6 +55,20 @@ void InterdepartTimeTestHandler::ComputeDistribution(int type, PacketCapture *pa
 	ComputeInterdeparture(packetTiming, timing);
 	
 }
+
+
+void InterdepartTimeTestHandler::computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet ){
+	static 	map<uint32_t, list<uint64_t> > * packetTiming =  new map<uint32_t, list<uint64_t> >();
+	
+	static int a = 0;
+	cout<<"interdep: "<< a++ <<endl;
+
+	struct ip * ipHdr = (struct ip*) (packet + sizeof(struct ether_header));
+
+	(*packetTiming)[ipHdr->ip_src.s_addr].push_back(timevalToUINT64(pkthdr->ts));
+}
+
+
 void InterdepartTimeTestHandler::initCapture(){}
 
 void InterdepartTimeTestHandler::JsonToData(Json::Value * root){

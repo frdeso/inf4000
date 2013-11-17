@@ -14,11 +14,12 @@
 namespace fs = boost::filesystem ;
 class FeatureTestHandler {
 	public:
-		FeatureTestHandler(fs::fstream *modelFile, fs::path path);
+		FeatureTestHandler(fs::fstream *modelFile, fs::path path, int typeOfTest);
 		virtual void initCapture() = 0;
 		void loadDataToModel();
 		void saveDataToModel();
 		virtual void ComputeDistribution(int type, PacketCapture *packetCapture) = 0;
+		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet ) = 0;
 		virtual void printDistribution() const = 0;
 		virtual void runTest() = 0;
 		virtual int getTestResult() = 0;
@@ -29,12 +30,15 @@ class FeatureTestHandler {
 		PacketCapture* getPacketCapture() const;
 		void addPacketCaptureFile(FILE * pcapFile);
 		fs::fstream *getModelFile()const;
+		void setTypeOfData(int type);
+		int getTypeOfData() const;
 		
 	private:
 		PacketCapture *pcap_;
 		fs::path path_;
 		fs::fstream *modelFile_;
 		std::string FEATURE_NAME;
+		int typeOfData_;
 
 	protected:
 		static const std::string MODEL_ROOT_;

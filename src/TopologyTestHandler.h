@@ -12,19 +12,20 @@
 class TopologyTestHandler : public FeatureTestHandler{
 	public:
 
-		TopologyTestHandler(fs::fstream *modelFile, fs::path path);
+		TopologyTestHandler(fs::fstream *modelFile, fs::path path, int typeOfTest);
 		~TopologyTestHandler();
 		void initCapture();
 		void ComputeDistribution(int type, PacketCapture *packetCapture);
+		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet );
 		virtual void JsonToData(Json::Value * json);
 		virtual Json::Value *DataToJson() const ;
 		virtual void runTest();
 		virtual int getTestResult();
 		void printDistribution() const;
 	private:
-		std::map<uint64_t,uint64_t> modelTopology_;
-		std::map<uint64_t,uint64_t> testTopology_;
-		std::map<uint64_t,uint64_t> unknownInteractions_;
+		std::map<uint64_t,uint64_t> *modelTopology_;
+		std::map<uint64_t,uint64_t> *testTopology_;
+		std::map<uint64_t,uint64_t> *unknownInteractions_;
 
 };
 #endif 	//_TOPOLOGY_TEST_HANDLER_H_
