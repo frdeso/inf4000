@@ -5,13 +5,13 @@ CFLAGS= -g -Wall -O0 -std=c++11
 all: pcap_analyzer.c $(OBJ)
 	g++ $(CFLAGS) pcap_analyzer.c $(OBJ) -lboost_system  -lboost_filesystem -lpcap  -o pcap_analyzer
 
-PacketLengthTestHandler.o: PacketLengthTestHandler.h PacketLengthTestHandler.cpp
+PacketLengthTestHandler.o: PacketLengthTestHandler.h PacketLengthTestHandler.cpp FeatureTestHandler.o
 	g++ $(CFLAGS) -c PacketLengthTestHandler.cpp  -o PacketLengthTestHandler.o
 
-InterdepartTimeTestHandler.o: InterdepartTimeTestHandler.h InterdepartTimeTestHandler.cpp utils.h
+InterdepartTimeTestHandler.o: InterdepartTimeTestHandler.h InterdepartTimeTestHandler.cpp utils.h FeatureTestHandler.o
 	g++ $(CFLAGS) -c InterdepartTimeTestHandler.cpp  -o InterdepartTimeTestHandler.o
 
-TopologyTestHandler.o: TopologyTestHandler.h TopologyTestHandler.cpp utils.h
+TopologyTestHandler.o: TopologyTestHandler.h TopologyTestHandler.cpp utils.h FeatureTestHandler.o
 	g++ $(CFLAGS) -c TopologyTestHandler.cpp -o TopologyTestHandler.o
 
 FeatureTestHandler.o: FeatureTestHandler.h FeatureTestHandler.cpp

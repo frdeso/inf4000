@@ -32,30 +32,7 @@ TopologyTestHandler::~TopologyTestHandler(){
 void TopologyTestHandler::initCapture()
 {}
 
-void topologyCallback( unsigned char * arg, const struct pcap_pkthdr* pkthdr, const unsigned char * packet )
-{
-	static int a = 0;
-	cout<<"topo: "<< a++ <<endl;
-	map<uint64_t,uint64_t>* topo = (map<uint64_t,uint64_t> *) arg;
-	struct ip * ipHdr = (struct ip*) (packet + sizeof(struct ether_header));
-	(*topo)[ipHdr->ip_src.s_addr] = ipHdr->ip_dst.s_addr;
- }
-
-void TopologyTestHandler::ComputeDistribution(int type, PacketCapture *packetCapture )
-{
-	map<uint64_t,uint64_t> * arg;
-	if(type == LEARNING_DATA) 
-		arg = modelTopology_;
-	if(type == ANALYSIS_DATA)
-		arg = testTopology_;
-
-	for( vector<pcap_t*>::iterator it = packetCapture->getRawPackets()->begin(); it != packetCapture->getRawPackets()->end(); ++it){
-		pcap_loop(*it, -1, topologyCallback, (unsigned char *) arg);
-	}
-}
 void TopologyTestHandler::computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet ) {
-	static int a = 0;
-	cout<<"topo: "<< a++ <<endl;
 	map<uint64_t,uint64_t> * arg;
 
 	if(getTypeOfData() == LEARNING_DATA) 

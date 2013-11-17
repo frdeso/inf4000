@@ -15,7 +15,6 @@ class TopologyTestHandler : public FeatureTestHandler{
 		TopologyTestHandler(fs::fstream *modelFile, fs::path path, int typeOfTest);
 		~TopologyTestHandler();
 		void initCapture();
-		void ComputeDistribution(int type, PacketCapture *packetCapture);
 		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet );
 		virtual void JsonToData(Json::Value * json);
 		virtual Json::Value *DataToJson() const ;

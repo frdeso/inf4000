@@ -2,7 +2,6 @@
 #define _PACKETLENGTHTESTHANDLER_H_
 
 #include <map>
-#include <fstream>
 #include <stdint.h>
 
 #include "FeatureTestHandler.h"
@@ -16,7 +15,6 @@ class PacketLengthTestHandler: public FeatureTestHandler
 		virtual void JsonToData(Json::Value * json);
 		virtual void runTest();
 		virtual int getTestResult();	
-		void ComputeDistribution(int type, PacketCapture *packetCapture);
 		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet );
 		std::map<uint32_t ,uint32_t>* getModelDistribution() const;
 		std::map<uint32_t ,uint32_t>* getTestDistribution() const;

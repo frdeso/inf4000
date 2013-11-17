@@ -17,7 +17,6 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 		InterdepartTimeTestHandler(fs::fstream *modelFile, fs::path path, int typeOfTest);
 		~InterdepartTimeTestHandler();
 		void initCapture();
-		void ComputeDistribution(int type, PacketCapture *packetCapture);
 		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet );
 		virtual void JsonToData(Json::Value * json);
 		virtual Json::Value *DataToJson() const ;
@@ -33,6 +32,7 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 		std::map<uint32_t, std::map<uint64_t, uint32_t> > * interdepTiming_; //TODO::change to modelInterdepTiming_
 		std::map<uint32_t, std::map<uint64_t, uint32_t> > * testInterdepTiming_;
 		std::map<uint32_t, std::vector<uint64_t> > * interdepTimingCumul_;
+		std::map<uint32_t, std::list<uint64_t> > * packetTiming_;
 };
 
 #endif // _INTERDEPART_TIME_TEST_HANDLER_H_

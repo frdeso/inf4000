@@ -26,15 +26,6 @@ PacketLengthTestHandler::PacketLengthTestHandler(fs::fstream *modelFile, fs::pat
 
 PacketLengthTestHandler::~PacketLengthTestHandler(){}
 
-void packetDistributionCallback( unsigned char * arg, const struct pcap_pkthdr* pkthdr, const unsigned char * packet )
-{
-	static int a = 0;
-	cout<<"packetSize: "<< a++ <<endl;
-	map<uint32_t,uint32_t>* p = (map<uint32_t,uint32_t>* ) arg;
-
-	(*p)[pkthdr->len]++;
-}
-
 void PacketLengthTestHandler::initCapture(){
 	computeModelMaxValue();
 	computeTestMaxValue();
@@ -67,25 +58,12 @@ Json::Value* PacketLengthTestHandler::DataToJson() const
 	return vect;
 }
 
-void PacketLengthTestHandler::ComputeDistribution(int type, PacketCapture * packetCapture)
-{
-	map<uint32_t ,uint32_t> * arg;
-	if(type == LEARNING_DATA) arg = getModelDistribution();
-	else if(type == ANALYSIS_DATA) arg = getTestDistribution();
-
-	for( vector<pcap_t*>::iterator it = packetCapture->getRawPackets()->begin(); it != packetCapture->getRawPackets()->end(); ++it){
-		pcap_loop(*it, -1, packetDistributionCallback,(unsigned char *) arg);
-	}
-}
-
 void PacketLengthTestHandler::computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet ){
 
 	map<uint32_t ,uint32_t> * arg;
 	if(getTypeOfData() == LEARNING_DATA) arg = getModelDistribution();
 	else if(getTypeOfData() == ANALYSIS_DATA) arg = getTestDistribution();
 
-	static int a = 0;
-	cout<<"packetSize: "<< a++ <<endl;
 	map<uint32_t,uint32_t>* p = (map<uint32_t,uint32_t>* ) arg;
 
 	(*p)[pkthdr->len]++;
@@ -165,7 +143,7 @@ void PacketLengthTestHandler::runTest(){
 
 		testValue = (i >= maxTestSize_ ? 1:  (*testCumulDist_)[i]);
 
-		cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelValue<< ", test: "<<setw(9)<< testValue <<", test - model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
+		//cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelValue<< ", test: "<<setw(9)<< testValue <<", test - model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
 
 		if (dStat_ < fabs(testValue - modelValue)){
 			dStat_ = fabs(testValue - modelValue);
