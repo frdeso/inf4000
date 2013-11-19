@@ -64,16 +64,16 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	if (!cmdOptionExists(argv, argv + argc, "-c")) {
-		std::cerr<<"You did not specified a critical value. Default value(0.10) will be used." <<std::endl;
-	}else{
-		criticalValue =  atof(getCmdOption(argv, argv + argc, "-c"));
-	}
-	std::cout<<"crit: " << criticalValue<<std::endl;
+
 	if ( cmdOptionExists(argv, argv + argc, "-l") ){
 		typeOfData = LEARNING_DATA;
 	} else if ( cmdOptionExists(argv, argv + argc, "-a") ){
 		typeOfData = ANALYSIS_DATA;
+		if (!cmdOptionExists(argv, argv + argc, "-c")) {
+			std::cerr<<"You did not specified a critical value. Default value(0.10) will be used." <<std::endl;
+		}else{
+			criticalValue =  atof(getCmdOption(argv, argv + argc, "-c"));
+		}
 	}
 
 	if(cmdOptionExists(argv, argv + argc, "-f")){
