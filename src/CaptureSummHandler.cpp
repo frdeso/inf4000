@@ -11,9 +11,13 @@ void CaptureSummHandler::initCapture(){}
 void CaptureSummHandler::computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet ){
 	nbOfPackets_++;
 }
-void CaptureSummHandler::JsonToData(Json::Value * json){}
+void CaptureSummHandler::JsonToData(Json::Value * json){
+	//Intentionnaly not reading the number of packet 
+	//from the file since it only really make sence to 
+	//display number of packet in analysis mode
+}
 Json::Value *CaptureSummHandler::DataToJson() const {
-	return (Json::Value *)NULL;
+	return new Json::Value(nbOfPackets_);;
 }
 void CaptureSummHandler::runTest(double cAlpha){}
 int CaptureSummHandler::getTestResult(){

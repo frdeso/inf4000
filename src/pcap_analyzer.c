@@ -143,6 +143,7 @@ int main(int argc, char **argv)
 			std::cerr<<"Exception during the saving of the data. Exception type: "<<e.what()<<std::endl;
 			return -1;
 		}
+		std::cout<<"Done learning from this capture."<< std::endl;
 	}
 	else if(typeOfData == ANALYSIS_DATA){
 		container->runTests();
