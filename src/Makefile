@@ -1,4 +1,4 @@
-OBJ = PacketLengthTestHandler.o FeatureTestHandler.o PacketCapture.o jsoncpp.o InterdepartTimeTestHandler.o TopologyTestHandler.o TestHandlerContainer.o
+OBJ = PacketLengthTestHandler.o FeatureTestHandler.o PacketCapture.o jsoncpp.o InterdepartTimeTestHandler.o TopologyTestHandler.o TestHandlerContainer.o CaptureSummHandler.o
 
 CFLAGS= -g -Wall -O0 -std=c++11
 
@@ -16,8 +16,12 @@ TopologyTestHandler.o: TopologyTestHandler.h TopologyTestHandler.cpp utils.h Fea
 
 FeatureTestHandler.o: FeatureTestHandler.h FeatureTestHandler.cpp
 	g++ $(CFLAGS) -c FeatureTestHandler.cpp -o FeatureTestHandler.o
+
 PacketCapture.o: PacketCapture.h PacketCapture.cpp
 	g++ $(CFLAGS) -c PacketCapture.cpp -o PacketCapture.o
+
+CaptureSummHandler.o: CaptureSummHandler.h CaptureSummHandler.cpp FeatureTestHandler.h
+	g++ $(CFLAGS) -c CaptureSummHandler.cpp -o CaptureSummHandler.o
 
 TestHandlerContainer.o: TestHandlerContainer.h TestHandlerContainer.cpp
 	g++ $(CFLAGS) -c TestHandlerContainer.cpp -o TestHandlerContainer.o

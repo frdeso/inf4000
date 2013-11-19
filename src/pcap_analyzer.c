@@ -8,6 +8,7 @@
 #include <pcap.h>
 #include "../libs/jsoncpp/json/json.h"
 
+#include "CaptureSummHandler.h"
 #include "InterdepartTimeTestHandler.h"
 #include "PacketLengthTestHandler.h"
 #include "TestHandlerContainer.h"
@@ -99,7 +100,7 @@ int main(int argc, char **argv)
 	
 	container->addTestHandler(new TopologyTestHandler(modelFile,pathToModel,typeOfData)		);
 	
-	
+	container->addTestHandler(new CaptureSummHandler(modelFile,pathToModel,typeOfData)		);
 	container->addPacketCapture(pcap);
 	try{
 		modelFile->open(pathToModel, std::ios::in);
