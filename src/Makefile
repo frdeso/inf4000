@@ -23,7 +23,7 @@ PacketCapture.o: PacketCapture.h PacketCapture.cpp
 CaptureSummHandler.o: CaptureSummHandler.h CaptureSummHandler.cpp FeatureTestHandler.h
 	g++ $(CFLAGS) -c CaptureSummHandler.cpp -o CaptureSummHandler.o
 
-TestHandlerContainer.o: TestHandlerContainer.h TestHandlerContainer.cpp
+TestHandlerContainer.o: TestHandlerContainer.h TestHandlerContainer.cpp FeatureTestHandler.h
 	g++ $(CFLAGS) -c TestHandlerContainer.cpp -o TestHandlerContainer.o
 
 jsoncpp.o:

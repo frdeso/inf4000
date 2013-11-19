@@ -65,7 +65,7 @@ Json::Value *TopologyTestHandler::DataToJson() const
 	return vect;
 }
 
-void TopologyTestHandler::runTest(){
+void TopologyTestHandler::runTest(double cAlpha){
 	for(map<uint64_t,uint64_t>::const_iterator it = testTopology_->begin(); it != testTopology_->end(); it++){
 
 		if((*modelTopology_)[it->first] != it->second){

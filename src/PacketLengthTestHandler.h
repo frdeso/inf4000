@@ -13,7 +13,7 @@ class PacketLengthTestHandler: public FeatureTestHandler
 		~PacketLengthTestHandler();
 		virtual void initCapture();
 		virtual void JsonToData(Json::Value * json);
-		virtual void runTest();
+		virtual void runTest(double cAlpha);
 		virtual int getTestResult();	
 		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet );
 		std::map<uint32_t ,uint32_t>* getModelDistribution() const;
@@ -31,6 +31,8 @@ class PacketLengthTestHandler: public FeatureTestHandler
 		std::vector<double> *testCumulDist_;
 		size_t maxModelSize_;
 		double dStat_;
+		double cAlpha_;
+		double seuil_;
 		size_t maxTestSize_;
 		static const double BUFFER; // 1*10^-15
 };

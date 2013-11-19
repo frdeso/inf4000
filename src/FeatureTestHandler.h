@@ -19,7 +19,7 @@ class FeatureTestHandler {
 		void saveDataToModel();
 		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet ) = 0;
 		virtual void printDistribution() const = 0;
-		virtual void runTest() = 0;
+		virtual void runTest( double cAlpha) = 0;
 		virtual int getTestResult() = 0;
 		virtual void JsonToData(Json::Value * json) = 0;
 		virtual Json::Value *DataToJson() const = 0;

@@ -89,24 +89,17 @@ void PacketLengthTestHandler::printDistribution() const
 }
 
 int PacketLengthTestHandler::getTestResult(){
-	double nModel = (double)getModelSampleSize();
-	double nTest = (double) getTestSampleSize();
 	//TODO: take alpha by argument or set default in a better place
-	double alpha = 0.1;
-	double c_alpah = 1.22;
-
-	double seuil = c_alpah*pow((nModel + nTest)/(nModel * nTest), 0.5);
-	//cout<<"seuil: "<<seuil<<endl;
 	
-	if(dStat_ > seuil)
-		cout << RED<<"The test distribution does not match the model with an alpha of : "<<NO_COLOR<<alpha<< ", seuil:"<<seuil<< ", dStat_: "<<dStat_<<endl;
+	if(dStat_ > seuil_)
+		cout << RED<<"The test distribution does not match the model with an cAlpha of: "<<NO_COLOR<<cAlpha_<< ", seuil:"<<seuil_<< ", dStat_: "<<dStat_<<endl;
 	else
-		cout<<GREEN<<"The test distribution matches with the model."<<NO_COLOR<<endl;
+		cout << GREEN<<"The test distribution matches with the model."<<NO_COLOR<<endl;
 	return 0;
 }
 
-void PacketLengthTestHandler::runTest(){
-
+void PacketLengthTestHandler::runTest(double cAlpha){
+	cAlpha_ = cAlpha;
 	//compute cumulative function of the model
 	double lastSum = 0;
 	uint32_t numberOfElementModel = getModelSampleSize();
@@ -151,6 +144,8 @@ void PacketLengthTestHandler::runTest(){
 		}
 
 	}
+
+	seuil_ = cAlpha*pow((numberOfElementModel + numberOfElementTest)/(numberOfElementModel * numberOfElementTest), 0.5);
 	//cout<<"dStat: "<< dStat_ <<endl;
 }
 

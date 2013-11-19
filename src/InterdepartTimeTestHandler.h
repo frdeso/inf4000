@@ -20,7 +20,7 @@ class InterdepartTimeTestHandler : public FeatureTestHandler{
 		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet );
 		virtual void JsonToData(Json::Value * json);
 		virtual Json::Value *DataToJson() const ;
-		virtual void runTest();
+		virtual void runTest(double cAlpha);
 		virtual int getTestResult();
 		void printDistribution() const;
 	private:

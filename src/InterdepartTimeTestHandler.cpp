@@ -102,7 +102,7 @@ int InterdepartTimeTestHandler::getTestResult(){
 	}
 	return 0;
 }
-void InterdepartTimeTestHandler::runTest(){
+void InterdepartTimeTestHandler::runTest(double cAlpha){
 
 	for(map<uint32_t, map<uint64_t, uint32_t> >::iterator networkIter = interdepTiming_->begin(); networkIter != interdepTiming_->end(); networkIter++){
 
@@ -179,8 +179,8 @@ void InterdepartTimeTestHandler::runTest(){
 		double nTest = (double) numOfElemTestAddrTiming;
 		if(nTest == 0)
 			nTest = DBL_MAX;
-		double c_alpah = 1.22;
-		double seuil = c_alpah*pow((nModel + nTest)/(nModel * nTest), 0.5);
+		//double c_alpah = 1.22;
+		double seuil = cAlpha*pow((nModel + nTest)/(nModel * nTest), 0.5);
 
 		//cout<<"Address: "<<networkIter->first<<" , dStat: "<< dStat <<endl;
 		dStats_.push_back(make_tuple(networkIter->first, dStat, seuil));

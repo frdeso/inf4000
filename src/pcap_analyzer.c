@@ -1,7 +1,8 @@
-#include <iostream>
 #include <algorithm>
-#include <errno.h>
 #include <cstring>
+#include <errno.h>
+#include <iostream>
+#include <stdlib.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -44,6 +45,7 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
 int main(int argc, char **argv)
 {
 	int typeOfData;
+	double criticalValue = 0.10;
 	std::string pathToFile_;
 
 	if(cmdOptionExists(argv, argv + argc, "-h")){
@@ -62,11 +64,18 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	if (!cmdOptionExists(argv, argv + argc, "-c")) {
+		std::cerr<<"You did not specified a critical value. Default value(0.10) will be used." <<std::endl;
+	}else{
+		criticalValue =  atof(getCmdOption(argv, argv + argc, "-c"));
+	}
+	std::cout<<"crit: " << criticalValue<<std::endl;
 	if ( cmdOptionExists(argv, argv + argc, "-l") ){
 		typeOfData = LEARNING_DATA;
 	} else if ( cmdOptionExists(argv, argv + argc, "-a") ){
 		typeOfData = ANALYSIS_DATA;
 	}
+
 	if(cmdOptionExists(argv, argv + argc, "-f")){
 		pathToFile_ = std::string(getCmdOption(argv, argv + argc, "-f"));
 	}else{
@@ -93,7 +102,7 @@ int main(int argc, char **argv)
 	}
 	fs::fstream *modelFile = new fs::fstream();
 	
-	TestHandlerContainer *container = new TestHandlerContainer(modelFile, pathToModel, typeOfData);
+	TestHandlerContainer *container = new TestHandlerContainer(modelFile, pathToModel, typeOfData, criticalValue);
 	container->addTestHandler(new InterdepartTimeTestHandler(modelFile,pathToModel, typeOfData)	);
 
 	container->addTestHandler(new PacketLengthTestHandler(modelFile,pathToModel,typeOfData)	);

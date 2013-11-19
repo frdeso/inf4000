@@ -15,7 +15,7 @@ void CaptureSummHandler::JsonToData(Json::Value * json){}
 Json::Value *CaptureSummHandler::DataToJson() const {
 	return (Json::Value *)NULL;
 }
-void CaptureSummHandler::runTest(){}
+void CaptureSummHandler::runTest(double cAlpha){}
 int CaptureSummHandler::getTestResult(){
 	cout<<"Number of packet captured: "<<nbOfPackets_<<endl;
 	return 0;
