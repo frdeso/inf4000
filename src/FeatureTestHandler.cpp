@@ -5,31 +5,17 @@
 using namespace std;
 
 FeatureTestHandler::FeatureTestHandler(fs::fstream * modelFile, fs::path path, int typeOfData){
-	pcap_ = new PacketCapture();
 	modelFile_ = modelFile;
 	path_ = path;
 	typeOfData_ = typeOfData;
 }
-
-PacketCapture *FeatureTestHandler::getPacketCapture() const
-{
-	return pcap_;
+FeatureTestHandler::~FeatureTestHandler(){
 }
+
 fs::fstream *FeatureTestHandler::getModelFile()const{
 	return modelFile_;
 }
-void FeatureTestHandler::addPacketCaptureFile(FILE * pcapFile)
-{
-	char error[PCAP_ERRBUF_SIZE];
-	
-	pcap_t* p = pcap_fopen_offline(pcapFile, error);
 
-	if(p == NULL) {
-		cerr<<error<<endl;
-	} else {
-		this->getPacketCapture()->addRawPacket(p);
-	}
-}
 
 void FeatureTestHandler::saveDataToModel(){
 	Json::Value *vec = DataToJson();
