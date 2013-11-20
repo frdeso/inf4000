@@ -23,6 +23,8 @@ class CaptureSummHandler : public FeatureTestHandler{
 		void printDistribution() const;
 	private:
 		uint32_t nbOfPackets_;
+		uint64_t beginning_;
+		uint64_t duration_;
 
 };
 #endif 	//_CAPTURE_SUMM_HANDLER_H_

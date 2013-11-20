@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 	} else if ( cmdOptionExists(argv, argv + argc, "-a") ){
 		typeOfData = ANALYSIS_DATA;
 		if (!cmdOptionExists(argv, argv + argc, "-c")) {
-			std::cerr<<"You did not specified a critical value. Default value(0.10) will be used." <<std::endl;
+			std::cerr<<"You did not specified a critical value. Default value("<<criticalValue<<") will be used." <<std::endl;
 		}else{
 			criticalValue =  atof(getCmdOption(argv, argv + argc, "-c"));
 		}
