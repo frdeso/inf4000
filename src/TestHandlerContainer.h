@@ -5,7 +5,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
-
+#include <pcap.h>
 
 #include "FeatureTestHandler.h"
 #include "PacketCapture.h"
@@ -14,9 +14,9 @@ class TestHandlerContainer{
 public:
 	TestHandlerContainer(fs::fstream *modelFile, fs::path path, int type, double alpha);
 	void addTestHandler(FeatureTestHandler * handler);
-	void addPacketCapture(FILE * pcapFile);
+	void addPacketCapture(pcap_t * captureHandle);
 	void loadModel();
-	void computeDistribution();
+	void computeDistribution(bool isLive, uint32_t duration);
 	void saveModel();
 	void runTests();
 	void printTestsResults();

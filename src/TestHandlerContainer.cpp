@@ -1,4 +1,7 @@
 #include <iostream>
+#include <signal.h>
+#include <unistd.h>
+
 #include <pcap.h>
 
 #include "TestHandlerContainer.h"
@@ -17,16 +20,9 @@ void TestHandlerContainer::addTestHandler(FeatureTestHandler * handler){
 	handlers_.push_back(handler);
 }
 
-void TestHandlerContainer::addPacketCapture(FILE * pcapFile){
-	char error[PCAP_ERRBUF_SIZE];
-	
-	pcap_t* p = pcap_fopen_offline(pcapFile, error);
+void TestHandlerContainer::addPacketCapture(pcap_t * captureHandle){
 
-	if(p == NULL) {
-		cerr<<"Error openning the pcap file: "<<error<<endl;
-	} else {
-		packetCapture_->addRawPacket(p);
-	}
+	packetCapture_->addRawPacket(captureHandle);
 }
 
 void TestHandlerContainer::loadModel(){
@@ -41,11 +37,25 @@ void containerCallback(unsigned char * arg, const struct pcap_pkthdr* pkthdr, co
 	}
 }
 
-void TestHandlerContainer::computeDistribution(){
+static pcap_t* current_capture;
+void alarm_handler(int sig){
+	pcap_breakloop(current_capture);
+}
+
+void TestHandlerContainer::computeDistribution(bool isLive, uint32_t duration){
+
+	if(isLive){
+		//set sigalrm handler
+		signal(SIGALRM, alarm_handler);
+		//set alarm
+		alarm(duration);
+	}
+
 
 	std::list<FeatureTestHandler* > *arg = &handlers_;
 	//call pcap_loop on every pcap files
 	for( vector<pcap_t*>::iterator it = packetCapture_->getRawPackets()->begin(); it != packetCapture_->getRawPackets()->end(); ++it){
+		current_capture =  *it;
 		pcap_loop(*it, -1, containerCallback,(unsigned char *) arg);
 	}
 

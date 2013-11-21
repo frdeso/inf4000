@@ -46,7 +46,11 @@ int main(int argc, char **argv)
 {
 	int typeOfData;
 	double criticalValue = 0.10;
+	bool isLive = true;
+	uint32_t duration = 5; //default duration for live capture
+	pcap_t* captureHandler;
 	std::string pathToFile_;
+	std::string interface;
 
 	if(cmdOptionExists(argv, argv + argc, "-h")){
 		/*TODO: help menu*/
@@ -76,19 +80,26 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if(cmdOptionExists(argv, argv + argc, "-f")){
-		pathToFile_ = std::string(getCmdOption(argv, argv + argc, "-f"));
-	}else{
-		std::cerr<<"No '-f' argument."<<std::endl;
+	/* Check for conflicting arguments */
+	if (cmdOptionExists(argv, argv + argc, "-f") && cmdOptionExists(argv, argv + argc, "-o")) {
+		std::cerr<<"You specified two conflicting source arguments '-f' and '-o'. Please specify only one of them." <<std::endl;
+		return -1;
+	}
+		/* Check for missing arguments */
+	if (!cmdOptionExists(argv, argv + argc, "-o") && !cmdOptionExists(argv, argv + argc, "-o")) {
+		std::cerr<<"You did not specified any source argument. Please specify online(\"-o\") or offline(\"-f\")." <<std::endl;
 		return -1;
 	}
 
-	/*Beginning of the program*/
-	FILE *pcap = fopen(pathToFile_.c_str(), "r");
-	if(pcap == NULL) {
-		std::cerr << "Trouble openning the file... "<<std::strerror(errno)<<std::endl;	
-		return -1;	
+	if(cmdOptionExists(argv, argv + argc, "-o")){
+		isLive = true;
+		interface = std::string(getCmdOption(argv, argv + argc, "-o"));
+	}else if(cmdOptionExists(argv, argv + argc, "-f")){
+		isLive = false;
+		pathToFile_ = std::string(getCmdOption(argv, argv + argc, "-f"));
 	}
+
+	/*Beginning of the program*/
 
 	fs::path pathToModel("model.json");
 	if(!fs::exists(pathToModel)){
@@ -110,7 +121,54 @@ int main(int argc, char **argv)
 	container->addTestHandler(new TopologyTestHandler(modelFile,pathToModel,typeOfData)		);
 	
 	container->addTestHandler(new CaptureSummHandler(modelFile,pathToModel,typeOfData)		);
-	container->addPacketCapture(pcap);
+	
+	char error[PCAP_ERRBUF_SIZE];
+	if(isLive){
+		pcap_if_t *devices, *first;
+     	if(pcap_findalldevs(&devices,error )){
+     		printf("Trouble finding all devices. Exiting.\n");
+     		return -1;
+     	}
+     	first = devices;
+     	bool interfaceFound = false;
+		while(devices != NULL){
+        	if(strcmp(devices->name, interface.c_str()) == 0){
+        		interfaceFound = true;
+        		break;
+        	}
+        	devices = devices->next;
+     	}
+     	if(interfaceFound == false){
+     		std::cerr<<"Specified interface not found. ";
+     		if(first != NULL) std::cerr<<"Here is a list of the interfaces:"<<std::endl;
+     		else std::cerr<<"You may need root privileges."<<std::endl;
+     		while(first != NULL){
+        		//printf("%s\n", first->description);
+        		std::cerr<<"\t- "<<first->name<<std::endl;
+        		first = first->next;
+     		}
+     		return -1;
+     	}
+
+		captureHandler = pcap_open_live(interface.c_str(),BUFSIZ,0,-1,error);
+		std::cout<<"Starting capture on interface "<< interface<<" for "<<duration<<" second(s).";
+	}
+	else {
+		FILE *pcap = fopen(pathToFile_.c_str(), "r");
+		if(pcap == NULL) {
+			std::cerr << "Trouble openning the capture file... "<<std::strerror(errno)<<std::endl;	
+			return -1;	
+		}
+		captureHandler = pcap_fopen_offline(pcap, error);
+		std::cout<<"Reading the capture file "<<pathToFile_<<" ...";
+		if(captureHandler == NULL) {
+			std::cerr<<"Error openning the pcap file: "<<error<<std::endl;
+			exit(-1);
+		}
+	}
+
+
+	container->addPacketCapture(captureHandler);
 	try{
 		modelFile->open(pathToModel, std::ios::in);
 		modelFile->exceptions ( std::ios::failbit | std::ios::badbit );
@@ -128,8 +186,9 @@ int main(int argc, char **argv)
 		
 	}
 	//modelFile->clear();
-	
-	container->computeDistribution();
+
+	container->computeDistribution(isLive, duration);
+	std::cout<<" Done."<<std::endl;
 	//p->initCapture();
 	if(typeOfData == LEARNING_DATA){
 		modelFile->close();
@@ -146,6 +205,7 @@ int main(int argc, char **argv)
 		std::cout<<"Done learning from this capture."<< std::endl;
 	}
 	else if(typeOfData == ANALYSIS_DATA){
+		std::cout<<"Testing capture against model..."<<std::endl;
 		container->runTests();
 		container->printTestsResults();
 	}
