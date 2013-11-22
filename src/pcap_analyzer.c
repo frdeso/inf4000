@@ -38,6 +38,24 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
     return std::find(begin, end, option) != end;
 }
 
+void printUsage()
+{
+	std::cout<<"Usage: pcap_analyzer [MODE] [SOURCE] [SOURCE-OPTION]" <<std::endl;
+	std::cout<<"You need to specify either of these two modes." <<std::endl;
+	std::cout<<"\t-l\t\t Learning mode." <<std::endl;
+	std::cout<<"\t-a\t\t Analysis mode." <<std::endl;
+
+	std::cout<<"You need to specify either of these two sources plus one option." <<std::endl;
+	std::cout<<"\t-f FILE\t\t Read packets from a packet capture file." <<std::endl;
+	std::cout<<"\t-o INTERFACE\t Read packets live from an interface. (May need root privileges)" <<std::endl;
+
+	std::cout<<"Optional flags" <<std::endl;
+	std::cout<<"\t-d DURATION\t Specify duration in seconds of the live capture." <<std::endl;
+	std::cout<<"\t-c VALUE\t Specify critical value to use in analysis mode." <<std::endl;
+	std::cout<<"" <<std::endl;
+}
+
+
 /*
  * Available options : -h : help, -l : learning mode, -a :analysis mode, -f <path to file> pcap file to learning from or to analyze
  */
@@ -47,14 +65,14 @@ int main(int argc, char **argv)
 	int typeOfData;
 	double criticalValue = 0.10;
 	bool isLive = true;
-	uint32_t duration = 5; //default duration for live capture
+	uint32_t duration = 10; //default duration for live capture
 	pcap_t* captureHandler;
 	std::string pathToFile_;
 	std::string interface;
 
 	if(cmdOptionExists(argv, argv + argc, "-h")){
 		/*TODO: help menu*/
-		std::cerr<<"Display help menu"<<std::endl;
+		printUsage();
 		return -1;
 	} 
 	/* Check for conflicting arguments */
@@ -70,8 +88,10 @@ int main(int argc, char **argv)
 
 
 	if ( cmdOptionExists(argv, argv + argc, "-l") ){
+		std::cout<<"Learning mode."<<std::endl;
 		typeOfData = LEARNING_DATA;
 	} else if ( cmdOptionExists(argv, argv + argc, "-a") ){
+		std::cout<<"Analysis mode."<<std::endl;
 		typeOfData = ANALYSIS_DATA;
 		if (!cmdOptionExists(argv, argv + argc, "-c")) {
 			std::cerr<<"You did not specified a critical value. Default value("<<criticalValue<<") will be used." <<std::endl;
@@ -94,6 +114,9 @@ int main(int argc, char **argv)
 	if(cmdOptionExists(argv, argv + argc, "-o")){
 		isLive = true;
 		interface = std::string(getCmdOption(argv, argv + argc, "-o"));
+		if(cmdOptionExists(argv, argv + argc, "-d")){
+			duration = atoi(getCmdOption(argv, argv + argc, "-d"));
+		}
 	}else if(cmdOptionExists(argv, argv + argc, "-f")){
 		isLive = false;
 		pathToFile_ = std::string(getCmdOption(argv, argv + argc, "-f"));
@@ -151,7 +174,7 @@ int main(int argc, char **argv)
      	}
 
 		captureHandler = pcap_open_live(interface.c_str(),BUFSIZ,0,-1,error);
-		std::cout<<"Starting capture on interface "<< interface<<" for "<<duration<<" second(s).";
+		std::cout<<"Starting live capture on interface "<< interface<<" for "<<duration<<" second(s)...";
 	}
 	else {
 		FILE *pcap = fopen(pathToFile_.c_str(), "r");
@@ -186,7 +209,7 @@ int main(int argc, char **argv)
 		
 	}
 	//modelFile->clear();
-
+	std::cout<<std::flush;
 	container->computeDistribution(isLive, duration);
 	std::cout<<" Done."<<std::endl;
 	//p->initCapture();
