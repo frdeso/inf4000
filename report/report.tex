@@ -417,8 +417,8 @@
 % journal papers have the author affiliations above the "Manuscript
 % received ..."  text while in non-compsoc journals this is reversed. Sigh.
 
-\author{Francis~Deslauriers% <-this % stops a space
-\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem F. Deslauriers is a computer engineering undergraduate student at Polytechnique Montréal, Montréal, Qc\protect\\
+\author{Francis~Deslauriers, Antoine~Lemay, José~Fernandez% <-this % stops a space
+\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem F. Deslauriers is a undergraduate computer engineering student at Polytechnique Montréal, Montréal, Qc\protect\\
 % note need leading \protect in front of \\ to get a newline within \thanks as
 % \\ is fragile and will error, could use \hfil\break instead.
 E-mail: francis.deslauriers@polymtl.ca
@@ -492,7 +492,7 @@ The abstract goes here.
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-Network analysis, SCADA, Intrusion detection.
+Traffic analysis, SCADA, Intrusion detection.
 \end{IEEEkeywords}}
 
 
@@ -567,33 +567,35 @@ for IEEE Computer Society journal papers produced under \LaTeX\ using
 IEEEtran.cls version 1.8 and later.
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
-I wish you the best of success.
 
-\hfill mds
- 
-\hfill December 27, 2012
 
-\section{Detection Features}
+\section{Related work}
 section text here.
+\subsection{SCADA Networks}
+section text here.
+\subsection{Distributed Network Protocol 3.0}
+section text here.
+\section{Detection Features}
+An important characteristic on most SCADA networks is that they use the DNP3.0 network protocol. The use of the protocol affects the way hosts on a network interact with each other. Those interaction occur in a really regular fashion. Also the fact that the DNP3 protocol make use of a slave-master hierarchy is really specific to control networks. These two important characteristics help us with the fact the unusual behavior is easily detectable on this kind of network. Here we will explain how we used three features of SCADA networks to detect possible cyber-attackers or infected hosts. 
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
 \subsection{Topology}
-subsection text here.
+On most SCADA networks the server-client model does not stand, as mentioned before, DNP3.0 protocol works on a Master-Slave hierarchy. This feature of SCADA networks make it really easy to detect abnormal behaviour. In really few occasions will an RTU initiate a conversation with a MTU without being previously polled. It would be really suspicious behavior for a RTU to send a large number of packets to the MTU, other RTUs and even hosts outside the network. This makes the network topology a good feature to test in order to detect infected units in a control network.
 
-\subsection{Packet Lenght}
-subsection text here.
-\subsection{Interdeparture Time}
-Subsubsection text here.
+\subsection{Packet Length}
+Another effect of the polling characteristic of most SCADA networks is that there is a really low variation of the packet size. When polling for data from the sensors, the packet containing the request is likely to be the same each time and the same applies to the response from the RTU. Recording an important chance in the size of the packets travelling on the network would a good indicator that an host is compromised.
+\subsection{Inter-departure Time}
+Subsection text here.
 
 
 
 \section{Implementation}
-Subsection text here.
+section text here.
 
 \section{Statistical fitness}
-Subsection text here.
+section text here.
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
