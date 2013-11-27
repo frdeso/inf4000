@@ -587,9 +587,7 @@ On most SCADA networks the server-client model does not stand, as mentioned befo
 \subsection{Packet Length}
 Another effect of the polling characteristic of most SCADA networks is that there is a really low variation of the packet size. When polling for data from the sensors, the packet containing the request is likely to be the same each time and the same applies to the response from the RTU. Recording an important chance in the size of the packets travelling on the network would a good indicator that an host is compromised.
 \subsection{Inter-departure Time}
-Subsection text here.
-
-
+The last feature of SCADA control networks that you have considered during this experimentation is the inter-departure time of packets from a particular host. We are still basing our thinking on the regularity that we mentioned earlier. Since control networks are most of the time used for data gathering and command sending to the RTUs the departure pattern is quite regular. For example, when polling a particular sensor a MTU will first send a polling request then receive the response and finally send an acknowledgement. The inter-departure time between the request and the acknowledgement will be stable over time since network has a really low traffic. Also, the fact that polling is done at a particular frequency makes this feature easily detectable when comparing two network packet capture.
 
 \section{Implementation}
 section text here.
