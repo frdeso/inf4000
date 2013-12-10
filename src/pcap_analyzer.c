@@ -78,11 +78,13 @@ int main(int argc, char **argv)
 	/* Check for conflicting arguments */
 	if (cmdOptionExists(argv, argv + argc, "-l") && cmdOptionExists(argv, argv + argc, "-a")) {
 		std::cerr<<"You specified two conflicting arguments '-l' and '-a'. Please specify only one of them." <<std::endl;
+		printUsage();
 		return -1;
 	}
 		/* Check for missing arguments */
 	if (!cmdOptionExists(argv, argv + argc, "-l") && !cmdOptionExists(argv, argv + argc, "-a")) {
 		std::cerr<<"You did not specified any argument. Please specify the type of data you have." <<std::endl;
+		printUsage();
 		return -1;
 	}
 
@@ -103,11 +105,13 @@ int main(int argc, char **argv)
 	/* Check for conflicting arguments */
 	if (cmdOptionExists(argv, argv + argc, "-f") && cmdOptionExists(argv, argv + argc, "-o")) {
 		std::cerr<<"You specified two conflicting source arguments '-f' and '-o'. Please specify only one of them." <<std::endl;
+		printUsage();
 		return -1;
 	}
 		/* Check for missing arguments */
 	if (!cmdOptionExists(argv, argv + argc, "-o") && !cmdOptionExists(argv, argv + argc, "-o")) {
 		std::cerr<<"You did not specified any source argument. Please specify online(\"-o\") or offline(\"-f\")." <<std::endl;
+		printUsage();
 		return -1;
 	}
 

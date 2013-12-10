@@ -384,11 +384,49 @@
 % to submit to, of course. )
 
 
+\usepackage{emp}
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+frame=top,frame=bottom,
+  language=C++,
+  aboveskip=10mm,
+  belowskip=3mm,
+  columns=flexible,
+  showstringspaces=false,
+ basicstyle=\fontsize{8}{12}\ttfamily,
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  captionpos=t,  
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
 
 
 \begin{document}
+\begin{empfile}
+\begin{empcmds}
+input metauml;
+\end{empcmds}
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
@@ -417,7 +455,7 @@
 % journal papers have the author affiliations above the "Manuscript
 % received ..."  text while in non-compsoc journals this is reversed. Sigh.
 
-\author{Francis~Deslauriers, Antoine~Lemay, José~Fernandez% <-this % stops a space
+\author{Francis~Deslauriers, Antoine~Lemay, Étienne~Ducharme, José~Fernandez% <-this % stops a space
 \IEEEcompsocitemizethanks{\IEEEcompsocthanksitem F. Deslauriers is a undergraduate computer engineering student at Polytechnique Montréal, Montréal, Qc\protect\\
 % note need leading \protect in front of \\ to get a newline within \thanks as
 % \\ is fragile and will error, could use \hfil\break instead.
@@ -481,7 +519,7 @@ E-mail: francis.deslauriers@polymtl.ca
 
 
 % for Computer Society papers, we must declare the abstract and index terms
-% PRIOR to the title within the \IEEEtitleabstractindextext IEEEtran
+% PRIOR to the title within the \IEEEtitleabstractindextext IEEEtranlemay
 % command as these need to go into the title area created by \maketitle.
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
@@ -492,7 +530,7 @@ The abstract goes here.
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-Traffic analysis, SCADA, Intrusion detection.
+Traffic Analysis, SCADA, Intrusion Detection System.
 \end{IEEEkeywords}}
 
 
@@ -525,7 +563,7 @@ Traffic analysis, SCADA, Intrusion detection.
 
 
 
-\section{Introduction}
+\section{Introduction 1/2 page}
 % Computer Society journal papers do something a tad strange with the very
 % first section heading (almost always called "Introduction"). They place it
 % ABOVE the main text! IEEEtran.cls currently does not do this for you.
@@ -559,41 +597,117 @@ Traffic analysis, SCADA, Intrusion detection.
 % 
 % Some journals put the first two words in caps:
 % \IEEEPARstart{T}{his demo} file is ....
-% 
+% 3
 % Here we have the typical use of a "T" for an initial drop letter
-% and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
-for IEEE Computer Society journal papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8 and later.
+% and "HIS" in caps to complete the first word.%
+%\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
+%for IEEE Computer Society journal papers produced under \LaTeX\ using
+%IEEEtran.cls version 1.8 and later.
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
 
 
-\section{Related work}
-section text here.
+\section{Related work 3/4 page}
 \subsection{SCADA Networks}
-section text here.
-\subsection{Distributed Network Protocol 3.0}
-section text here.
-\section{Detection Features}
-An important characteristic on most SCADA networks is that they use the DNP3.0 network protocol. The use of the protocol affects the way hosts on a network interact with each other. Those interaction occur in a really regular fashion. Also the fact that the DNP3 protocol make use of a slave-master hierarchy is really specific to control networks. These two important characteristics help us with the fact the unusual behavior is easily detectable on this kind of network. Here we will explain how we used three features of SCADA networks to detect possible cyber-attackers or infected hosts. 
+SCADA networks are cyber physical networks designed for Supervisory Control And Data Acquisition. This type of network is used to remotely control industrial systems such as circuit breakers, valves or robots\cite{lemay}. Operators can have a real-time overview of the state of the network in order to adjust and react to measurements and alerts from all across the network. Critical control networks such as the electrical power grid are controlled and monitored by such system. An important advantage of using control networks is that it is possible to affect the state of the network remotely and the use of TCP/IP stack over the internet means that the power flow can be controlled and monitored without physical access to the components\cite{lemay}. Tipically, a SCADA is formed by multiple devices spread all accross the network forming a logical tree. The root of this tree, is the Master Terminal Unit(MTU) wher all data and commands are send to and from. MTUs are in charge of a large geographical section of the grid and they use polling techniques to gather data from the leaves of that logical tree. The Remote Terminal Units(RTU) are the field components that retrieved the data from the sensors and forward it to their MTU.
+
+A major drawback of using TCP/IP stack on these kind of network is that the well-known internet vulnerabilities are easily transferable to SCADA networks context. An attacker controlling even a single host can have major impacts on populations. A good example of what is at stake when we talk about security on a SCADA network is the worm unveiled in 2010 by Symantec, Stuxnet \cite{symantec:stuxnet}. Stuxnet was specially design to target Industrial Control Systems(ICS) in infrastructures such as power plants. Intrusion Detection system have a really important role in this kind of situation but those tools may be hard to transfer to SCADA networks because of the highly specialized attackers targeting control networks. It is important to realize that traditionnal reaction to intrusion may not be applicable to highly critical networks.
+
+There are multiple protocols used for communication between devices on a control network. An important protocol used in north american SCADA networks is Distributed Network Protocol version 3 (DNP3)\cite{lemay}. We focused our effort on this protocol for our analysis and experimentation. The use of this particular has an important impact on the traffic. For example, the master-slave feature of this protocol has a noticeable effect the topology of the communications \cite{clark}. Also, DNP3 use periodic pooling from the masters as well as exceptions reporting from the slaves\cite{lemay}. 
+
+\subsection{Feature detection 1/2 page}
+As we mentionned earlier, we focus our analysis on the DNP3 network protocol but most of the ideas used here also apply to other control protocols such as Modbus. The use of the DNP3 protocol affects the way hosts on a network interact with each other. Those interactions occur in a very regular fashion. Also the fact that the DNP3 protocol make use of a slave-master hierarchy is really specific to control networks. These two important characteristics help us with the fact the unusual behavior is easily detectable on this kind of network. Here we will explain how we used three features of SCADA networks to detect possible cyber-attackers or infected hosts. 
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
-\subsection{Topology}
-On most SCADA networks the server-client model does not stand, as mentioned before, DNP3.0 protocol works on a Master-Slave hierarchy. This feature of SCADA networks make it really easy to detect abnormal behaviour. In really few occasions will an RTU initiate a conversation with a MTU without being previously polled. It would be really suspicious behavior for a RTU to send a large number of packets to the MTU, other RTUs and even hosts outside the network. This makes the network topology a good feature to test in order to detect infected units in a control network.
+\subsubsection{Topology}
+On most SCADA networks the server-client model does not stand, as mentioned before, DNP3 protocol works on a Master-Slave hierarchy. This feature of SCADA networks makes it really easy to detect abnormal behaviour. In really few occasions will an RTU initiate a conversation with a MTU without being previously polled. It would be really suspicious behavior for a RTU to send a large number of packets to the MTU, other RTUs and even hosts outside the network. This makes the network topology a good feature to test in order to detect infected units in a control network.
 
-\subsection{Packet Length}
-Another effect of the polling characteristic of most SCADA networks is that there is a really low variation of the packet size. When polling for data from the sensors, the packet containing the request is likely to be the same each time and the same applies to the response from the RTU. Recording an important chance in the size of the packets travelling on the network would a good indicator that an host is compromised.
-\subsection{Inter-departure Time}
-The last feature of SCADA control networks that you have considered during this experimentation is the inter-departure time of packets from a particular host. We are still basing our thinking on the regularity that we mentioned earlier. Since control networks are most of the time used for data gathering and command sending to the RTUs the departure pattern is quite regular. For example, when polling a particular sensor a MTU will first send a polling request then receive the response and finally send an acknowledgement. The inter-departure time between the request and the acknowledgement will be stable over time since network has a really low traffic. Also, the fact that polling is done at a particular frequency makes this feature easily detectable when comparing two network packet capture.
+\subsubsection{Packet Length}
+Another effect of the polling characteristic of most SCADA networks is that there is a really low variation of the packet size. When polling for data from the sensors, the packet containing the request is likely to be the same each time and the same applies to the response from the RTU. Recording an important change in the size of the packets travelling on the network would a good indicator that an host is compromised.
+\subsubsection{Inter-departure Time}
+The last feature of SCADA control networks that we have considered during this experimentation is the inter-departure time of packets from a particular host. We are still basing our thinking on the regularity that we mentioned earlier. Since control networks are most of the time used for data gathering and command sending to the RTUs the departure pattern is quite regular. For example, when polling a particular sensor a MTU will first send a polling request then receive the response and finally send an acknowledgement. The inter-departure time between the request and the acknowledgement will be stable over time since network has a really low traffic. Also, the fact that polling is done at a particular frequency makes this feature easily detectable when comparing two network packet capture.
 
-\section{Implementation}
-section text here.
+\section{Model 1.5-2 pages}
+\subsection{Solving the problem}
+While analyzing the problem we decided that our program should have to mode of operation. 
 
-\section{Statistical fitness}
-section text here.
+First of all, there is the Learning mode. The learning mode is when the program is record every interactions between the hosts of the network. This model of was is usual is then stored as a JSON file.
+
+Next, there is the Analyzing mode. Running in this mode challenge the packet capture with the distributions recorded during the learning stage.
+
+It is possible to learn and analyze either from a live capture or from a packet capture file. 
+
+Finally, a key element of our tool was that it must be possible for the user to specify a critical value for the statistical test. If not specified, a default value is used.
+
+\subsection{Software structure}
+The idea behind our design was modularity. We wished to be able to add new test handlers as we want. During our design phase we decided to use the C++ programming language because of its powerful object oriented features and also because of our experience. On figure ~\ref{fig:classdiagramm} you can see our three test handler classes that inherite from the FeatureTestHandler class. The next important part is the TestHandlerContainer class that is keeping a vector FeatureTestHandler objects to use. Every test handler classes implements the FeatureTestHandler virtual interface that is shown by listing ~\ref{vinter}. 
+
+\begin{lstlisting}[caption= {FeatureTestHandler class virtual interface}, label=vinter]
+
+virtual void computePacket(
+                  const struct pcap_pkthdr* pkthdr,
+                  const unsigned char * packet ) = 0;
+virtual void printDistribution() const = 0;
+virtual void runTest( double cAlpha) = 0;
+virtual int getTestResult() = 0;
+virtual void JsonToData(Json::Value *json) = 0;
+virtual Json::Value *DataToJson() const = 0;
+
+\end{lstlisting}
+
+\begin{figure}
+\centering
+\begin{emp}[classdiag](100,100)
+Class.A("FeatureTstHdlr")()();
+Class.B("TopologyTestHandlr")()();
+Class.C("PacketLengthTestHdlr")()();
+Class.D("InterDepartureTestHdlr")()();
+Class.E("TstHdlrContainer")()();
+B.e = A.e + (0, -120);
+C.e = B.n + (-3, 20);
+D.e = C.n + (-3, 20);
+
+
+rightToLeft(85)(A,E);
+drawObjects(A,B,C,D, E);
+
+link(aggregation)(E.e -- A.w);
+clink(inheritance)(B, A);
+clink(inheritance)(C,A);
+clink(inheritance)(D, A);
+
+item(iAssoc)("Container")(obj.sw = E.e);
+item(iAssoc)("1..1")(obj.nw = E.e);
+
+item(iAssoc)("TestHandler")(obj.se = A.w+(0,4));
+item(iAssoc)("0..*")(obj.ne = A.w +(0, -4));
+
+
+\end{emp}
+
+\caption{Class diagram of the test Handlers and the container}
+\label{fig:classdiagramm}
+\end{figure}
+
+
+\subsection{Statistical analysis}
+
+\section{Implementation and Tests 2 pages}
+\subsection{Tools used}
+This tool has been implemented in C++11. It has taking advantage of the many object-oriented features of this language. This software was designed with polymorphism in mind which positively impacted its modularity. In fact, it is really easy to add new features to detect and test. The user only has to implement the virtual interface defined by the FeatureTestHandler and add a newly allocated object in the TestHandlerContainer object.
+
+Traffic analysis for security purposes has been used for several years and many tools are free available out there. When building a tool like the pcapAnalyzer it is important to take advantage of the work that others have open sourced. This program was build using the free and open source libpcap library to help with the online and offline packet parsing. 
+
+A key aspect of this tool is that it records a model what is normal on the network. In order to save this model, we use a JSON file called the model.json. The JSON parsing and writing of this file is done with the help of JSONcpp C++ library. It is important to note that this library is licensed under a Public domain license.
+
+Finally, we use the C++ Boost library for file system operations.
+\subsection{Performance requirements}
+\subsection{Performance analysis}
+
+\section{Discussion 1/2 page}
+section text here
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
@@ -684,7 +798,7 @@ section text here.
 
 
 
-\section{Conclusion}
+\section{Conclusion 1/2 page}
 The conclusion goes here.
 
 
@@ -707,21 +821,12 @@ The conclusion goes here.
 
 
 \appendices
-\section{Proof of the First Zonklar Equation}
-Appendix one text goes here.
 
 % you can choose not to have a title for an appendix
 % if you want by leaving the argument blank
 
-
-% use section* for acknowledgement
-\ifCLASSOPTIONcompsoc
-  % The Computer Society usually uses the plural form
   \section*{Acknowledgments}
-\else
-  % regular IEEE prefers the singular form
-  \section*{Acknowledgment}
-\fi
+
 
 
 
@@ -758,10 +863,14 @@ Appendix one text goes here.
 % (used to reserve space for the reference number labels box)
 \begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-
+\bibitem{lemay}
+A.~Lemay, \emph{Defending the SCADA Network Controlling the Electrical Grid from Advanced Persistent Threats (Ph.D. Thesis)},\hskip 1em plus
+  0.5em minus 0.4em\relax Polytechnique Montréal, Québec, Canada, 2013.
+\bibitem{symantec:stuxnet}
+N. Falliere, L. O. Murchu and E. Chien, \emph{W32.Stuxnet Dossier Version 1.4},\hskip 1em plus 0.5em minus 0.4em\relax Symantec
+Security Response, 2011.  
+\bibitem{clark}
+G. Clark and D. Reynders, \emph{ Pratcical Modern SCADA Protocols: DNP3, IEC 60870.5 and Related Systems},\hskip 1em plus 0.5em minus 0.4em\relax China: Newnes (Elsevier), 2008.
 \end{thebibliography}
 
 
@@ -780,5 +889,6 @@ H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
 
 
 % that's all folks
+\end{empfile}
 \end{document}
 
