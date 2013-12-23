@@ -24,12 +24,19 @@ class FeatureTestHandler {
 		virtual void initCapture() = 0;
 		void loadDataFromModel();
 		void saveDataToModel();
+		//Gather needed information from packet according to the handler
 		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet ) = 0;
+		//Print the model distribution
 		virtual void printDistribution() const = 0;
+		// Run the actual statistical test if needed
 		virtual void runTest( double cAlpha) = 0;
+		// Displays the results of the test
 		virtual int getTestResult() = 0;
+		// Load the model from the json model file
 		virtual void JsonToData(Json::Value * json) = 0;
+		// Save the model to the json model file
 		virtual Json::Value *DataToJson() const = 0;
+		//Return the name of the feature related to this handler
 		std::string getFeatureName() const;
 		void setFeatureName(std::string name);
 		fs::fstream *getModelFile()const;

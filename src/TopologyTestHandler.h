@@ -1,3 +1,9 @@
+///////////////////////////////////////////////////////////////////////////////////
+// TopologyTestHandler
+// Inherite FeatureTestHandler virtual class and has all information concerning 
+// 	the topology test.
+///////////////////////////////////////////////////////////////////////////////////
+
 #ifndef _TOPOLOGY_TEST_HANDLER_H_
 #define _TOPOLOGY_TEST_HANDLER_H_
 
@@ -10,6 +16,8 @@
 #include <map>
 
 #include "FeatureTestHandler.h"
+
+
 
 class TopologyTestHandler : public FeatureTestHandler{
 	public:

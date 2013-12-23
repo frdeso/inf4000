@@ -241,13 +241,6 @@ double InterdepartTimeTestHandler::findValueInCumul(std::vector<tuple<uint64_t,u
 		
 	while(max >= min){
 		uint32_t mid = min + (max-min)/2;
-		//	std::cout<<"\ts: "<<get<0>(cumul[0])<<", e: "<<get<1>(cumul[0])<< ", v: "<<get<2>(cumul[0])<<endl;
-		//std::cout<<"\ts: "<<get<0>(cumul[1])<<", e: "<<get<1>(cumul[1])<< ", v: "<<get<2>(cumul[1])<<endl;
-		//std::cout<<"\ts: "<<get<0>(cumul[2])<<", e: "<<get<1>(cumul[2])<< ", v: "<<get<2>(cumul[2])<<endl;
-
-
-	//std::cout<<"s: "<<get<0>(cumul[mid])<<", e: "<<get<1>(cumul[mid])<< ", v: "<<get<2>(cumul[mid])<<endl;
-
 		if(get<0>(cumul[mid]) > value)
 			max = mid - 1;
 		else if(get<1>(cumul[mid]) < value)
