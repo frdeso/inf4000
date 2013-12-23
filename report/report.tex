@@ -17,56 +17,6 @@
 %% and
 %% http://www.ieee.org/
 
-%%*************************************************************************
-%% Legal Notice:
-%% This code is offered as-is without any warranty either expressed or
-%% implied; without even the implied warranty of MERCHANTABILITY or
-%% FITNESS FOR A PARTICULAR PURPOSE! 
-%% User assumes all risk.
-%% In no event shall IEEE or any contributor to this code be liable for
-%% any damages or losses, including, but not limited to, incidental,
-%% consequential, or any other damages, resulting from the use or misuse
-%% of any information contained here.
-%%
-%% All comments are the opinions of their respective authors and are not
-%% necessarily endorsed by the IEEE.
-%%
-%% This work is distributed under the LaTeX Project Public License (LPPL)
-%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
-%% distributed and modified. A copy of the LPPL, version 1.3, is included
-%% in the base LaTeX documentation of all distributions of LaTeX released
-%% 2003/12/01 or later.
-%% Retain all contribution notices and credits.
-%% ** Modified files should be clearly indicated as such, including  **
-%% ** renaming them and changing author support contact information. **
-%%
-%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
-%%                    bare_conf.tex, bare_jrnl.tex, bare_jrnl_compsoc.tex,
-%%                    bare_jrnl_transmag.tex
-%%*************************************************************************
-
-% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
-% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
-% *** with production work. IEEE's font choices can trigger bugs that do  ***
-% *** not appear when using other class files.                            ***
-% The testflow support page is at:
-% http://www.michaelshell.org/tex/testflow/
-
-
-
-
-% Note that the a4paper option is mainly intended so that authors in
-% countries using A4 can easily print to A4 and see how their papers will
-% look in print - the typesetting of the document will not typically be
-% affected with changes in paper size (but the bottom and side margins will).
-% Use the testflow package mentioned above to verify correct handling of
-% both paper sizes by the user's LaTeX system.
-%
-% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
-% should be used if it is desired that the figures are to be displayed in
-% draft mode.
-%
-% The Computer Society usually requires 12pt for submissions.
 %
 \documentclass[12pt,journal,compsoc]{IEEEtran}
 %
@@ -142,6 +92,7 @@
 
 
 \usepackage[utf8]{inputenc}
+\usepackage{url}
 
 
 % *** GRAPHICS RELATED PACKAGES ***
@@ -393,29 +344,33 @@
 \fi
 
 \usepackage{listings}
+\usepackage{caption}
 \usepackage{color}
-
+\usepackage{csquotes}
+\MakeOuterQuote{"}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
-
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \lstset{frame=tb,
-frame=top,frame=bottom,
   language=C++,
-  aboveskip=10mm,
-  belowskip=3mm,
+  aboveskip=5mm,
+  belowskip=5mm,
   columns=flexible,
   showstringspaces=false,
- basicstyle=\fontsize{8}{12}\ttfamily,
+  basicstyle=\fontsize{8}{12}\ttfamily,
   numbers=none,
   numberstyle=\tiny\color{gray},
   keywordstyle=\color{blue},
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
-  captionpos=t,  
+  captionpos=b, 
   breaklines=true,
   breakatwhitespace=true
-  tabsize=3
+  tabsize=4
 }
 
 % correct bad hyphenation here
@@ -434,26 +389,7 @@ input metauml;
 \title{Statistical analysis of SCADA network communications}
 %
 %
-% author names and IEEE memberships
-% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
-% a structure at a ~ so this keeps an author's name from being broken across
-% two lines.
-% use \thanks{} to gain access to the first footnote area
-% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
-% was not built to handle multiple paragraphs
-%
-%
-%\IEEEcompsocitemizethanks is a special \thanks that produces the bulleted
-% lists the Computer Society journals use for "first footnote" author
-% affiliations. Use \IEEEcompsocthanksitem which works much like \item
-% for each affiliation group. When not in compsoc mode,
-% \IEEEcompsocitemizethanks becomes like \thanks and
-% \IEEEcompsocthanksitem becomes a line break with idention. This
-% facilitates dual compilation, although admittedly the differences in the
-% desired content of \author between the different types of papers makes a
-% one-size-fits-all approach a daunting prospect. For instance, compsoc 
-% journal papers have the author affiliations above the "Manuscript
-% received ..."  text while in non-compsoc journals this is reversed. Sigh.
+
 
 \author{Francis~Deslauriers, Antoine~Lemay, Étienne~Ducharme, José~Fernandez% <-this % stops a space
 \IEEEcompsocitemizethanks{\IEEEcompsocthanksitem F. Deslauriers is a undergraduate computer engineering student at Polytechnique Montréal, Montréal, Qc\protect\\
@@ -464,68 +400,10 @@ E-mail: francis.deslauriers@polymtl.ca
 %\thanks{Manuscript received April 19, 2005; revised December 27, 2012.}
 }
 
-% note the % following the last \IEEEmembership and also \thanks - 
-% these prevent an unwanted space from occurring between the last author name
-% and the end of the author line. i.e., if you had this:
-% 
-% \author{....lastname \thanks{...} \thanks{...} }
-%                     ^------------^------------^----Do not want these spaces!
 %
-% a space would be appended to the last name and could cause every name on that
-% line to be shifted left slightly. This is one of those "LaTeX things". For
-% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
-% "AB" then you have to do: "\textbf{A}\textbf{B}"
-% \thanks is no different in this regard, so shield the last } of each \thanks
-% that ends a line with a % and do not let a space in before the next \thanks.
-% Spaces after \IEEEmembership other than the last one are OK (and needed) as
-% you are supposed to have spaces between the names. For what it is worth,
-% this is a minor point as most people would not even notice if the said evil
-% space somehow managed to creep in.
-
-
-
-% The paper headers
-%\markboth{Journal of \LaTeX\ Class Files,~Vol.~11, No.~4, December~2012}%
-%{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Computer Society Journals}
-% The only time the second header will appear is for the odd numbered pages
-% after the title page when using the twoside option.
-% 
-% *** Note that you probably will NOT want to include the author's ***
-% *** name in the headers of peer review papers.                   ***
-% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
-% you desire.
-
-
-
-% The publisher's ID mark at the bottom of the page is less important with
-% Computer Society journal papers as those publications place the marks
-% outside of the main text columns and, therefore, unlike regular IEEE
-% journals, the available text space is not reduced by their presence.
-% If you want to put a publisher's ID mark on the page you can do it like
-% this:
-%\IEEEpubid{0000--0000/00\$00.00~\copyright~2012 IEEE}
-% or like this to get the Computer Society new two part style.
-%\IEEEpubid{\makebox[\columnwidth]{\hfill 0000--0000/00/\$00.00~\copyright~2012 IEEE}%
-%\hspace{\columnsep}\makebox[\columnwidth]{Published by the IEEE Computer Society\hfill}}
-% Remember, if you use this you must call \IEEEpubidadjcol in the second
-% column for its text to clear the IEEEpubid mark (Computer Society jorunal
-% papers don't need this extra clearance.)
-
-
-
-% use for special paper notices
-%\IEEEspecialpapernotice{(Invited Paper)}
-
-
-
-% for Computer Society papers, we must declare the abstract and index terms
-% PRIOR to the title within the \IEEEtitleabstractindextext IEEEtranlemay
-% command as these need to go into the title area created by \maketitle.
-% As a general rule, do not put math, special symbols or citations
-% in the abstract or keywords.
 \IEEEtitleabstractindextext{%
 \begin{abstract}
-The abstract goes here.
+ Applying notions from intrusion detection system, we built a tool named \texttt{ScadaAnalyzer} that learns from a network usual traffic and can determine if specific capture fits with the model distribution. Our SCADA packet analyzer takes advantage of the highly periodic behavior of the DNP3 protocol to detect unusual communication between hosts. This tool uses the Kolmogorov-Smirnov statistical test to compare a model distribution and a test sample. Gathering positive preliminary results during test runs suggest a safer future for SCADA computer security.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -538,126 +416,67 @@ Traffic Analysis, SCADA, Intrusion Detection System.
 \maketitle
 
 
-% To allow for easy dual compilation without having to reenter the
-% abstract/keywords data, the \IEEEtitleabstractindextext text will
-% not be used in maketitle, but will appear (i.e., to be "transported")
-% here as \IEEEdisplaynontitleabstractindextext when the compsoc 
-% or transmag modes are not selected <OR> if conference mode is selected 
-% - because all conference papers position the abstract like regular
-% papers do.
 \IEEEdisplaynontitleabstractindextext
-% \IEEEdisplaynontitleabstractindextext has no effect when using
-% compsoc or transmag under a non-conference mode.
 
-
-
-% For peer review papers, you can put extra information on the cover
-% page as needed:
-% \ifCLASSOPTIONpeerreview
-% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
-% \fi
-%
-% For peerreview papers, this IEEEtran command inserts a page break and
-% creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
 
 
 
-\section{Introduction 1/2 page}
-% Computer Society journal papers do something a tad strange with the very
-% first section heading (almost always called "Introduction"). They place it
-% ABOVE the main text! IEEEtran.cls currently does not do this for you.
-% However, You can achieve this effect by making LaTeX jump through some
-% hoops via something like:
-%
-%\ifCLASSOPTIONcompsoc
-%  \noindent\raisebox{2\baselineskip}[0pt][0pt]%
-%  {\parbox{\columnwidth}{\section{Introduction}\label{sec:introduction}%
-%  \global\everypar=\everypar}}%
-%  \vspace{-1\baselineskip}\vspace{-\parskip}\par
-%\else
-%  \section{Introduction}\label{sec:introduction}\par
-%\fi
-%
-% Admittedly, this is a hack and may well be fragile, but seems to do the
-% trick for me. Note the need to keep any \label that may be used right
-% after \section in the above as the hack puts \section within a raised box.
+\section{Introduction}
+The electrical grid is a set of highly critical equipment spread across a large geographical area and therefore is complex to manage efficiently. With the increasing use of computer-controled devices on the grid, operators can monitor the state of the network from remote location. For example, operators can query for the state of a particular sensor on the network or send request to change its state without having a direct interaction with the device.
 
+With the automation of the Grid comes the cyber-threats on the control network. The lack of suffisiant security on those networks would put a large number of people at risk. In cold countries, a failure of the electrical grid which powers most of the heating would have catastrophic consequences.
 
+This article introduce \texttt{ScadaAnalyzer}, a tool developed to detect abnormal interactions between hosts on a control network. Having a small amount of noise on such network makes statistical analysis a posibility. This tool uses features from control network protocol to perform statistical analysis in order to detect intrusions and infected hosts.
 
-% The very first letter is a 2 line initial drop letter followed
-% by the rest of the first word in caps (small caps for compsoc).
-% 
-% form to use if the first word consists of a single letter:
-% \IEEEPARstart{A}{demo} file is ....
-% 
-% form to use if you need the single drop letter followed by
-% normal text (unknown if ever used by IEEE):
-% \IEEEPARstart{A}{}demo file is ....
-% 
-% Some journals put the first two words in caps:
-% \IEEEPARstart{T}{his demo} file is ....
-% 3
-% Here we have the typical use of a "T" for an initial drop letter
-% and "HIS" in caps to complete the first word.%
-%\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
-%for IEEE Computer Society journal papers produced under \LaTeX\ using
-%IEEEtran.cls version 1.8 and later.
-% You must have at least 2 lines in the paragraph with the drop letter
-% (should never be an issue)
-
-
-\section{Related work 3/4 page}
+\section{Related work}
+This section includes a brief introduction to SCADA networks and explains the challenges that the industry is facing regarding computer security. It also dicuss how specific features of SCADA networks can be used to detect threats and anomalies.
 \subsection{SCADA Networks}
-SCADA networks are cyber physical networks designed for Supervisory Control And Data Acquisition. This type of network is used to remotely control industrial systems such as circuit breakers, valves or robots\cite{lemay}. Operators can have a real-time overview of the state of the network in order to adjust and react to measurements and alerts from all across the network. Critical control networks such as the electrical power grid are controlled and monitored by such system. An important advantage of using control networks is that it is possible to affect the state of the network remotely and the use of TCP/IP stack over the internet means that the power flow can be controlled and monitored without physical access to the components\cite{lemay}. Tipically, a SCADA is formed by multiple devices spread all accross the network forming a logical tree. The root of this tree, is the Master Terminal Unit(MTU) wher all data and commands are send to and from. MTUs are in charge of a large geographical section of the grid and they use polling techniques to gather data from the leaves of that logical tree. The Remote Terminal Units(RTU) are the field components that retrieved the data from the sensors and forward it to their MTU.
+SCADA networks are cyber physical networks designed for Supervisory Control And Data Acquisition. This type of network is used to remotely control industrial systems such as circuit breakers, valves or robots\cite{lemay}. Operators can have a real-time overview of the state of the network in order to adjust and react to measurements and alerts from all across the network. Critical control networks such as the electrical power grid are controlled and monitored by such system. An important advantage of using control networks consists of being able to affect the state of the network remotely. Also, the use of TCP/IP stack over the internet means that the power flow can be controlled and monitored without physical access to the components\cite{lemay}. Typically, a SCADA is formed by multiple devices spread all accross the network forming a logical tree. The root of this tree is the Master Terminal Unit (MTU) where all data and commands are sent to and from. MTUs are in charge of a large geographical section of the grid and use polling techniques to gather data from the leaves of that logical tree. The Remote Terminal Units (RTU) are the field components that retrieve the data from the sensors and forward it to their MTU.
 
-A major drawback of using TCP/IP stack on these kind of network is that the well-known internet vulnerabilities are easily transferable to SCADA networks context. An attacker controlling even a single host can have major impacts on populations. A good example of what is at stake when we talk about security on a SCADA network is the worm unveiled in 2010 by Symantec, Stuxnet \cite{symantec:stuxnet}. Stuxnet was specially design to target Industrial Control Systems(ICS) in infrastructures such as power plants. Intrusion Detection system have a really important role in this kind of situation but those tools may be hard to transfer to SCADA networks because of the highly specialized attackers targeting control networks. It is important to realize that traditionnal reaction to intrusion may not be applicable to highly critical networks.
+A major drawback of using TCP/IP stack on this type of network is that the well-known internet vulnerabilities are easily transferable to SCADA networks context. An attacker controlling even a single host can have major impacts on populations. A good example of what is at stake when we talk about security on a SCADA network is the worm unveiled in 2010 by Symantec, Stuxnet \cite{symantec:stuxnet}. Stuxnet was specially designed to target Industrial Control Systems(ICS) in infrastructures such as power plants. Intrusion Detection Systems have an important role in these cases, but those tools may be hard to transfer to SCADA networks because of the highly specialized attackers targeting control networks. It is important to realize that traditionnal reaction to intrusion may not be applicable to highly critical networks. For exemple, an operator can not shutdown the electrical distribution network without having a major impact on the customers powered by this network.
 
-There are multiple protocols used for communication between devices on a control network. An important protocol used in north american SCADA networks is Distributed Network Protocol version 3 (DNP3)\cite{lemay}. We focused our effort on this protocol for our analysis and experimentation. The use of this particular has an important impact on the traffic. For example, the master-slave feature of this protocol has a noticeable effect the topology of the communications \cite{clark}. Also, DNP3 use periodic pooling from the masters as well as exceptions reporting from the slaves\cite{lemay}. 
+There are multiple protocols used for communication between devices on a control network. An important protocol used in North American SCADA networks is Distributed Network Protocol version 3 (DNP3)\cite{lemay}. We focused our effort on this protocol for our analysis and experimentation. The use of this particular protocol has an important impact on the traffic. For example, the master-slave feature of this protocol has a noticeable effect on the topology of the communications \cite{clark}. Also, DNP3 use periodic pooling from the masters as well as exceptions reporting from the slaves\cite{lemay}. 
 
-\subsection{Feature detection 1/2 page}
-As we mentionned earlier, we focus our analysis on the DNP3 network protocol but most of the ideas used here also apply to other control protocols such as Modbus. The use of the DNP3 protocol affects the way hosts on a network interact with each other. Those interactions occur in a very regular fashion. Also the fact that the DNP3 protocol make use of a slave-master hierarchy is really specific to control networks. These two important characteristics help us with the fact the unusual behavior is easily detectable on this kind of network. Here we will explain how we used three features of SCADA networks to detect possible cyber-attackers or infected hosts. 
-
-% needed in second column of first page if using \IEEEpubid
-%\IEEEpubidadjcol
+\subsection{Feature detection}
+\label{subsectionFeature}
+As mentionned earlier, we focused our analysis on the DNP3 network protocol but most of the ideas used here also apply to other control protocols such as Modbus. The use of the DNP3 protocol affects the way hosts on a network interact with each other. As Lemay \cite{lemay} has shown in his thesis, those interactions occur in a very regular fashion. Also the fact that the DNP3 protocol makes use of a slave-master hierarchy is really specific to control networks. These two important characteristics help us with the fact that unusual behavior is easily detectable on this type of network. Here we will explain how we used three features of SCADA networks to detect possible cyber-attackers or infected hosts. In this section, we will discuss the features that Lemay studied.
 
 \subsubsection{Topology}
-On most SCADA networks the server-client model does not stand, as mentioned before, DNP3 protocol works on a Master-Slave hierarchy. This feature of SCADA networks makes it really easy to detect abnormal behaviour. In really few occasions will an RTU initiate a conversation with a MTU without being previously polled. It would be really suspicious behavior for a RTU to send a large number of packets to the MTU, other RTUs and even hosts outside the network. This makes the network topology a good feature to test in order to detect infected units in a control network.
+On most SCADA networks, the server-client model does not stand. As mentioned before, DNP3 protocol works on a Master-Slave hierarchy. This feature of SCADA networks makes it really easy to detect abnormal behaviour. In really few occasions will an RTU initiate a conversation with a MTU without being previously polled. It would be really suspicious behavior for a RTU to send a large number of packets to the MTU, other RTUs and even hosts outside the network. This makes the network topology a good feature to test in order to detect infected units in a control network.
 
 \subsubsection{Packet Length}
-Another effect of the polling characteristic of most SCADA networks is that there is a really low variation of the packet size. When polling for data from the sensors, the packet containing the request is likely to be the same each time and the same applies to the response from the RTU. Recording an important change in the size of the packets travelling on the network would a good indicator that an host is compromised.
-\subsubsection{Inter-departure Time}
-The last feature of SCADA control networks that we have considered during this experimentation is the inter-departure time of packets from a particular host. We are still basing our thinking on the regularity that we mentioned earlier. Since control networks are most of the time used for data gathering and command sending to the RTUs the departure pattern is quite regular. For example, when polling a particular sensor a MTU will first send a polling request then receive the response and finally send an acknowledgement. The inter-departure time between the request and the acknowledgement will be stable over time since network has a really low traffic. Also, the fact that polling is done at a particular frequency makes this feature easily detectable when comparing two network packet capture.
+Another effect of the polling characteristic of most SCADA networks is that there is a really low variation of the packet size. When polling for data from the sensors, the packet containing the request is likely to be the same each time and the same applies to the response from the RTU. Recording an important change in the size of the packets travelling on the network would be a good indicator that an host is compromised.
 
-\section{Model 1.5-2 pages}
+
+\subsubsection{Interdeparture Time}
+The last feature of SCADA control networks that was considered during this experimentation is the interdeparture time of packets from a particular host. We are still basing our thinking on the regularity mentioned earlier. Since control networks are most of the time used for data gathering and command sending to the RTUs the departure pattern is quite regular. For example, when polling a particular sensor a MTU will first send a polling request then receive the response and finally send an acknowledgement. The inter-departure time between the request and the acknowledgement will be stable over time since network has a really low traffic. Also, the fact that polling is done at a particular frequency makes this feature easily detectable when comparing two network packet capture.
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=3.2in]{interdep_dist.png}
+\caption{Average interdepature time from RTU \cite{lemay}}
+\label{fig:interdep}
+\end{figure}
+Figure ~\ref{fig:interdep} from Lemay's Ph.D. thesis is showing the average interdepature time distribution from the RTUs. We can clearly see that 50\% of the interdepature time is distributed between about three timings.
+
+\section{Model}
+As we explained in section ~\ref{subsectionFeature}, some patterns of communication between hosts on a DNP3.0 network are happening in a really tight distribution. It is this distribution shape that was used in our tool to detect threat on the network. In this section, we will explained how we understood the problem and how we solved it. 
+
+\subsection{Challenge}
+With that tool we are trying to automate the detection of the distribution of specific features that are outside the regular state of the network. As we saw from the work of Lemay, the distributions are far from the normal distribution which means that we had to find a statistical test that does not make any assumption on the shape of the distribution. This tool must first learn how the hosts on the network normally behave and it is not possible to use a model from another network because the technical configuration might be different from a network to another. 
+We also want to create a tool that can easily be upgraded and adapted to the situation. According to the network, features must be easily added, modified or removed.
 \subsection{Solving the problem}
-While analyzing the problem we decided that our program should have to mode of operation. 
+While analyzing the problem, it was decided that our program should have two operation modes. First of all, there is the Learning mode. The learning mode is when the program is recording every interaction between the hosts of the network. This model is then stored as a Json file and will be considered as usual pattern for the analysis stage. Next, there is the Analyzing mode. Running in this mode compare the packet capture against the distributions recorded during the learning stage. It is possible to learn and analyze with a live capture directly from the network interface card. It is also possible to use those two modes with a packet capture file that has been previously recorded on the network. Finally, a key element of our tool was that it must be possible for the user to specify a critical value for the statistical test. If not specified, a default value is used.
 
-First of all, there is the Learning mode. The learning mode is when the program is record every interactions between the hosts of the network. This model of was is usual is then stored as a JSON file.
+In this tool, we used the Kolmogorov Smirnov test (KS test) that is test for goodness of fit. As Masset \cite{kstest} discussed a test for goodness of fit ''is based on the maximum difference between an empirical and a hypothetical cumulative distribution''. In our case, we will use the term model distribution to talk about the hypothetical distribution. 
+On the other side, the topology feature test confirms that specific topology has been seen in the model distribution without any statistical evaluation. We will run this test on each feature independantly. We want our tool to offer a good modularity and to be ready for the addition of needed feature handlers.
 
-Next, there is the Analyzing mode. Running in this mode challenge the packet capture with the distributions recorded during the learning stage.
-
-It is possible to learn and analyze either from a live capture or from a packet capture file. 
-
-Finally, a key element of our tool was that it must be possible for the user to specify a critical value for the statistical test. If not specified, a default value is used.
-
+\label{subsectionStat}
+\section{Implementation}
 \subsection{Software structure}
-The idea behind our design was modularity. We wished to be able to add new test handlers as we want. During our design phase we decided to use the C++ programming language because of its powerful object oriented features and also because of our experience. On figure ~\ref{fig:classdiagramm} you can see our three test handler classes that inherite from the FeatureTestHandler class. The next important part is the TestHandlerContainer class that is keeping a vector FeatureTestHandler objects to use. Every test handler classes implements the FeatureTestHandler virtual interface that is shown by listing ~\ref{vinter}. 
-
-\begin{lstlisting}[caption= {FeatureTestHandler class virtual interface}, label=vinter]
-
-virtual void computePacket(
-                  const struct pcap_pkthdr* pkthdr,
-                  const unsigned char * packet ) = 0;
-virtual void printDistribution() const = 0;
-virtual void runTest( double cAlpha) = 0;
-virtual int getTestResult() = 0;
-virtual void JsonToData(Json::Value *json) = 0;
-virtual Json::Value *DataToJson() const = 0;
-
-\end{lstlisting}
-
-\begin{figure}
+\label{impl}
+The idea behind our design was modularity. We wished to be able to add new test handlers as we want. During our design phase we decided to use the \verb!C++! programming language because of its powerful object oriented features and also because of our experience. In figure~\ref{fig:classdiagramm} you can see our three test handler classes that inherit from the FeatureTestHandler class. 
+\begin{figure}[!ht]
 \centering
 \begin{emp}[classdiag](100,100)
 Class.A("FeatureTstHdlr")()();
@@ -690,25 +509,122 @@ item(iAssoc)("0..*")(obj.ne = A.w +(0, -4));
 \caption{Class diagram of the test Handlers and the container}
 \label{fig:classdiagramm}
 \end{figure}
+The next important part is the TestHandlerContainer class that is keeping a vector FeatureTestHandler objects to use. Every test handler classes implements the FeatureTestHandler virtual interface that is shown by listing ~\ref{lst:ftrTestHdlr}.
+
+\begin{lstlisting}[caption=FeatureTestHandler class virtual interface, label=lst:ftrTestHdlr]
+virtual void JsonToData(Json::Value *json) = 0;
+virtual void computePacket(
+                  const struct pcap_pkthdr* pkthdr,
+                  const unsigned char * packet ) = 0;
+virtual void printDistribution() const = 0;
+virtual void runTest( double cAlpha) = 0;
+virtual int getTestResult() = 0;
+virtual Json::Value *DataToJson() const = 0;
+\end{lstlisting}
+
+We will walkthrough this interface  and explain the use of these six methods. Some of these methods may be necessary during learning and/or analysis mode. Also, it is important to note that the TestHandlerContainer class calls these methods for each handler. 
+
+First of all, the implementation of the JsonToData method is looking for model data for a particular test handler in the model file. Each implementation of the FeatureTestHandler interface knows how to extract this data for its own feature.
+
+Next, the computePacket method is called for each packet in the capture for each handler in the test. Each handler is aware of how to consider each packet. This method takes in argument pointers to packet header and packet structures.
+
+Moreover, the printDistribution method is primarily for testing purposes. It is not used in production code but is really helpful during development phase.
+
+Next, the runTest method is running the actual statistical test that will be discussed in the subsection ~\ref{subsectionStat}. It takes the critical value that is to be used in that test as argument. Again, each handler is aware of how to run the test for its particular feature. 
+
+The getTestResult method then returns the results of the statistical test. In its current state, the tool is simply printing which tests have failed or passed. It would be really easy to add some other action to be taken of failed test runs. For example, we could easily send an email stating which test has failed.
+
+Finally, the DataToJson method is to save the model to the model file after a learning session. Each implementation returns a Json document to the TestHandlerContainer which is saved in the file.
+
+\subsection{Tools \& Libraries}
+This tool has been implemented in C++11. It is taking advantage of the many object-oriented features of this language. This software was designed with polymorphism in mind which positively impacted its modularity. In fact, it is really easy to add new features to detect and test. The user only has to implement the virtual interface defined by the FeatureTestHandler and add a newly allocated object in the TestHandlerContainer object.
+
+Traffic analysis for security purposes has been used for several years and many tools are free available out there. When building a tool like the ScadaAnalyzer, it is important to take advantage of the work others have open sourced. This program was built using the free and open source libpcap library to help with the online and offline packet parsing\cite{libpcap}. 
+
+A key aspect of this tool is that it records a model of what is normal on the network. In order to save this model, we use a Json file called the \texttt{model.json}. The JSON parsing and writing of this file is done with the help of JSONcpp \verb!C++! library\cite{jsoncpp}. It is important to note that this library is licensed under a Public domain license.
+
+Finally, we use the C++ Boost library for file system operations\cite{boost}.
+\section{Performance analysis}
+In this section, we explain our experiental methodology for testing the efficiency of our tool. We are also exposing the results of those tests.
+\subsection{Methodology}
+In order to test the suitability of our tool, we used a packet capture recorded from a simulated network. This traffic was generated in an ICS sandbox design by LEMAY \cite{lemay}. The testbench was made of seven virtual machines running in VMware Workstation software. As shown in figure ~\ref{fig:network}, six of these virtual machines were representating RTUs and one was the MTU. The use of a simulated network instead of a real world dataset was motivated by the limited availability of production traffic capture and the fact that we wanted to simulate real world malware. 
+For our learning phase, we used packet capture from  normal interactions on this simulated network. In order to simulated an infected host on the network, we later installed the Waledac malware on host named RLS103. 
+This is the setup that we used in our the analysis phase. Two scenarios were executed in order to test \texttt{ScadaAnalyzer}. Firstly, the Waledac scenario where a RTU is infected with the Waledac worm. Secondly, the Advance Persistent Threat is mimicking an intrusion in a RTU by an attacker.
+It is important to note that we performed our tests with a confidence interval of 0.05.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=3in]{network1.png}
+\caption{Testbench network map \cite{lemay}}
+\label{fig:network}
+\end{figure}
 
 
-\subsection{Statistical analysis}
+\subsection{Results}
+\subsubsection{Topology}
+\label{sec:topology}
+In table ~\ref{tab:topo} shows the result of the topology test. Those are the interaction that our tool has not encountered in the model distribution. The source and destination columns are representing the source and destination hosts respectively.
+\begin{table}[ht!]
+\centering
+\captionof{table}{Unknown interaction detected} \label{tab:topo} 
 
-\section{Implementation and Tests 2 pages}
-\subsection{Tools used}
-This tool has been implemented in C++11. It has taking advantage of the many object-oriented features of this language. This software was designed with polymorphism in mind which positively impacted its modularity. In fact, it is really easy to add new features to detect and test. The user only has to implement the virtual interface defined by the FeatureTestHandler and add a newly allocated object in the TestHandlerContainer object.
+    \begin{tabular}{ | C{2cm}| C{2.5cm} | C{2.5cm} |}
+    \hline
+      \multicolumn{2}{|c|}{\bf Source} & \bf Destination \\ \hline 
+    RSL103 &172.31.255.103 &    89.18.58.10 \\[0.2cm] \hline
+    RLS103 & 172.31.255.103 &  117.102.35.90 \\[0.2cm] \hline
+    RLS103 & 172.31.255.103 & 69.203.207.115 \\[0.2cm] \hline
+    RLS103 & 172.31.255.103 &  83.87.159.131 \\[0.2cm] \hline
+    RLS103 & 172.31.255.103 & 119.192.145.145 \\ [0.2cm]\hline
 
-Traffic analysis for security purposes has been used for several years and many tools are free available out there. When building a tool like the pcapAnalyzer it is important to take advantage of the work that others have open sourced. This program was build using the free and open source libpcap library to help with the online and offline packet parsing. 
+    \end{tabular}
+\end{table}
 
-A key aspect of this tool is that it records a model what is normal on the network. In order to save this model, we use a JSON file called the model.json. The JSON parsing and writing of this file is done with the help of JSONcpp C++ library. It is important to note that this library is licensed under a Public domain license.
+\subsubsection{Packet size}
+Table~\ref{tab:size} exposes the results of the packet size tests with two different samples. The dataset column represents the name of the scenario simulated in our custom sandbox. The Status column shows if the sample data matches with the model data. The status is compute from the Dstat and Critical Value columns. The column titled DStat represents the largest difference between the cumulative distributions value of the test and the model samples. The critical value is compute from the confidence interval, the size of the test sample and the size of the model sample. 
+\begin{table}[ht!]
+\centering
+\captionof{table}{Packet size} \label{tab:size} 
 
-Finally, we use the C++ Boost library for file system operations.
-\subsection{Performance requirements}
-\subsection{Performance analysis}
+    \begin{tabular}{ | C{2.4cm} | C{1.1cm} |C{1cm} | C{2cm}  |}
+    \hline
+        \bf Dataset & \bf Status & \bf Dstat & \bf Critical value ($\alpha$ = 0.05)\\ \hline 
+          Waledac & Failed & 0.032 & 0.026\\ [0.2cm]\hline
+          Advance Persistent Threat (APT)& Failed & 0.411 & 0.013 \\ \hline
+    \end{tabular}
+\end{table}
+First, the Waledac dataset is the scenario shown in section~\ref{sec:topology} where an host has been infected by the Waledac worm. Secondly, the Advance Persistent Threat is a scenario where a cyber-attacker has been able to take control of a RTU in the network. From this infected node, he is now trying to expand is control to other RTUs in the network using the tool meterpreter. 
 
-\section{Discussion 1/2 page}
-section text here
 
+\subsubsection{Interdeparture time}
+Table~\ref{tab:interdep} shows the results of the interdeparture time test run. The column names have identical meaning that in table~\ref{tab:size}. This data was gathered testing the Waledac scenario against the model distribution.
+
+\begin{table}[ht!]
+\centering
+\captionof{table}{Interdeparture Time} \label{tab:interdep} 
+
+    \begin{tabular}{|C{1.1cm} | C{2.1cm} | C{1cm} |C{0.8cm} | C{1.1cm} |}
+    \hline
+        \multicolumn{2}{|c|}{\bf Host} & \bf Status & \bf Dstat & \bf Critical value ($\alpha$=0.05) \\ \hline 
+        MTU & 172.31.255.100 & Failed & 0.052 & 0.035 \\[0.2cm] \hline
+        RLS103 & 172.31.255.103 & Failed & 0.124 & 0.091 \\[0.2cm]  \hline
+        RLS104 & 172.31.255.104 & Passed & 0.053 & 0.095 \\[0.2cm]  \hline
+        RLS105 & 172.31.255.105 & Passed & 0.081 & 0.094 \\[0.2cm]  \hline
+        RLS106 &  172.31.255.106 & Passed & 0.062 & 0.099 \\[0.2cm]  \hline
+        RLS107 &  172.31.255.107 & Passed & 0.055 & 0.099 \\[0.2cm]  \hline
+
+    \end{tabular}
+\end{table}
+
+\section{Discussion}
+%topology
+First, we can see from the topology test in table~\ref{tab:topo} that we detected an host at IP address 172.31.255.103 that is trying to send packets to other hosts that are not in the subnet. It is most likely the Waledac worm trying to reach its Command and Control (C\&C) server. As Lemay explained, this worm has a list of peer that it needs to query in order to notify the C\&C of its presence \cite{lemay}. This type of behavior is easy to detect, specially when a RTU is trying to reach addresses outside of the network. Moreover, the IP addresses that RLS103 is trying to reach are spread across three continents: North America, Europe and Asia.
+%packet size
+
+Secondly, we can see in table~\ref{tab:size} that in our test with the Waledac scenario there is a 0.032 gap and that 0.026 was the critical value for that sample. Also, we can see that the Advance Persistent Threat (APT) scenario is 0.399 points out of the critical value. In both of those tests we have effectively detected the threat. From this data, it is possible see that these type of abnormal behavior can easily be detected. Those results match with those that Lemay has gathered. This easily detectable traffic is most likely due to the fact that the worm Waledac is trying to reach its C\&C server with no consideration of the type of network it is in. In the same line, meterpreter software that is used in the APT scenario is trying, by default to send exploits and payload as fast as possible which would unsuual packet size.
+
+%interdeparture
+Finally, we can see from table~\ref{tab:interdep} that the distribution of the interdeparture time for the RLS103 RTU is statistically different from the model distribution. The difference is high enough to reject the null hypothesis which indicates a potential threat to the network. Also, the MTU has also failed the test with a 0.052 gap with the model which is an unexpected result. This can be explained by the incomplete model dataset. A packet capture on a longer period would help having a better idea of the of the normal behavior.
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
 % For figures, \caption should occur after the \includegraphics.
@@ -798,11 +714,10 @@ section text here
 
 
 
-\section{Conclusion 1/2 page}
-The conclusion goes here.
+\section{Conclusion}
+This article presented a SCADA traffic statistical analysis tool that can be used onsite or offsite to detect cyber-threats. We have successfully detected threats using features of SCADA control networks. We also had a false positive during our test runs. This false positive is probably due the limited size of the packet capture during the learning phase. Moreover, usual tools and malware were shown to be easily detectable because of the default behavior that is likely to be motivated by ''a faster infection is a better infection''. Which means that a cyber-attacker would need to put a lot of effort to modify existing tools to minic the way hosts are interacting on this specific network.
 
-
-
+Further work could include expanding the tool with more features. For example, it would be interesting to develop a test handler that would specially detect if an host is trying to reach and address outside the control network subnet. We are already detecting this type of behavior with the topology handler but it would be useful to set a specific way to react to that really alarming event. Also, it would be interesting to specify different critical value for each test. It is easy to picture an use-case where the user would like a specific feature to be more sensible to a variation of distribution.
 
 
 % if have a single appendix:
@@ -824,11 +739,6 @@ The conclusion goes here.
 
 % you can choose not to have a title for an appendix
 % if you want by leaving the argument blank
-
-  \section*{Acknowledgments}
-
-
-
 
 
 % Can use something like this to put references on a page
@@ -871,8 +781,21 @@ N. Falliere, L. O. Murchu and E. Chien, \emph{W32.Stuxnet Dossier Version 1.4},\
 Security Response, 2011.  
 \bibitem{clark}
 G. Clark and D. Reynders, \emph{ Pratcical Modern SCADA Protocols: DNP3, IEC 60870.5 and Related Systems},\hskip 1em plus 0.5em minus 0.4em\relax China: Newnes (Elsevier), 2008.
-\end{thebibliography}
 
+\bibitem{jsoncpp}
+Baptiste Lepilleur, \emph{ JSONcpp},\hskip 1em plus 0.5em minus 0.4em\relax \url{http://jsoncpp.sourceforge.net/}
+
+\bibitem{kstest}
+Frank J. Massey, Jr.\emph{The Kolmogorov-Smirnov Test for Goodness of Fit}\hskip 1em plus 0.5em minus 0.4em\relax Journal of the American Statistical Association
+Vol. 46, No. 253 (Mar., 1951), pp. 68-78
+
+\bibitem{boost}
+Boost project, \emph{Boost C++ Library},\hskip 1em plus 0.5em minus 0.4em\relax \url{http://www.boost.org/doc/libs/1_55_0/libs/filesystem/doc/index.htm}
+
+\bibitem{libpcap}
+LibPcap, \emph{libpcap, a portable C/C++ library for network traffic capture.},\hskip 1em plus 0.5em minus 0.4em\relax \url{http://www.tcpdump.org/}
+
+\end{thebibliography}
 
 % You can push biographies down or up by placing
 % a \vfill before or after them. The appropriate

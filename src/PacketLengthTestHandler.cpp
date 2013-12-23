@@ -92,7 +92,7 @@ int PacketLengthTestHandler::getTestResult(){
 	//TODO: take alpha by argument or set default in a better place
 	
 	if(dStat_ > seuil_)
-		cout << RED<<"The test distribution does not match the model with an cAlpha of: "<<NO_COLOR<<cAlpha_<< ", seuil:"<<seuil_<< ", dStat_: "<<dStat_<<endl;
+		cout << RED<<"The test distribution does not match the model."<<NO_COLOR<< "(dStat_: "<<dStat_<< ", seuil:"<<seuil_<<")"<<endl;
 	else
 		cout << GREEN<<"The test distribution matches with the model."<<NO_COLOR<<endl;
 	return 0;
@@ -145,8 +145,10 @@ void PacketLengthTestHandler::runTest(double cAlpha){
 
 	}
 
-	seuil_ = cAlpha*pow((numberOfElementModel + numberOfElementTest)/(numberOfElementModel * numberOfElementTest), 0.5);
-	//cout<<"dStat: "<< dStat_ <<endl;
+	double nModel = (double ) numberOfElementModel;
+	double nTest =  (double) numberOfElementTest;
+
+	seuil_ = cAlpha*pow((nModel + nTest)/(nModel * nTest), 0.5);
 }
 
 void PacketLengthTestHandler::computeModelMaxValue()

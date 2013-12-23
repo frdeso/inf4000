@@ -40,7 +40,7 @@ void InterdepartTimeTestHandler::computePacket(const struct pcap_pkthdr* pkthdr,
 
 
 void InterdepartTimeTestHandler::initCapture(){
-	map<uint32_t, std::map<uint64_t, uint32_t> > * timing;
+	map<uint32_t, std::map<uint64_t, uint32_t> > * timing = NULL;
 	if(getTypeOfData() == LEARNING_DATA) timing = interdepTiming_;
 	else if(getTypeOfData() == ANALYSIS_DATA) timing = testInterdepTiming_;
 	ComputeInterdeparture(packetTiming_, timing);
@@ -169,6 +169,7 @@ void InterdepartTimeTestHandler::runTest(double cAlpha){
 				testValue = 1;
 			else
 				testValue = findValueInCumul(testCumulDist, value);
+
 			double tmp = modelValue - testValue;
 			if (dStat < fabs(tmp)){
 					dStat = fabs(tmp);
@@ -177,12 +178,12 @@ void InterdepartTimeTestHandler::runTest(double cAlpha){
 
 		double nModel = (double)numOfElemModelAddrTiming;
 		double nTest = (double) numOfElemTestAddrTiming;
-		if(nTest == 0)
+
+		if(nTest == 0){
 			nTest = DBL_MAX;
-		//double c_alpah = 1.22;
+		}
 		double seuil = cAlpha*pow((nModel + nTest)/(nModel * nTest), 0.5);
 
-		//cout<<"Address: "<<networkIter->first<<" , dStat: "<< dStat <<endl;
 		dStats_.push_back(make_tuple(networkIter->first, dStat, seuil));
 	}
 }

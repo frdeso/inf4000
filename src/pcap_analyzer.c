@@ -62,7 +62,7 @@ void printUsage()
 
 int main(int argc, char **argv)
 {
-	int typeOfData;
+	int typeOfData = LEARNING_DATA;
 	double criticalValue = 0.10;
 	bool isLive = true;
 	uint32_t duration = 10; //default duration for live capture
@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 		/* Check for missing arguments */
-	if (!cmdOptionExists(argv, argv + argc, "-o") && !cmdOptionExists(argv, argv + argc, "-o")) {
+	if (!cmdOptionExists(argv, argv + argc, "-f") && !cmdOptionExists(argv, argv + argc, "-o")) {
 		std::cerr<<"You did not specified any source argument. Please specify online(\"-o\") or offline(\"-f\")." <<std::endl;
 		printUsage();
 		return -1;
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 	
 	container->addTestHandler(new TopologyTestHandler(modelFile,pathToModel,typeOfData)		);
 	
-	container->addTestHandler(new CaptureSummHandler(modelFile,pathToModel,typeOfData)		);
+	//container->addTestHandler(new CaptureSummHandler(modelFile,pathToModel,typeOfData)		);
 	
 	char error[PCAP_ERRBUF_SIZE];
 	if(isLive){

@@ -44,7 +44,7 @@ void FeatureTestHandler::saveDataToModel(){
 	return;
 }
 
-void FeatureTestHandler::loadDataToModel(){
+void FeatureTestHandler::loadDataFromModel(){
 	Json::Value *root = new Json::Value();
 	Json::Reader reader;
 

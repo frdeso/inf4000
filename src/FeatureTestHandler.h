@@ -1,3 +1,10 @@
+/*
+ * FeatureTestHandler
+ * Specifying interface for test handlers. Virtual methods must be
+ * implemented by the daugther classes.
+ * 
+ */
+ 
 #ifndef _FEATURECAPTURE_H_
 #define _FEATURECAPTURE_H_
 
@@ -15,7 +22,7 @@ class FeatureTestHandler {
 		FeatureTestHandler(fs::fstream *modelFile, fs::path path, int typeOfTest);
 		~FeatureTestHandler();
 		virtual void initCapture() = 0;
-		void loadDataToModel();
+		void loadDataFromModel();
 		void saveDataToModel();
 		virtual void computePacket(const struct pcap_pkthdr* pkthdr, const unsigned char * packet ) = 0;
 		virtual void printDistribution() const = 0;

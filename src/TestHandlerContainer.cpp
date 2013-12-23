@@ -1,4 +1,6 @@
+#include <arpa/inet.h>
 #include <iostream>
+#include <net/ethernet.h>
 #include <signal.h>
 #include <unistd.h>
 
@@ -8,6 +10,7 @@
 #include "utils.h"
 
 using namespace std;
+
 TestHandlerContainer::TestHandlerContainer(fs::fstream *modelFile, fs::path path, int type, double alpha){
 	path_ = path;
 	modelFile_ = modelFile;
@@ -16,6 +19,7 @@ TestHandlerContainer::TestHandlerContainer(fs::fstream *modelFile, fs::path path
 	packetCapture_ = new PacketCapture();
 	setCAlpha(alpha);
 }
+
 void TestHandlerContainer::addTestHandler(FeatureTestHandler * handler){
 	handlers_.push_back(handler);
 }
@@ -27,13 +31,22 @@ void TestHandlerContainer::addPacketCapture(pcap_t * captureHandle){
 
 void TestHandlerContainer::loadModel(){
 	for(list<FeatureTestHandler *>::iterator it = handlers_.begin(); it != handlers_.end(); it++ ){
-		(*it)->loadDataToModel();
+		(*it)->loadDataFromModel();
 	}
 }
+
 void containerCallback(unsigned char * arg, const struct pcap_pkthdr* pkthdr, const unsigned char * packet ){
 	std::list<FeatureTestHandler* > *handlers = (std::list<FeatureTestHandler* > *) arg;
+	//Sending the packet to all the feature handler
 	for(list<FeatureTestHandler *>::iterator it = handlers->begin(); it != handlers->end(); it++ ){
-		(*it)->computePacket(pkthdr, packet);
+		
+		struct  ether_header* ethHdr = (struct ether_header*) packet;
+		//We check if this is a IP packet. (Removing ARP and DNS...)
+		if (ntohs (ethHdr->ether_type) == ETHERTYPE_IP)
+		{
+			(*it)->computePacket(pkthdr, packet);
+		}
+		
 	}
 }
 
@@ -50,7 +63,6 @@ void TestHandlerContainer::computeDistribution(bool isLive, uint32_t duration){
 		//set alarm
 		alarm(duration);
 	}
-
 
 	std::list<FeatureTestHandler* > *arg = &handlers_;
 	//call pcap_loop on every pcap files
