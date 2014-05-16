@@ -106,6 +106,7 @@ void InterdepartTimeTestHandler::runTest(double cAlpha){
 
 	for(map<uint32_t, map<uint64_t, uint32_t> >::iterator networkIter = interdepTiming_->begin(); networkIter != interdepTiming_->end(); networkIter++){
 
+	cout<<"----------------------------------"<<endl;
 		map<uint64_t, uint32_t>  modelAddressTiming = networkIter->second;
 		
 		//Compute the number of elements for a particular address in model
@@ -171,11 +172,13 @@ void InterdepartTimeTestHandler::runTest(double cAlpha){
 				testValue = findValueInCumul(testCumulDist, value);
 
 			double tmp = modelValue - testValue;
+			cout<<value<<"\t"<< modelValue << "\t"<<testValue<<endl;
+
 			if (dStat < fabs(tmp)){
 					dStat = fabs(tmp);
 			}
 		}
-
+		cout<<dStat<<endl;
 		double nModel = (double)numOfElemModelAddrTiming;
 		double nTest = (double) numOfElemTestAddrTiming;
 

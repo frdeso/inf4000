@@ -86,6 +86,9 @@ void PacketLengthTestHandler::printDistribution() const
 {
 	for ( map<uint32_t ,uint32_t>::iterator it=getModelDistribution()->begin(); it!=getModelDistribution()->end(); ++it)
 		cout << it->first << "\t=> " << it->second <<  endl;
+	for ( map<uint32_t ,uint32_t>::iterator it=getTestDistribution()->begin(); it!=getTestDistribution()->end(); ++it)
+		cout << it->first << "\t=> " << it->second <<  endl;
+
 }
 
 int PacketLengthTestHandler::getTestResult(){
@@ -94,11 +97,12 @@ int PacketLengthTestHandler::getTestResult(){
 	if(dStat_ > seuil_)
 		cout << RED<<"The test distribution does not match the model."<<NO_COLOR<< "(dStat_: "<<dStat_<< ", seuil:"<<seuil_<<")"<<endl;
 	else
-		cout << GREEN<<"The test distribution matches with the model."<<NO_COLOR<<endl;
+		cout << GREEN<<"The test distribution matches with the model."<<NO_COLOR<< "(dStat_: "<<dStat_<< ", seuil:"<<seuil_<<")"<<endl;
 	return 0;
 }
 
 void PacketLengthTestHandler::runTest(double cAlpha){
+
 	cAlpha_ = cAlpha;
 	//compute cumulative function of the model
 	double lastSum = 0;
@@ -137,16 +141,20 @@ void PacketLengthTestHandler::runTest(double cAlpha){
 
 		testValue = (i >= maxTestSize_ ? 1:  (*testCumulDist_)[i]);
 
-		//cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelValue<< ", test: "<<setw(9)<< testValue <<", test - model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
+	//cout<<"i: " << setw(3)<<i <<", model: "<<setw(9)<<modelvalue<< ", test: "<<setw(9)<< testValue <<", test - model: "<<setw(9)<<fabs(testValue - modelValue)<<endl;
+
+//cout<< i << "\t" << modelValue<< "\t"<<testValue<<endl;
 
 		if (dStat_ < fabs(testValue - modelValue)){
 			dStat_ = fabs(testValue - modelValue);
+		//	cout<<dStat_ << endl;
 		}
-
 	}
 
 	double nModel = (double ) numberOfElementModel;
 	double nTest =  (double) numberOfElementTest;
+
+	cout<<nModel << " " << nTest<<endl;
 
 	seuil_ = cAlpha*pow((nModel + nTest)/(nModel * nTest), 0.5);
 }

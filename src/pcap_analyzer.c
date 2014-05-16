@@ -115,6 +115,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	
 	if(cmdOptionExists(argv, argv + argc, "-o")){
 		isLive = true;
 		interface = std::string(getCmdOption(argv, argv + argc, "-o"));
@@ -125,7 +126,7 @@ int main(int argc, char **argv)
 		isLive = false;
 		pathToFile_ = std::string(getCmdOption(argv, argv + argc, "-f"));
 	}
-
+	
 	/*Beginning of the program*/
 
 	fs::path pathToModel("model.json");
